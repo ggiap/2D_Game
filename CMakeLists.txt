@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 
 project("Entity_Component_System" CXX)
 
+set(CMAKE_MODULE_PATH
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+         ${CMAKE_MODULE_PATH})
+
 # Download automatically, you can also just copy the conan.cmake file
 if(NOT EXISTS "${CMAKE_MODULE_PATH}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
@@ -9,10 +13,11 @@ if(NOT EXISTS "${CMAKE_MODULE_PATH}/conan.cmake")
             "${CMAKE_MODULE_PATH}/conan.cmake")
 endif()
 
-include(cmake/conan.cmake)
+include(${CMAKE_MODULE_PATH}/conan.cmake)
 
 conan_cmake_run(REQUIRES
         fmt/6.1.2
+        spdlog/1.5.0
         BASIC_SETUP
         BUILD missing)
 

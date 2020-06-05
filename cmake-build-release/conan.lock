@@ -1,0 +1,29 @@
+{
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Release\ncompiler=gcc\ncompiler.libcxx=libstdc++11\ncompiler.version=10\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n",
+ "graph_lock": {
+  "nodes": {
+   "0": {
+    "pref": null,
+    "options": "fmt:fPIC=True\nfmt:header_only=False\nfmt:shared=False\nfmt:with_fmt_alias=False\nspdlog:fPIC=True\nspdlog:header_only=False\nspdlog:no_exceptions=False\nspdlog:shared=False\nspdlog:wchar_filenames=False\nspdlog:wchar_support=False",
+    "requires": [
+     "1",
+     "2"
+    ],
+    "path": "/home/george/CLionProjects/Entity-Component-System/cmake-build-release/conanfile.txt"
+   },
+   "1": {
+    "pref": "fmt/6.1.2#0:b173bbda18164d49a449ffadc1c9e817f49e819d#8e2a7aaccec678e8f2d72504ea006add",
+    "options": "fPIC=True\nheader_only=False\nshared=False\nwith_fmt_alias=False"
+   },
+   "2": {
+    "pref": "spdlog/1.5.0#0:5ec35c7aba5410ef8b762c324eb39c457e8e6fe3#97a516356d99477a4fa19d240d53cf26",
+    "options": "fPIC=True\nheader_only=False\nno_exceptions=False\nshared=False\nwchar_filenames=False\nwchar_support=False\nfmt:fPIC=True\nfmt:header_only=False\nfmt:shared=False\nfmt:with_fmt_alias=False",
+    "modified": "built",
+    "requires": [
+     "1"
+    ]
+   }
+  }
+ },
+ "version": "0.3"
+}
