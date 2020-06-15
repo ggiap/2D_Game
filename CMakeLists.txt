@@ -14,8 +14,12 @@ if(NOT EXISTS "${CMAKE_MODULE_PATH}/conan.cmake")
 endif()
 
 include(${CMAKE_MODULE_PATH}/conan.cmake)
+conan_add_remote(NAME bincrafters URL
+                 https://api.bintray.com/conan/bincrafters/public-conan)
 
-conan_cmake_run(REQUIRES
+conan_cmake_run(REQUIRES    
+        sfml/2.5.1@bincrafters/stable 
+        entt/3.4.0 
         fmt/6.1.2
         spdlog/1.5.0
         BASIC_SETUP
@@ -27,7 +31,7 @@ add_library(project_warnings INTERFACE)
 # Link this 'library' to set the c++ standard / compile-time options requested
 add_library(project_options INTERFACE)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 # Don't add this line if you will try_compile with boost.
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -36,7 +40,7 @@ if (MSVC)
     if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         # remove default warning level from CMAKE_CXX_FLAGS
         string (REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-        add_compile_options(/W4 /WX "/permissive-") #/Za produces an error
+        add_compile_options(/W2 /WX "/permissive-") #/Za produces an error
     endif()
 else()
     target_compile_options(project_warnings
