@@ -1,14 +1,31 @@
-add_library(SOURCE
-            src/Entity.hpp
-            src/Entity.cpp
-            src/EntityManager.cpp
-            src/EntityManager.hpp
+add_library(SOURCE 
+            core/EntityManager.cpp
+            core/EntityManager.hpp
+            core/Game.h
+            core/Game.cpp
+            core/World.cpp
+            core/World.h
+            core/SceneNode.cpp
+            core/SceneNode.h
             Components/C_Position.hpp
             Components/C_Velocity.hpp
             Components/C_Shape.hpp
             Systems/BaseSystem.hpp
             Systems/BaseSystem.cpp
             Utils/Utility.hpp
-            )
+            Systems/CollisionSystem.hpp
+            Systems/CollisionSystem.cpp
+            States/State.h
+            States/StateStack.h
+            States/State.cpp
+            States/StateStack.cpp
+            GUI/Button.cpp
+            GUI/Component.cpp
+            GUI/Container.cpp
+            GUI/Label.cpp
+            States/StateIdentifiers.h 
+            Utils/ResourceHolder.h 
+            States/GameState.h
+            States/GameState.cpp)
 
 target_link_libraries(SOURCE ${SOURCE})

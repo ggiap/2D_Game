@@ -39,7 +39,7 @@ void update(float dt, entt::registry& registry, sf::RenderTarget& window)
 
 void render(sf::RenderWindow& win, entt::registry& registry)
 {
-    registry.view<shape>().each([&win](auto& s)
+    registry.view<shape>().each([&win](auto& entity, auto& s)
         {
             win.draw(s);
         });
@@ -58,10 +58,6 @@ int main()
         registry.emplace<velocity>(entity, float(rand() % 60 + 20), float(rand() % 60 + 20));
         registry.emplace<shape>(entity, sf::RectangleShape(), sf::Vector2f(10.f, 10.f));
     }
-
-    sf::Vector2<double> v(2, 3);
-    auto t = utils::normalize(v);
-    spdlog::info("v: ({},{}) -> normalized: ({},{})", v.x, v.y, t.x, t.y);
 
    
     sf::RenderWindow sfmlWin(sf::VideoMode(600, 360), "Entity Component System");
