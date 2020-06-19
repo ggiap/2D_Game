@@ -1,9 +1,8 @@
-#ifndef C_SHAPE
-#define C_SHAPE
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
-struct shape : public sf::Drawable, public sf::Transformable
+struct shape : sf::Drawable, public sf::Transformable
 {
     shape() = default;
     shape(const sf::RectangleShape& rect, const sf::Vector2f& s) : rectangle(rect), size(s) 
@@ -23,5 +22,3 @@ private:
         target.draw(rectangle, states);
     }
 };
-
-#endif

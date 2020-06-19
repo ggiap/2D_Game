@@ -6,7 +6,7 @@
 class CollisionSystem : public BaseSystem
 {
 public:
-	void update() override;
+	void update(sf::Time dt) override;
 };
 
 #endif

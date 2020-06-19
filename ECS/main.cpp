@@ -6,11 +6,12 @@
 #include "Components/C_Position.hpp"
 #include "Components/C_Velocity.hpp"
 #include "Components/C_Shape.hpp"
+#include "Components/C_Body.hpp"
 #include <SFML/Graphics.hpp>
 #include "Utils/Utility.hpp"
 
 
-void update(float dt, entt::registry& registry, sf::RenderTarget& window)
+void update(sf::Time dt, entt::registry& registry, sf::RenderTarget& window)
 {
     registry.view<position, velocity, shape>().each([&](auto& pos, auto& vel, auto& s)
         {
@@ -30,8 +31,8 @@ void update(float dt, entt::registry& registry, sf::RenderTarget& window)
             {
                 vel.dx = -vel.dx;
             }
-            pos.x += vel.dx * dt;
-            pos.y += vel.dy * dt;
+            pos.x += vel.dx * dt.asSeconds();
+            pos.y += vel.dy * dt.asSeconds();
             
             s.setPosition(pos.x, pos.y);
         });
@@ -48,33 +49,53 @@ void render(sf::RenderWindow& win, entt::registry& registry)
 int main()
 {
     entt::registry registry;
-    float dt = 0.001f;
 
     std::srand(std::time(nullptr));
-    for (auto i = 0; i < 100; ++i) 
+    for (auto i = 0; i < 6000; ++i) 
     {
         auto entity = registry.create();
         registry.emplace<position>(entity, float(rand() % 550), float(rand() % 300));
-        registry.emplace<velocity>(entity, float(rand() % 60 + 20), float(rand() % 60 + 20));
-        registry.emplace<shape>(entity, sf::RectangleShape(), sf::Vector2f(10.f, 10.f));
+        registry.emplace<velocity>(entity, float(rand() % 100 + 50), float(rand() % 100 + 50));
+        registry.emplace<shape>(entity, sf::RectangleShape(), sf::Vector2f(5.f, 5.f));
+        registry.emplace<Body>(entity, sf::RectangleShape(sf::Vector2f(5.f, 5.f)));
     }
 
    
-    sf::RenderWindow sfmlWin(sf::VideoMode(600, 360), "Entity Component System");
+    sf::RenderWindow sfmlWin(sf::VideoMode(1200, 660), "Entity Component System");
 
+    sf::Time m_StatisticsUpdateTime{};
+    std::size_t m_StatisticsNumFrames{};
+    const sf::Time TimePerFrame = sf::seconds(1 / 60.f);
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
     while (sfmlWin.isOpen())
     {
-
-        sf::Event e;
-        while (sfmlWin.pollEvent(e))
+        sf::Time dt = clock.restart();
+        timeSinceLastUpdate += dt;
+        while (timeSinceLastUpdate > TimePerFrame)
         {
+            timeSinceLastUpdate -= TimePerFrame;
+            sf::Event e;
+            while (sfmlWin.pollEvent(e))
+            {
 
-            switch (e.type) {
-            case sf::Event::EventType::Closed:
-                sfmlWin.close();
-                break;
+                switch (e.type) {
+                case sf::Event::EventType::Closed:
+                    sfmlWin.close();
+                    break;
+                }
             }
         }
+        m_StatisticsUpdateTime += dt;
+        m_StatisticsNumFrames += std::size_t(1);
+        if (m_StatisticsUpdateTime >= sf::seconds(1.0f))
+        {
+            spdlog::info("FPS: {}", std::to_string(m_StatisticsNumFrames));
+
+            m_StatisticsUpdateTime -= sf::seconds(1.0f);
+            m_StatisticsNumFrames = 0;
+        }
+        
 
         update(dt, registry, sfmlWin);
         sfmlWin.clear(sf::Color(0, 116, 217));

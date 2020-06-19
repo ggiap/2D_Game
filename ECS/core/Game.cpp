@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <SFML/Window/Event.hpp>
 #include "../States/GameState.h"
 
 const sf::Time TimePerFrame = sf::seconds(1 / 60.f);
@@ -7,7 +8,7 @@ Game::Game() :
 	m_window(sf::VideoMode(1200, 800), "Application", sf::Style::Close),
 	m_Textures(),
 	m_Fonts(),
-	m_StateStack(State::Context(m_window, m_Textures, m_Fonts, registry)),
+	m_StateStack(Context(m_window, m_Textures, m_Fonts, registry)),
 	m_StatisticsText(),
 	m_StatisticsUpdateTime(),
 	m_StatisticsNumFrames(0)

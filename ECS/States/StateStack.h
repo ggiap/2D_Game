@@ -8,6 +8,7 @@
 
 #include "State.h"
 #include "StateIdentifiers.h"
+#include "../Utils/Context.hpp"
 
 class StateStack : private sf::NonCopyable
 {
@@ -20,7 +21,7 @@ public:
 	};
 
 public:
-	explicit StateStack(State::Context context);
+	explicit StateStack(Context context);
 
 	template<typename T>
 	void registerState(States::ID stateID);
@@ -51,7 +52,7 @@ private:
 private:
 	std::vector<State::Ptr> m_Stack;
 	std::vector<PendingChange> m_PendingList;
-	State::Context m_Context;
+	Context m_Context;
 	std::map<States::ID, std::function<State::Ptr()>> m_Factories;
 };
 

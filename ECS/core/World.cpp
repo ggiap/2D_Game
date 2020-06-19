@@ -1,31 +1,27 @@
 #include "World.h"
 
-World::World(sf::RenderWindow& window) :
-	m_Window(window),
-	m_WorldView(window.getDefaultView()),
+#include "../Components/C_Body.hpp"
+#include "../Components/C_Position.hpp"
+#include "../Components/C_Velocity.hpp"
+
+World::World(Context context) :
+	m_Window(context.window),
+	m_WorldView(context.window->getDefaultView()),
 	m_WorldBounds(0, 0, m_WorldView.getSize().x, 600),
-	m_spawnPosition(m_WorldView.getSize().x / 2, m_WorldView.getSize().y / 2),
-	m_Textures(),
-	m_Fonts()
+	em(context.registry)
 {
 	loadTextures();
 	buildScene();
-
-	m_WorldView.setCenter(m_spawnPosition);
 }
 
 void World::update(sf::Time dt)
 {
-	m_SceneGraph.update(dt);
-
-	sf::FloatRect viewBounds(m_WorldView.getCenter() - m_WorldView.getSize() / 2.f, m_WorldView.getSize());
-	const float borderDistance = 40.f;
+	em.update(dt);
 }
 
 void World::draw()
 {
-	m_Window.setView(m_WorldView);
-	m_Window.draw(m_SceneGraph);
+	em.draw();
 }
 
 void World::loadTextures()
@@ -35,11 +31,14 @@ void World::loadTextures()
 
 void World::buildScene()
 {
-	for (size_t i = 0; i < LayerCount; ++i)
-	{
-		SceneNode::Ptr layer(new SceneNode());
-		m_SceneLayers[i] = layer.get();
+	entt::registry registry;
 
-		m_SceneGraph.attachChild(std::move(layer));
+	std::srand(std::time(nullptr));
+	for (auto i = 0; i < 6000; ++i)
+	{
+		auto entity = registry.create();
+		registry.emplace<position>(entity, float(rand() % 550), float(rand() % 300));
+		registry.emplace<velocity>(entity, float(rand() % 100 + 50), float(rand() % 100 + 50));
+		registry.emplace<Body>(entity, sf::RectangleShape(sf::Vector2f(5.f, 5.f)));
 	}
 }

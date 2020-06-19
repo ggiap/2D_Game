@@ -1,4 +1,4 @@
-#include "../Gui/Button.h"
+#include "Button.h"
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>

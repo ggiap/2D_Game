@@ -3,7 +3,7 @@
 GameState::GameState(StateStack& stack, Context context)
 	:
 	State(stack, context),
-	m_World(*context.window)
+	m_World(getContext())
 {
 }
 
@@ -21,7 +21,6 @@ bool GameState::update(sf::Time dt)
 
 bool GameState::handleEvent(const sf::Event& event)
 {
-	event;
-
+	
 	return true;
 }

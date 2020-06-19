@@ -1,6 +1,6 @@
 #include "StateStack.h"
 
-StateStack::StateStack(State::Context context) :
+StateStack::StateStack(Context context) :
 	m_Stack(),
 	m_PendingList(),
 	m_Context(context),

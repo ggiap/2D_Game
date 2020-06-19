@@ -2,7 +2,7 @@
 #include "StateStack.h"
 #include "../Utils/Utility.hpp"
 
-State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, entt::registry& registry) :
+Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, entt::registry& registry) :
 	window(&window),
 	textures(&textures),
 	fonts(&fonts),
@@ -36,7 +36,7 @@ void State::requestStackClear()
 	m_Stack->clearStates();
 }
 
-State::Context State::getContext() const
+Context State::getContext() const
 {
 	return m_Context;
 }

@@ -10,22 +10,26 @@ add_library(SOURCE
             Components/C_Position.hpp
             Components/C_Velocity.hpp
             Components/C_Shape.hpp
+            Components/C_Body.hpp 
             Systems/BaseSystem.hpp
             Systems/BaseSystem.cpp
-            Utils/Utility.hpp
             Systems/CollisionSystem.hpp
             Systems/CollisionSystem.cpp
             States/State.h
             States/StateStack.h
             States/State.cpp
             States/StateStack.cpp
+            States/GameState.h
+            States/GameState.cpp
             GUI/Button.cpp
             GUI/Component.cpp
             GUI/Container.cpp
             GUI/Label.cpp
             States/StateIdentifiers.h 
-            Utils/ResourceHolder.h 
-            States/GameState.h
-            States/GameState.cpp)
+            Utils/ResourceHolder.h
+            Utils/Utility.hpp
+            Utils/Utility.cpp 
+            Utils/Math.hpp          
+            Utils/Context.hpp "Systems/MoveSystem.hpp" "Systems/MoveSystem.cpp")
 
 target_link_libraries(SOURCE ${SOURCE})
