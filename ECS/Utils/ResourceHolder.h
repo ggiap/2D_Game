@@ -3,7 +3,7 @@
 #include <memory>
 #include <stdexcept>
 #include <map>
-#include <assert.h>
+#include <cassert>
 
 template<typename Resource, typename Identifier>
 class ResourceHolder

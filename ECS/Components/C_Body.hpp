@@ -1,14 +1,15 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <utility>
 #include "../Utils/Utility.hpp"
 
 struct Body
 {
     Body() = default;
-    Body(const sf::RectangleShape& rect, const sf::Vector2f pos, 
-                                         const sf::Vector2f& vel) :
-        shape(rect),
+    Body(sf::RectangleShape rect, const sf::Vector2f pos, 
+         const sf::Vector2f& vel) :
+        shape(std::move(rect)),
         position(pos),
         velocity(vel)
     {

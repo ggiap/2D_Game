@@ -13,9 +13,7 @@ void MoveSystem::update(sf::Time dt)
     registry->view<Body>().each([&](auto& body)
         {
             body.position += body.velocity * dt.asSeconds();
-            //body.position.x += vel.dx * dt.asSeconds();
-            //body.position.y += vel.dy * dt.asSeconds();
 
-            body.shape.setPosition(body.position.x, body.position.y);
+            body.shape.setPosition(body.position);
         });
 }

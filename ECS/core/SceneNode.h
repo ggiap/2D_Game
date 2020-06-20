@@ -1,8 +1,6 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include <algorithm>
-#include <cassert>
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>

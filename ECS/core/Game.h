@@ -2,7 +2,6 @@
 
 #include <entt/entt.hpp>
 
-#include "../States/State.h"
 #include "../States/StateStack.h"
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"

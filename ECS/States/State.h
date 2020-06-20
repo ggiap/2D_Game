@@ -1,9 +1,7 @@
 #pragma once
 #include <memory>
-#include <entt/entt.hpp>
 
 #include "StateIdentifiers.h"
-#include "../Utils/Utility.hpp"
 #include "../Utils/Context.hpp"
 
 class StateStack;
@@ -25,18 +23,17 @@ public:
 
 public:
 	State(StateStack& stack, Context context);
-	virtual ~State();
 
 	virtual void draw() = 0;
 	virtual bool update(sf::Time dt) = 0;
 	virtual bool handleEvent(const sf::Event& event) = 0;
 
 protected:
-	void requestStackPush(States::ID stateID);
-	void requestStackPop();
-	void requestStackClear();
+	void requestStackPush(States::ID stateID) const;
+	void requestStackPop() const;
+	void requestStackClear() const;
 
-	Context getContext() const;
+	[[nodiscard]] Context getContext() const;
 
 private:
 	StateStack* m_Stack;

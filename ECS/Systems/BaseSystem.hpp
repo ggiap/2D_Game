@@ -1,5 +1,4 @@
-#ifndef BASE_SYSTEM
-#define BASE_SYSTEM
+#pragma once
 
 #include <entt/entity/registry.hpp>
 
@@ -21,5 +20,3 @@ protected:
 	entt::registry* registry{};
 	sf::RenderWindow* window{};
 };
-
-#endif

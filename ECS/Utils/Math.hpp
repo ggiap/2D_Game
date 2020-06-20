@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cmath>
+#include <SFML/System/Vector2.hpp>
+
 namespace math
 {
     constexpr const double PI = 3.141592653589793238462643383;

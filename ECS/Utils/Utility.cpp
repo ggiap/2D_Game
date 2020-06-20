@@ -5,25 +5,25 @@ namespace utils
     template <typename T>
     void centerOrigin(T obj)
     {
-        sf::FloatRect bounds = obj.getLocalBounds();
+	    const sf::FloatRect bounds = obj.getLocalBounds();
         obj.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
     }
 
     void centerOrigin(sf::Sprite& sprite)
     {
-        sf::FloatRect bounds = sprite.getLocalBounds();
+	    const sf::FloatRect bounds = sprite.getLocalBounds();
         sprite.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
     }
 
     void centerOrigin(sf::Text& text)
     {
-        sf::FloatRect bounds = text.getLocalBounds();
+	    const sf::FloatRect bounds = text.getLocalBounds();
         text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
     }
 
     void centerOrigin(sf::RectangleShape& rect)
     {
-        sf::FloatRect bounds = rect.getLocalBounds();
+	    const sf::FloatRect bounds = rect.getLocalBounds();
         rect.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
     }
 

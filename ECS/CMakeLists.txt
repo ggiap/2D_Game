@@ -25,6 +25,8 @@ add_library(SOURCE
             Utils/Math.hpp          
             Utils/Context.hpp 
             Systems/MoveSystem.hpp 
-            Systems/MoveSystem.cpp "Systems/RenderSystem.hpp" "Systems/RenderSystem.cpp")
+            Systems/MoveSystem.cpp 
+            Systems/RenderSystem.hpp 
+            Systems/RenderSystem.cpp)
 
 target_link_libraries(SOURCE ${SOURCE})

@@ -1,5 +1,4 @@
-#ifndef COLLISION_SYSTEM_HPP
-#define COLLISION_SYSTEM_HPP
+#pragma once
 
 #include "BaseSystem.hpp"
 #include "../Components/C_Body.hpp"
@@ -13,7 +12,5 @@ public:
 	void update(sf::Time dt) override;
 
 private:
-	void checkOutOFBorder(Body& body);
+	void checkOutOFBorder(Body& body) const;
 };
-
-#endif

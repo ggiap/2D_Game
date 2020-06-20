@@ -10,7 +10,7 @@ StateStack::StateStack(Context context) :
 
 State::Ptr StateStack::createState(States::ID stateID)
 {
-	auto found = m_Factories.find(stateID);
+	const auto found = m_Factories.find(stateID);
 
 	assert(found != m_Factories.end());
 
@@ -73,17 +73,17 @@ void StateStack::handleEvent(const sf::Event& event)
 
 void StateStack::pushState(States::ID stateID)
 {
-	m_PendingList.push_back(PendingChange(Push, stateID));
+	m_PendingList.emplace_back(Push, stateID);
 }
 
 void StateStack::popState()
 {
-	m_PendingList.push_back(PendingChange(Pop));
+	m_PendingList.emplace_back(Pop);
 }
 
 void StateStack::clearStates()
 {
-	m_PendingList.push_back(PendingChange(Clear));
+	m_PendingList.emplace_back(Clear);
 }
 
 bool StateStack::isEmpty() const

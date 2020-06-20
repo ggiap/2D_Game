@@ -2,8 +2,7 @@
 #include <vector>
 #include <map>
 #include <functional>
-#include <algorithm>
-#include <assert.h>
+#include <cassert>
 #include <SFML/System.hpp>
 
 #include "State.h"
@@ -21,6 +20,7 @@ public:
 	};
 
 public:
+	StateStack() = default;
 	explicit StateStack(Context context);
 
 	template<typename T>
@@ -34,7 +34,7 @@ public:
 	void popState();
 	void clearStates();
 
-	bool isEmpty() const;
+	[[nodiscard]] bool isEmpty() const;
 
 private:
 	State::Ptr createState(States::ID stateID);
@@ -50,14 +50,14 @@ private:
 	};
 
 private:
-	std::vector<State::Ptr> m_Stack;
-	std::vector<PendingChange> m_PendingList;
-	Context m_Context;
-	std::map<States::ID, std::function<State::Ptr()>> m_Factories;
+	std::vector<State::Ptr> m_Stack{};
+	std::vector<PendingChange> m_PendingList{};
+	Context m_Context{};
+	std::map<States::ID, std::function<State::Ptr()>> m_Factories{};
 };
 
 template<typename T>
-inline void StateStack::registerState(States::ID stateID)
+void StateStack::registerState(States::ID stateID)
 {
 	m_Factories[stateID] = [this]()
 	{ 

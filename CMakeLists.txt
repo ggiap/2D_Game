@@ -111,3 +111,9 @@ add_subdirectory(ECS)
 
 add_executable(${CMAKE_PROJECT_NAME} ECS/main.cpp)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS})
+
+add_custom_command(
+        TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/ECS/res
+        ${CMAKE_CURRENT_BINARY_DIR}/res)

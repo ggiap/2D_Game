@@ -1,5 +1,4 @@
-#ifndef ENTITY_MANAGER
-#define ENTITY_MANAGER
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -14,12 +13,13 @@ public:
 	EntityManager(entt::registry* reg);
 
 	void update(sf::Time dt);
+	void draw();
 
 	void addSystem(std::unique_ptr<BaseSystem> sys);
+	void addRenderSystem(std::unique_ptr<BaseSystem> sys);
 	
 private:
-	entt::registry* m_registry;
-	std::vector<std::unique_ptr<BaseSystem>> m_systems;
+	entt::registry* m_Registry{};
+	std::vector<std::unique_ptr<BaseSystem>> m_Systems{};
+	std::vector<std::unique_ptr<BaseSystem>> m_RenderSystems{};
 };
-
-#endif

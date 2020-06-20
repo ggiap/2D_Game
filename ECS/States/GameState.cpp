@@ -1,9 +1,9 @@
 #include "GameState.h"
 
-GameState::GameState(StateStack& stack, Context context)
+GameState::GameState(StateStack& stack, Context& context)
 	:
 	State(stack, context),
-	m_World(getContext())
+	m_World(context)
 {
 }
 
@@ -12,7 +12,7 @@ void GameState::draw()
 	m_World.draw();
 }
 
-bool GameState::update(sf::Time dt)
+bool GameState::update(const sf::Time dt)
 {
 	m_World.update(dt);
 

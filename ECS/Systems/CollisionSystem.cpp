@@ -10,7 +10,7 @@ CollisionSystem::CollisionSystem(entt::registry& reg, sf::RenderWindow& win) :
 
 void CollisionSystem::update(sf::Time dt)
 {
-	auto view = registry->view();
+	auto view = registry->view<Body>();
 
 	for (auto& entity : view)
 	{
@@ -19,13 +19,13 @@ void CollisionSystem::update(sf::Time dt)
 	}
 }
 
-void CollisionSystem::checkOutOFBorder(Body& body)
+void CollisionSystem::checkOutOFBorder(Body& body) const
 {
-    if (window->getView().getSize().x - 10.f < body.position.x)
+    if (window->getView().getSize().x - body.shape.getSize().x < body.position.x)
     {
         body.velocity.x = -body.velocity.x;
     }
-    if (window->getView().getSize().y - 10.f < body.position.y)
+    if (window->getView().getSize().y - body.shape.getSize().y < body.position.y)
     {
         body.velocity.y = -body.velocity.y;
     }

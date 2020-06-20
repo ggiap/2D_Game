@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <SFML/Window/Event.hpp>
 #include "../States/GameState.h"
+#include "spdlog/spdlog.h"
 
 const sf::Time TimePerFrame = sf::seconds(1 / 60.f);
 
@@ -22,7 +23,7 @@ Game::Game() :
 	m_StatisticsText.setCharacterSize(20u);
 
 	registerStates();
-	m_StateStack.pushState(States::Title);
+	m_StateStack.pushState(States::Game);
 }
 
 void Game::Run()
@@ -32,7 +33,7 @@ void Game::Run()
 	
 	while (m_window.isOpen())
 	{
-		sf::Time dt = clock.restart();
+		const sf::Time dt = clock.restart();
 		timeSinceLastUpdate += dt;
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
@@ -51,7 +52,7 @@ void Game::Run()
 
 void Game::HandleEvents()
 {
-	sf::Event event;
+	sf::Event event{};
 	while (m_window.pollEvent(event))
 	{
 		m_StateStack.handleEvent(event);
@@ -78,7 +79,7 @@ void Game::Render()
 
 void Game::loadResources()
 {
-	m_Fonts.load(Fonts::ARJULIAN, "res/Font/ARJULIAN.ttf");
+	m_Fonts.load(Fonts::ARJULIAN, "../res/Font/ARJULIAN.ttf");
 }
 
 void Game::registerStates()
@@ -93,7 +94,7 @@ void Game::updateStatistics(sf::Time dt)
 	if (m_StatisticsUpdateTime >= sf::seconds(1.0f))
 	{
 		m_StatisticsText.setString("FPS: " + std::to_string(m_StatisticsNumFrames));
-
+		spdlog::info(std::to_string(m_StatisticsNumFrames));
 		m_StatisticsUpdateTime -= sf::seconds(1.0f);
 		m_StatisticsNumFrames = 0;
 	}
