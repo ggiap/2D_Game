@@ -1,9 +1,7 @@
 #pragma once
 
-#include <algorithm>
-#include <memory>
-#include <array>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"
 #include "../Utils/Context.hpp"
@@ -27,5 +25,6 @@ private:
 	sf::FloatRect m_WorldBounds;
 
 	EntityManager em;
+	Context* m_Context;
 };
 

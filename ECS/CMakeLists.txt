@@ -6,10 +6,7 @@ add_library(SOURCE
             core/World.cpp
             core/World.h
             core/SceneNode.cpp
-            core/SceneNode.h
-            Components/C_Position.hpp
-            Components/C_Velocity.hpp
-            Components/C_Shape.hpp
+            core/SceneNode.h     
             Components/C_Body.hpp 
             Systems/BaseSystem.hpp
             Systems/BaseSystem.cpp
@@ -21,15 +18,13 @@ add_library(SOURCE
             States/StateStack.cpp
             States/GameState.h
             States/GameState.cpp
-            GUI/Button.cpp
-            GUI/Component.cpp
-            GUI/Container.cpp
-            GUI/Label.cpp
             States/StateIdentifiers.h 
             Utils/ResourceHolder.h
             Utils/Utility.hpp
             Utils/Utility.cpp 
             Utils/Math.hpp          
-            Utils/Context.hpp "Systems/MoveSystem.hpp" "Systems/MoveSystem.cpp")
+            Utils/Context.hpp 
+            Systems/MoveSystem.hpp 
+            Systems/MoveSystem.cpp "Systems/RenderSystem.hpp" "Systems/RenderSystem.cpp")
 
 target_link_libraries(SOURCE ${SOURCE})

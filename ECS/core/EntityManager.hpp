@@ -14,7 +14,6 @@ public:
 	EntityManager(entt::registry* reg);
 
 	void update(sf::Time dt);
-	void draw();
 
 	void addSystem(std::unique_ptr<BaseSystem> sys);
 	

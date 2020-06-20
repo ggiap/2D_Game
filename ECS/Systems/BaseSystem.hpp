@@ -18,8 +18,8 @@ public:
 	virtual void update(sf::Time dt) = 0;
 
 protected:
-	entt::registry* registry;
-	sf::RenderWindow* window;
+	entt::registry* registry{};
+	sf::RenderWindow* window{};
 };
 
 #endif

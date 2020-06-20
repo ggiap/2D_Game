@@ -6,12 +6,17 @@
 struct Body
 {
     Body() = default;
-    Body(const sf::RectangleShape& rect) :
-        rectangle(rect)
+    Body(const sf::RectangleShape& rect, const sf::Vector2f pos, 
+                                         const sf::Vector2f& vel) :
+        shape(rect),
+        position(pos),
+        velocity(vel)
     {
-        utils::centerOrigin(rectangle);
-        rectangle.setOutlineColor(sf::Color::White);
+        utils::centerOrigin(shape);
+        shape.setOutlineColor(sf::Color::White);
     }
 
-    sf::RectangleShape rectangle;
+    sf::RectangleShape shape{};
+    sf::Vector2f position{};
+    sf::Vector2f velocity{};
 };
