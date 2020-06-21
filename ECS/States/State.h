@@ -11,18 +11,9 @@ class State
 public:
 	using Ptr = std::unique_ptr<State>;
 
-	/*struct Context
-	{
-		Context(sf::RenderWindow &window, TextureHolder& textures, FontHolder& fonts, entt::registry& registry);
-
-		sf::RenderWindow*	window;
-		TextureHolder*		textures;
-		FontHolder*			fonts;
-		entt::registry*		registry;
-	};*/
-
 public:
 	State(StateStack& stack, Context context);
+	virtual ~State() {}
 
 	virtual void draw() = 0;
 	virtual bool update(sf::Time dt) = 0;

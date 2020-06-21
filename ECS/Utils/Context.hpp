@@ -8,12 +8,12 @@
 struct Context
 {
 	Context() = default;
-	Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, entt::registry& registry)
+	Context(sf::RenderWindow& win, TextureHolder& tex, FontHolder& font, entt::registry& reg)
 		:
-		window(&window),
-		textures(&textures),
-		fonts(&fonts),
-		registry(&registry)
+		window(&win),
+		textures(&tex),
+		fonts(&font),
+		registry(&reg)
 	{
 	
 	}

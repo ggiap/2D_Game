@@ -1,7 +1,8 @@
 #pragma once
 #include "../States/State.h"
-#include "../States/StateStack.h"
 #include "../core/World.h"
+
+class StateStack;
 
 
 class GameState : public State

@@ -22,7 +22,7 @@ namespace Textures
 {
     typedef enum
     {
-
+        Background,
     }ID;
 }
 
