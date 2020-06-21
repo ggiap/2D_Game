@@ -47,7 +47,7 @@ namespace math
     template <typename T>
     T angle(const sf::Vector2<T>& v, const sf::Vector2<T>& u)
     {
-        T m = std::sqrt(magnitude(v) * magnitude(u));
+        T m = std::sqrt(squaredLength(v) * squaredLength(u));
         return std::acos(dotProduct(v, u) / m);
     }
 
