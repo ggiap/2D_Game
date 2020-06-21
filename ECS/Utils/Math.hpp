@@ -45,15 +45,22 @@ namespace math
     }
 
     template <typename T>
+    T angle(const sf::Vector2<T>& v, const sf::Vector2<T>& u)
+    {
+        T m = std::sqrt(magnitude(v) * magnitude(u));
+        return std::acos(dotProduct(v, u) / m);
+    }
+
+    template <typename T>
     T radToDeg(T radians)
     {
         return (180 / PI) * radians;
     }
 
     template <typename T>
-    T degToRad(T deegres)
+    T degToRad(T degrees)
     {
-        return (PI / 180) * deegres;
+        return (PI / 180) * degrees;
     }
 
     template <typename T>
