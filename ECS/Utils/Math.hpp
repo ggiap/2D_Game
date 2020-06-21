@@ -32,6 +32,12 @@ namespace math
     }
 
     template <typename T>
+    T distance(const sf::Vector2<T>& v, const sf::Vector2<T>& u)
+    {
+        return magnitude(v - u);
+    }
+
+    template <typename T>
     sf::Vector2<T> normalize(const sf::Vector2<T>& v)
     {
         assert(v != sf::Vector2<T>());
