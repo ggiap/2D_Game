@@ -1,7 +1,9 @@
 #pragma once
 
 #include "BaseSystem.hpp"
-#include "../Components/C_Body.hpp"
+#include <SFML/System/Vector2.hpp>
+
+class Body;
 
 class CollisionSystem : public BaseSystem
 {
@@ -13,4 +15,5 @@ public:
 
 private:
 	void checkOutOFBorder(Body& body) const;
+	bool checkOutOFBorder2(Body& body) const;
 };

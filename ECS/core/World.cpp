@@ -37,9 +37,9 @@ void World::buildScene()
 	for (auto i = 0; i < 6000; ++i)
 	{
 		const auto entity = m_Context->registry->create();
-		sf::Vector2f position(static_cast<float>(rand() % 550), static_cast<float>(rand() % 300));
+		sf::Vector2f position(static_cast<float>(rand() % 1150), static_cast<float>(rand() % 750));
 		sf::Vector2f velocity(static_cast<float>(rand() % 200 - 50), static_cast<float>(rand() % 200 - 50));
-		m_Context->registry->emplace<Body>(entity, sf::RectangleShape(sf::Vector2f(5.f, 5.f)), position, velocity);
+		m_Context->registry->emplace<Body>(entity, sf::RectangleShape(sf::Vector2f(10.f, 10.f)), position, velocity);
 	}
 
 	em.addSystem(std::make_unique<MoveSystem>(*m_Context->registry, *m_Window));
