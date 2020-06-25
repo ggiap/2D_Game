@@ -9,7 +9,7 @@ class CollisionSystem : public BaseSystem
 {
 public:
 	CollisionSystem() = default;
-	CollisionSystem(entt::registry& reg, sf::RenderWindow& win);
+	explicit CollisionSystem(Context& context);
 
 	void update(sf::Time dt) override;
 

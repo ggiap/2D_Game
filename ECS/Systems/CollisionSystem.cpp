@@ -1,30 +1,32 @@
 #include "CollisionSystem.hpp"
 #include "../Components/C_Body.hpp"
 
-CollisionSystem::CollisionSystem(entt::registry& reg, sf::RenderWindow& win) :
-    BaseSystem(reg, win)
+CollisionSystem::CollisionSystem(Context& context) :
+    BaseSystem(context)
 {
-
+    //m_Context->registry->view()
 }
 
 void CollisionSystem::update(sf::Time dt)
 {
-	auto view = registry->view<Body>();
+	//auto view = m_Context->registry->view<Body>();
 
-	for (auto& entity : view)
-	{
-		auto& body = view.get<Body>(entity);
-        checkOutOFBorder(body);
-	}
+//	for (auto& entity : view)
+//	{
+//		auto& body = view.get<Body>(entity);
+//        checkOutOFBorder(body);
+//	}
+
+    m_Context->world->Step(dt.asSeconds(), 8, 3);
 }
 
 void CollisionSystem::checkOutOFBorder(Body& body) const
 {
-    if (window->getView().getSize().x - body.shape.getSize().x < body.position.x)
+    if (m_Context->window->getView().getSize().x - body.shape.getSize().x < body.position.x)
     {
         body.velocity.x = -body.velocity.x;
     }
-    if (window->getView().getSize().y - body.shape.getSize().y < body.position.y)
+    if (m_Context->window->getView().getSize().y - body.shape.getSize().y < body.position.y)
     {
         body.velocity.y = -body.velocity.y;
     }
@@ -40,8 +42,8 @@ void CollisionSystem::checkOutOFBorder(Body& body) const
 
 bool CollisionSystem::checkOutOFBorder2(Body& body) const
 {
-    return (window->getView().getSize().x - body.shape.getSize().x < body.position.x) ||
-           (window->getView().getSize().y - body.shape.getSize().y < body.position.y) ||
+    return (m_Context->window->getView().getSize().x - body.shape.getSize().x < body.position.x) ||
+           (m_Context->window->getView().getSize().y - body.shape.getSize().y < body.position.y) ||
            (0.0f > body.position.y) ||
            (0.0f > body.position.x);
 

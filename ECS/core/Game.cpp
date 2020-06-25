@@ -9,7 +9,8 @@ Game::Game() :
 	m_window(sf::VideoMode(1200, 800), "Application", sf::Style::Close),
 	m_Textures(),
 	m_Fonts(),
-	m_StateStack(Context(m_window, m_Textures, m_Fonts, registry)),
+	m_B2DWorld(b2Vec2(0, 9.81)),
+	m_StateStack(Context(m_window, m_Textures, m_Fonts, m_Registry, m_B2DWorld)),
 	m_StatisticsText(),
 	m_StatisticsUpdateTime(),
 	m_StatisticsNumFrames(0)

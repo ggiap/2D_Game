@@ -1,19 +1,19 @@
 #include "MoveSystem.hpp"
 #include <SFML/System/Time.hpp>
 #include "../Components/C_Body.hpp"
+#include "../Components/C_Rigidbody.hpp"
 
-MoveSystem::MoveSystem(entt::registry& reg, sf::RenderWindow& win) :
-    BaseSystem(reg, win)
+MoveSystem::MoveSystem(Context& context) :
+    BaseSystem(context)
 {
 
 }
 
 void MoveSystem::update(sf::Time dt)
 {
-    registry->view<Body>().each([&](auto& body)
+    b2Body* g;
+    m_Context->registry->view<Body, C_Rigidbody>().each([&](auto& body, auto& rb)
         {
-            body.position += body.velocity * dt.asSeconds();
-
-            body.shape.setPosition(body.position);
+            body.shape.setPosition(utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition()));
         });
 }

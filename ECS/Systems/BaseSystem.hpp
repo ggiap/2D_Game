@@ -1,10 +1,9 @@
 #pragma once
 
-#include <entt/entity/registry.hpp>
+#include "../Utils/Context.hpp"
 
 namespace sf 
-{ 
-	class RenderWindow;
+{
 	class Time;
 }
 
@@ -12,11 +11,10 @@ class BaseSystem
 {
 public:
 	BaseSystem() = default;
-	BaseSystem(entt::registry& reg, sf::RenderWindow& win);
+	BaseSystem(Context& context);
 
 	virtual void update(sf::Time dt) = 0;
 
 protected:
-	entt::registry* registry{};
-	sf::RenderWindow* window{};
+	Context* m_Context;
 };

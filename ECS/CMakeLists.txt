@@ -27,6 +27,6 @@ add_library(SOURCE
             Systems/MoveSystem.hpp 
             Systems/MoveSystem.cpp 
             Systems/RenderSystem.hpp 
-            Systems/RenderSystem.cpp)
+            Systems/RenderSystem.cpp Components/C_Rigidbody.hpp)
 
 target_link_libraries(SOURCE ${SOURCE})

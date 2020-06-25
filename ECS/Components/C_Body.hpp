@@ -1,13 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <utility>
+#include <Box2D/Common/b2Math.h>
 #include "../Utils/Utility.hpp"
 
 struct Body
 {
     Body() = default;
-    Body(sf::RectangleShape rect, const sf::Vector2f pos, 
+    Body(sf::RectangleShape rect, const sf::Vector2f pos,
          const sf::Vector2f& vel) :
         shape(std::move(rect)),
         position(pos),

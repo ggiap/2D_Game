@@ -6,7 +6,7 @@ class MoveSystem : public BaseSystem
 {
 public:
 	MoveSystem() = default;
-	MoveSystem(entt::registry& reg, sf::RenderWindow& win);
+	MoveSystem(Context& context);
 
 	void update(sf::Time dt) override;
 };

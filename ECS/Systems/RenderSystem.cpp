@@ -3,8 +3,8 @@
 #include "../Components/C_Body.hpp"
 #include "spdlog/spdlog.h"
 
-RenderSystem::RenderSystem(entt::registry& reg, sf::RenderWindow& win) :
-BaseSystem(reg, win)
+RenderSystem::RenderSystem(Context& context) :
+BaseSystem(context)
 {
 	
 }
@@ -12,8 +12,8 @@ BaseSystem(reg, win)
 
 void RenderSystem::update(sf::Time dt)
 {
-	registry->view<Body>().each([&](auto& body) 
+	m_Context->registry->view<Body>().each([&](auto& body)
 		{
-			window->draw(body.shape);
+            m_Context->window->draw(body.shape);
 		});
 }

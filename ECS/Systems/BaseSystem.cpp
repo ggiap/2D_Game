@@ -1,9 +1,8 @@
 #include "BaseSystem.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include "../Utils/Context.hpp"
 
-BaseSystem::BaseSystem(entt::registry& reg, sf::RenderWindow& win) :
-	registry(&reg),
-	window(&win)
+BaseSystem::BaseSystem(Context& context) :
+    m_Context(&context)
 {
 
 }

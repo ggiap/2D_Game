@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <Box2D/Box2D.h>
 #include <cassert>
 #include <cmath>
 
@@ -20,29 +21,29 @@ namespace sf
 
 namespace Textures
 {
-    typedef enum
+    enum ID
     {
         Background,
-    }ID;
+    };
 }
 
 namespace Fonts
 {
-    typedef enum
+    enum ID
     {
         ARJULIAN,
-    }ID;
+    };
 }
 
 namespace Category
 {
-    typedef enum
+    enum Type
     {
         None = 0,
         Scene = 1 << 0,
         Player = 1 << 1,
         Enemy = 1 << 2,
-    }type;
+    };
 }
 
 template<typename Resource, typename Identifier>
@@ -50,6 +51,11 @@ class ResourceHolder;
 
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
+
+namespace sfdd
+{
+    const float SCALE = 30.f;
+}
 
 namespace utils
 {
@@ -59,4 +65,19 @@ namespace utils
     void centerOrigin(sf::Text& text);
     void centerOrigin(sf::RectangleShape& rect);
     const char* getKeyName(const sf::Keyboard::Key key);
+
+    //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS units
+    template <typename T>
+    b2Vec2 sfVecToB2Vec(sf::Vector2<T> vector)
+    {
+        return b2Vec2(vector.x / sfdd::SCALE, vector.y / sfdd::SCALE);
+    }
+
+    // Convert Box2D's vector to SFML vector [Default - scales the vector up by SCALE constants amount]
+    template <typename T>
+    T B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = true)
+    {
+        return T(vector.x * (scaleToPixels ? sfdd::SCALE : 1.f), vector.y * (scaleToPixels ? sfdd::SCALE : 1.f));
+    }
+
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <entt/entt.hpp>
+#include <Box2D/Box2D.h>
 
 #include "../States/StateStack.h"
 #include "../Utils/ResourceHolder.h"
@@ -26,7 +27,8 @@ private:
 	TextureHolder m_Textures;
 	FontHolder m_Fonts;
 	StateStack m_StateStack;
-	entt::registry registry;
+	entt::registry m_Registry;
+	b2World m_B2DWorld;
 
 	sf::Text m_StatisticsText;
 	sf::Time m_StatisticsUpdateTime;
