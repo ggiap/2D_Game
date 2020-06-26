@@ -6,7 +6,8 @@
 const sf::Time TimePerFrame = sf::seconds(1 / 60.f);
 
 Game::Game() :
-	m_window(sf::VideoMode(1200, 800), "Application", sf::Style::Close),
+	m_window(sf::VideoMode(1200, 800), "Application",
+	        sf::Style::Close, sf::ContextSettings(0,0,1,1,1)),
 	m_Textures(),
 	m_Fonts(),
 	m_B2DWorld(b2Vec2(0, 9.81)),
@@ -16,6 +17,8 @@ Game::Game() :
 	m_StatisticsNumFrames(0)
 {
 	m_window.setKeyRepeatEnabled(false);
+
+	m_B2DWorld.SetAllowSleeping(true);
 
 	loadResources();
 

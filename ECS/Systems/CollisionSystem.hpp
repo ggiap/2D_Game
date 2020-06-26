@@ -14,6 +14,6 @@ public:
 	void update(sf::Time dt) override;
 
 private:
-	void checkOutOFBorder(Body& body) const;
-	bool checkOutOFBorder2(Body& body) const;
+//	void checkOutOFBorder(Body& body) const;
+//	bool checkOutOFBorder2(Body& body) const;
 };

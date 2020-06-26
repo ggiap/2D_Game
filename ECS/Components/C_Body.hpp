@@ -7,17 +7,12 @@
 struct Body
 {
     Body() = default;
-    Body(sf::RectangleShape rect, const sf::Vector2f pos,
-         const sf::Vector2f& vel) :
-        shape(std::move(rect)),
-        position(pos),
-        velocity(vel)
+    Body(sf::RectangleShape rect) :
+        shape(std::move(rect))
     {
         utils::centerOrigin(shape);
-        shape.setOutlineColor(sf::Color::White);
+        shape.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
     }
 
     sf::RectangleShape shape{};
-    sf::Vector2f position{};
-    sf::Vector2f velocity{};
 };

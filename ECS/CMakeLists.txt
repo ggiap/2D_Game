@@ -24,9 +24,12 @@ add_library(SOURCE
             Utils/Utility.cpp 
             Utils/Math.hpp          
             Utils/Context.hpp 
-            Systems/MoveSystem.hpp 
+            Utils/SFMLDebugDraw.h
+            Utils/SFMLDebugDraw.cpp
+            Systems/MoveSystem.hpp
             Systems/MoveSystem.cpp 
             Systems/RenderSystem.hpp 
-            Systems/RenderSystem.cpp Components/C_Rigidbody.hpp)
+            Systems/RenderSystem.cpp
+            Components/C_Rigidbody.hpp)
 
 target_link_libraries(SOURCE ${SOURCE})
