@@ -20,6 +20,6 @@ void RenderSystem::update(sf::Time dt)
 	m_Context->registry->view<Body>().each([&](auto& body)
 		{
             m_Context->window->draw(body.shape);
-            m_Context->world->DrawDebugData();
+            //m_Context->world->DrawDebugData();
 		});
 }

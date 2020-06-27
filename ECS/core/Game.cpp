@@ -23,6 +23,7 @@ Game::Game() :
 	loadResources();
 
 	m_StatisticsText.setFont(m_Fonts.get(Fonts::ARJULIAN));
+	m_StatisticsText.setOutlineThickness(3);
 	m_StatisticsText.setPosition(5.f, 5.f);
 	m_StatisticsText.setCharacterSize(20u);
 

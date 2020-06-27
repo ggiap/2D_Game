@@ -54,7 +54,7 @@ using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
 
 namespace sfdd
 {
-    const float SCALE = 30.f;
+    const float SCALE = 32.f;
 }
 
 namespace utils
