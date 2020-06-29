@@ -40,30 +40,35 @@ void World::buildScene()
     createWalls();
 
 	std::srand(std::time(nullptr));
-	for (auto i = 0; i < 10; ++i)
+	for (auto i = 0; i < 100; ++i)
 	{
 		const auto entity = m_Context->registry->create();
-		sf::Vector2f position(static_cast<float>(rand() % 1100), static_cast<float>(rand() % 700));
-		sf::Vector2f velocity(static_cast<float>(rand() % 200 - 50), static_cast<float>(rand() % 200 - 50));
 		m_Context->registry->emplace<Body>(entity, sf::RectangleShape(sf::Vector2f(20.f, 20.f)));
+
+		// Create the body definition
+        sf::Vector2f position(static_cast<float>(rand() % 1100), static_cast<float>(rand() % 700));
         auto bodySize = m_Context->registry->view<Body>().get<Body>(entity);
-        //printf("%f %f\n", bodySize.shape.getSize().x, bodySize.shape.getSize().y);
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
         bodyDef.position = utils::sfVecToB2Vec(position);
-        bodyDef.bullet = true;
         //bodyDef.fixedRotation = true;
+
+        // Create and register the body in the world
         b2Body* body = m_Context->world->CreateBody(&bodyDef);
+
+        // Fixture shape
         b2PolygonShape bShape;
         b2Vec2 size = utils::sfVecToB2Vec(bodySize.shape.getSize() / 2.f);
-        //printf("%f %f\n", size.x, size.y);
         bShape.SetAsBox(size.x, size.y);
+
+        // Fixture definition
         b2FixtureDef fixture;
         fixture.shape = &bShape;
         fixture.density = 1.f;
         fixture.friction = 1.f;
         fixture.restitution = 0.f;
         body->CreateFixture(&fixture);
+
         bodies[entity] = body;
 
         m_Context->registry->emplace<C_Rigidbody>(entity, body);
