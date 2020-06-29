@@ -61,7 +61,7 @@ void World::buildScene()
         fixture.shape = &bShape;
         fixture.density = 1.f;
         fixture.friction = 1.f;
-        fixture.restitution = 1.f;
+        fixture.restitution = 0.f;
         body->CreateFixture(&fixture);
         bodies[entity] = body;
 

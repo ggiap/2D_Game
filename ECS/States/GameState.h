@@ -16,5 +16,8 @@ public:
 
 private:
 	World m_World;
+
+    b2MouseJoint* mouseJoint;
+    b2Body* ground;
 };
 

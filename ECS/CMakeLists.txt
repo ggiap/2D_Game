@@ -26,6 +26,8 @@ add_library(SOURCE
             Utils/Context.hpp 
             Utils/SFMLDebugDraw.h
             Utils/SFMLDebugDraw.cpp
+            Utils/QueryCallback.h
+            Utils/QueryCallback.cpp
             Systems/MoveSystem.hpp
             Systems/MoveSystem.cpp 
             Systems/RenderSystem.hpp 

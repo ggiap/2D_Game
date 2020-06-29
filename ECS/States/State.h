@@ -28,6 +28,8 @@ protected:
 
 private:
 	StateStack* m_Stack;
+
+protected:
 	Context m_Context;
 };
 
