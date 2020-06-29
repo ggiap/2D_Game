@@ -40,7 +40,7 @@ void World::buildScene()
     createWalls();
 
 	std::srand(std::time(nullptr));
-	for (auto i = 0; i < 1000; ++i)
+	for (auto i = 0; i < 10; ++i)
 	{
 		const auto entity = m_Context->registry->create();
 		sf::Vector2f position(static_cast<float>(rand() % 1100), static_cast<float>(rand() % 700));
@@ -51,6 +51,7 @@ void World::buildScene()
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
         bodyDef.position = utils::sfVecToB2Vec(position);
+        bodyDef.bullet = true;
         //bodyDef.fixedRotation = true;
         b2Body* body = m_Context->world->CreateBody(&bodyDef);
         b2PolygonShape bShape;
