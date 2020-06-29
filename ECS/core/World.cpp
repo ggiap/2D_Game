@@ -91,10 +91,9 @@ void World::createWalls()
     //Top
     {
         auto size = sf::Vector2f(static_cast<float>(m_Context->window->getSize().x),
-                                 static_cast<float>(0.5f * sfdd::SCALE));
+                                 static_cast<float>(1.f * sfdd::SCALE));
         sf::RectangleShape rect(size);
         rect.setPosition(xPos * sfdd::SCALE, yPos * sfdd::SCALE);
-        printf("%f %f %f %f\n", size.x, size.y, xPos, yPos);
 
         const auto entity = m_Context->registry->create();
         //Add body to entity-bodies map
@@ -110,12 +109,9 @@ void World::createWalls()
     //Bottom
     {
         auto size = sf::Vector2f(static_cast<float>(m_Context->window->getSize().x),
-                                 static_cast<float>(0.5f * sfdd::SCALE));
+                                 static_cast<float>(1.f * sfdd::SCALE));
         sf::RectangleShape rect(size);
-        //utils::centerOrigin(rect);
-        //rect.setOrigin(rect.getOrigin().x, yPos * sfdd::SCALE);
-        rect.setPosition(xPos * sfdd::SCALE, yPos * sfdd::SCALE + 10.f);
-        printf("%f %f %f %f %f %f\n", size.x, size.y, xPos, yPos, rect.getOrigin().x, rect.getOrigin().x);
+        rect.setPosition(xPos * sfdd::SCALE, yPos * sfdd::SCALE + 16.f);
 
         const auto entity = m_Context->registry->create();
         //Add body to entity-bodies map
@@ -130,12 +126,10 @@ void World::createWalls()
 
     //Left
     {
-        auto size = sf::Vector2f(static_cast<float>(0.6f * sfdd::SCALE),
+        auto size = sf::Vector2f(static_cast<float>(1.f * sfdd::SCALE),
                                  static_cast<float>(m_Context->window->getSize().y) * 2.f);
         sf::RectangleShape rect(size);
-        //rect.setOrigin(xPos * sfdd::SCALE + 20.f, rect.getOrigin().y);
         rect.setPosition(16.f, yPos * sfdd::SCALE);
-        printf("%f %f %f %f\n", size.x, size.y, xPos, yPos);
 
         const auto entity = m_Context->registry->create();
         //Add body to entity-bodies map
@@ -149,11 +143,10 @@ void World::createWalls()
 
     //Right
     {
-        auto size = sf::Vector2f(0.5f * sfdd::SCALE,
+        auto size = sf::Vector2f(1.f * sfdd::SCALE,
                                 static_cast<float>(m_Context->window->getSize().y) * 2.f);
         sf::RectangleShape rect(size);
         rect.setPosition(xPos * sfdd::SCALE + m_Context->window->getSize().x / 2.f, yPos * sfdd::SCALE);
-        printf("%f %f %f %f\n", size.x, size.y, xPos, yPos);
 
         const auto entity = m_Context->registry->create();
         //Add body to entity-bodies map

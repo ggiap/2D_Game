@@ -4,8 +4,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include "../Utils/Utility.hpp"
-#include "../Utils/Context.hpp"
 #include "../core/EntityManager.hpp"
+
+class Context;
 
 class World
 {

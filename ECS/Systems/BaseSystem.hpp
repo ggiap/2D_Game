@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Utils/SFMLDebugDraw.h"
 #include "../Utils/Context.hpp"
 
 namespace sf 
@@ -18,5 +17,4 @@ public:
 
 protected:
 	Context* m_Context;
-    SFMLDebugDraw debugDraw;
 };
