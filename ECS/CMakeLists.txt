@@ -6,8 +6,7 @@ add_library(SOURCE
             core/World.cpp
             core/World.h
             core/SceneNode.cpp
-            core/SceneNode.h     
-            Components/C_Body.hpp 
+            core/SceneNode.h
             Systems/BaseSystem.hpp
             Systems/BaseSystem.cpp
             Systems/CollisionSystem.hpp
@@ -32,6 +31,8 @@ add_library(SOURCE
             Systems/MoveSystem.cpp 
             Systems/RenderSystem.hpp 
             Systems/RenderSystem.cpp
-            Components/C_Rigidbody.hpp)
+            Components/C_Shape.hpp
+            Components/C_Rigidbody.hpp
+            Components/C_Transform.hpp)
 
 target_link_libraries(SOURCE ${SOURCE})

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <Box2D/Common/b2Math.h>
 #include "../Utils/Utility.hpp"
 
-struct Body
+struct BodyShape
 {
-    Body() = default;
-    Body(sf::RectangleShape rect) :
+    BodyShape() = default;
+    BodyShape(sf::RectangleShape rect) :
         shape(std::move(rect))
     {
         utils::centerOrigin(shape);

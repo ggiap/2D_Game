@@ -1,5 +1,5 @@
 #include "CollisionSystem.hpp"
-#include "../Components/C_Body.hpp"
+#include "../Components/C_Shape.hpp"
 
 CollisionSystem::CollisionSystem(Context& context) :
     BaseSystem(context)
@@ -9,7 +9,7 @@ CollisionSystem::CollisionSystem(Context& context) :
 
 void CollisionSystem::update(sf::Time dt)
 {
-    m_Context->world->Step(1 / 60.f, 8, 5);
+    m_Context->b2_World->Step(1 / 60.f, 8, 5);
 }
 
 //void CollisionSystem::checkOutOFBorder(Body& body) const

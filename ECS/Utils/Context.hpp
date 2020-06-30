@@ -11,11 +11,11 @@ struct Context
 	Context() = default;
 	Context(sf::RenderWindow& win, TextureHolder& tex, FontHolder& font, entt::registry& reg, b2World& wr)
 		:
-		window(&win),
-		textures(&tex),
-		fonts(&font),
-		registry(&reg),
-		world(&wr)
+            window(&win),
+            textures(&tex),
+            fonts(&font),
+            registry(&reg),
+            b2_World(&wr)
 	{
 	
 	}
@@ -24,5 +24,5 @@ struct Context
 	TextureHolder* textures;
 	FontHolder* fonts;
 	entt::registry* registry;
-	b2World* world;
+	b2World* b2_World;
 };
