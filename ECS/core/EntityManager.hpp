@@ -10,7 +10,7 @@ class EntityManager
 {
 public:
 	EntityManager() = default;
-	EntityManager(entt::registry* reg);
+	explicit EntityManager(entt::registry* reg);
 
 	void update(sf::Time dt);
 	void draw();

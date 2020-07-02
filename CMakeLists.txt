@@ -107,6 +107,12 @@ else()
     endif()
 endif (MSVC)
 
+include_directories(${CMAKE_SOURCE_DIR} ECS)
+include_directories(${CMAKE_SOURCE_DIR} ECS/core)
+include_directories(${CMAKE_SOURCE_DIR} ECS/Components)
+include_directories(${CMAKE_SOURCE_DIR} ECS/Systems)
+include_directories(${CMAKE_SOURCE_DIR} ECS/States)
+include_directories(${CMAKE_SOURCE_DIR} ECS/utils)
 add_subdirectory(ECS)
 
 add_executable(${CMAKE_PROJECT_NAME} ECS/main.cpp)

@@ -40,7 +40,7 @@ void World::buildScene()
     createWalls();
 
 	std::srand(std::time(nullptr));
-	for (auto i = 0; i < 100; ++i)
+	for (auto i = 0; i < 1000; ++i)
 	{
 		const auto entity = m_Context->registry->create();
 		m_Context->registry->emplace<BodyShape>(entity, sf::RectangleShape(sf::Vector2f(20.f, 20.f)));
