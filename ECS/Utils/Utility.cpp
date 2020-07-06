@@ -2,13 +2,6 @@
 
 namespace utils
 {
-    template <typename T>
-    void centerOrigin(T obj)
-    {
-	    const sf::FloatRect bounds = obj.getLocalBounds();
-        obj.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
-    }
-
     void centerOrigin(sf::Sprite& sprite)
     {
 	    const sf::FloatRect bounds = sprite.getLocalBounds();

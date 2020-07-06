@@ -9,6 +9,8 @@
 #include <cassert>
 #include <cmath>
 
+#include "../Utils/ResourceHolder.h"
+
 
 namespace sf
 {
@@ -23,6 +25,7 @@ namespace Textures
 {
     enum ID
     {
+        CharactersSpriteSheet,
         Background,
     };
 }
@@ -46,6 +49,26 @@ namespace Category
     };
 }
 
+namespace PlayerState
+{
+    enum State
+    {
+        Standing,
+        Walking,
+        Jumping,
+    };
+}
+
+namespace Animations
+{
+    enum ID
+    {
+        Standing,
+        Walking,
+        Jumping,
+    };
+}
+
 template<typename Resource, typename Identifier>
 class ResourceHolder;
 
@@ -59,8 +82,6 @@ namespace sfdd
 
 namespace utils
 {
-    template <typename T>
-    void centerOrigin(T obj);
     void centerOrigin(sf::Sprite& sprite);
     void centerOrigin(sf::Text& text);
     void centerOrigin(sf::RectangleShape& rect);
@@ -79,5 +100,4 @@ namespace utils
     {
         return T(vector.x * (scaleToPixels ? sfdd::SCALE : 1.f), vector.y * (scaleToPixels ? sfdd::SCALE : 1.f));
     }
-
 }
