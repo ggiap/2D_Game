@@ -6,11 +6,10 @@
 #include <SFML/System/Time.hpp>
 #include "../Systems/BaseSystem.hpp"
 
-class EntityManager
+class SystemManager
 {
 public:
-	EntityManager() = default;
-	explicit EntityManager(entt::registry* reg);
+	SystemManager() = default;
 
 	void update(sf::Time dt);
 	void draw();
@@ -19,7 +18,6 @@ public:
 	void addRenderSystem(std::unique_ptr<BaseSystem> sys);
 	
 private:
-	entt::registry* m_Registry{};
 	std::vector<std::unique_ptr<BaseSystem>> m_Systems{};
 	std::vector<std::unique_ptr<BaseSystem>> m_RenderSystems{};
 };
