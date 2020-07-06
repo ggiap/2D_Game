@@ -1,6 +1,7 @@
 #include "RenderSystem.hpp"
 #include <SFML/System/Time.hpp>
 #include "../Components/C_Shape.hpp"
+#include "../Components/C_Animation.hpp"
 
 RenderSystem::RenderSystem(Context& context) :
 BaseSystem(context)
@@ -19,9 +20,12 @@ void RenderSystem::update(sf::Time dt)
 {
 	m_Context->registry->view<BodyShape>().each([&](auto entity, auto& bodyShape)
 		{
-            if(!m_Context->registry->has<BodyShape>(entity)) return;
-
             m_Context->window->draw(bodyShape.shape);
             //m_Context->b2_World->DrawDebugData();
 		});
+
+	m_Context->registry->view<C_Animation>().each([&](auto entity, auto& anim)
+	{
+	    m_Context->window->draw(anim.animatedSprite);
+	});
 }
