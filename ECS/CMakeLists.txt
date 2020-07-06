@@ -1,6 +1,6 @@
-add_library(SOURCE 
-            core/EntityManager.cpp
-            core/EntityManager.hpp
+add_library(SOURCE
+        core/SystemManager.cpp
+        core/SystemManager.hpp
             core/Game.h
             core/Game.cpp
             core/World.cpp
@@ -27,12 +27,24 @@ add_library(SOURCE
             Utils/SFMLDebugDraw.cpp
             Utils/QueryCallback.h
             Utils/QueryCallback.cpp
+            Utils/Animation.h
+            Utils/Animation.cpp
+            Utils/AnimatedSprite.h
+            Utils/AnimatedSprite.cpp
             Systems/MoveSystem.hpp
             Systems/MoveSystem.cpp 
             Systems/RenderSystem.hpp 
             Systems/RenderSystem.cpp
+            Systems/AnimationSystem.hpp
+            Systems/AnimationSystem.cpp
+            Systems/PlayerControllerSystem.cpp
+            Systems/PlayerControllerSystem.hpp
             Components/C_Shape.hpp
             Components/C_Rigidbody.hpp
-            Components/C_Transform.hpp)
+            Components/C_Transform.hpp
+            Components/C_Animation.hpp
+            Components/C_PlayerInput.hpp
+            Components/C_Movable.hpp)
+
 
 target_link_libraries(SOURCE ${SOURCE})

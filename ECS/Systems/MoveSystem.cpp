@@ -3,6 +3,7 @@
 #include "../Utils/Math.hpp"
 #include "../Components/C_Shape.hpp"
 #include "../Components/C_Rigidbody.hpp"
+#include "../Components/C_Animation.hpp"
 
 MoveSystem::MoveSystem(Context& context) :
     BaseSystem(context)
@@ -12,7 +13,7 @@ MoveSystem::MoveSystem(Context& context) :
 
 void MoveSystem::update(sf::Time dt)
 {
-    m_Context->registry->view<BodyShape, C_Rigidbody>().each([&](auto entity, auto& bodyShape, auto& rb)
+    m_Context->registry->view<BodyShape, C_Rigidbody, C_Animation>().each([&](auto entity, auto& bodyShape, auto& rb, auto& anim)
         {
             if(!m_Context->registry->has<BodyShape>(entity)) return;
 
@@ -20,6 +21,8 @@ void MoveSystem::update(sf::Time dt)
             {
                 bodyShape.shape.setRotation(math::radToDeg(rb.rigidbody->GetAngle()));
                 bodyShape.shape.setPosition(utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition()));
+
+                anim.animatedSprite.setPosition(bodyShape.shape.getPosition() + sf::Vector2f(0, -6.f));
             }
         });
 }

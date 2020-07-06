@@ -10,8 +10,7 @@ struct BodyShape
     BodyShape(sf::RectangleShape rect) :
         shape(std::move(rect))
     {
-        utils::centerOrigin(shape);
-        shape.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+
     }
 
     sf::RectangleShape shape{};
