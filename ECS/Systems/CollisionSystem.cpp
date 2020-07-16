@@ -1,5 +1,7 @@
 #include "CollisionSystem.hpp"
 #include "../Components/C_Shape.hpp"
+#include "../Utils//Context.hpp"
+#include <SFML/System/Time.hpp>
 
 CollisionSystem::CollisionSystem(Context& context) :
     BaseSystem(context)

@@ -51,8 +51,8 @@ void SFMLDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, 
 }
 void SFMLDebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
-	sf::CircleShape circle(radius * sfdd::SCALE);
-	circle.setOrigin(radius * sfdd::SCALE, radius * sfdd::SCALE);
+	sf::CircleShape circle(radius * utils::SCALE);
+	circle.setOrigin(radius * utils::SCALE, radius * utils::SCALE);
 	circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(center));
 	circle.setFillColor(sf::Color::Transparent);
 	circle.setOutlineThickness(-1.f);
@@ -62,8 +62,8 @@ void SFMLDebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color
 }
 void SFMLDebugDraw::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color)
 {
-	sf::CircleShape circle(radius * sfdd::SCALE);
-	circle.setOrigin(radius * sfdd::SCALE, radius * sfdd::SCALE);
+	sf::CircleShape circle(radius * utils::SCALE);
+	circle.setOrigin(radius * utils::SCALE, radius * utils::SCALE);
 	circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(center));
 	circle.setFillColor(SFMLDebugDraw::GLColorToSFML(color, 60));
 	circle.setOutlineThickness(1.f);

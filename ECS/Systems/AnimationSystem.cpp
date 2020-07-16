@@ -4,6 +4,7 @@
 
 #include "AnimationSystem.hpp"
 #include "../Components/C_Animation.hpp"
+#include "../Utils//Context.hpp"
 
 AnimationSystem::AnimationSystem(Context& context) :
 BaseSystem(context)

@@ -9,6 +9,7 @@
 #include "../Systems/RenderSystem.hpp"
 #include "../Systems/PlayerControllerSystem.hpp"
 #include "../Systems/AnimationSystem.hpp"
+#include "../Utils//Context.hpp"
 
 #include <Box2D/Box2D.h>
 
@@ -92,7 +93,7 @@ void World::createWalls()
     /* Create the bounding box */
     b2BodyDef boundingBoxDef;
     boundingBoxDef.type = b2_staticBody;
-    float xPos = (m_Context->window->getSize().x / 2.f) / sfdd::SCALE;
+    float xPos = (m_Context->window->getSize().x / 2.f) / utils::SCALE;
     float yPos = 0.5f;
     boundingBoxDef.position.Set(xPos, yPos);
 
@@ -104,67 +105,67 @@ void World::createWalls()
 
 
     b2PolygonShape boxShape;
-    boxShape.SetAsBox(m_Context->window->getSize().x / sfdd::SCALE, 0.5f,b2Vec2(0.f, 0.f), 0.f);
+    boxShape.SetAsBox(m_Context->window->getSize().x / utils::SCALE, 0.5f,b2Vec2(0.f, 0.f), 0.f);
     m_Context->bodies[entity]->CreateFixture(&boxShape, 1.0); //Top
 
     //Top sfml rectangle
     {
         auto size = sf::Vector2f(static_cast<float>(m_Context->window->getSize().x),
-                                 static_cast<float>(1.f * sfdd::SCALE));
+                                 static_cast<float>(1.f * utils::SCALE));
         sf::RectangleShape rect(size);
         utils::centerOrigin(rect);
         rect.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        rect.setPosition(xPos * sfdd::SCALE, yPos * sfdd::SCALE);
+        rect.setPosition(xPos * utils::SCALE, yPos * utils::SCALE);
 
         auto entity = m_Context->registry->create();
         m_Context->registry->emplace<BodyShape>(entity, rect);
     }
 
-    yPos = (m_Context->window->getSize().y) / sfdd::SCALE - 1.f;
-    boxShape.SetAsBox((m_Context->window->getSize().x) / sfdd::SCALE, 0.5f, b2Vec2(0.f, yPos), 0.f);
+    yPos = (m_Context->window->getSize().y) / utils::SCALE - 1.f;
+    boxShape.SetAsBox((m_Context->window->getSize().x) / utils::SCALE, 0.5f, b2Vec2(0.f, yPos), 0.f);
     m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f); //Bottom
 
     //Bottom sfml rectangle
     {
         auto size = sf::Vector2f(static_cast<float>(m_Context->window->getSize().x),
-                                 static_cast<float>(1.f * sfdd::SCALE));
+                                 static_cast<float>(1.f * utils::SCALE));
         sf::RectangleShape rect(size);
         utils::centerOrigin(rect);
         rect.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        rect.setPosition(xPos * sfdd::SCALE, yPos * sfdd::SCALE + 16.f);
+        rect.setPosition(xPos * utils::SCALE, yPos * utils::SCALE + 16.f);
 
         auto entity = m_Context->registry->create();
         m_Context->registry->emplace<BodyShape>(entity, rect);
     }
 
     xPos -= 0.5f;
-    boxShape.SetAsBox(0.5f, (m_Context->window->getSize().y) / sfdd::SCALE, b2Vec2(-xPos, 0.f), 0.f);
+    boxShape.SetAsBox(0.5f, (m_Context->window->getSize().y) / utils::SCALE, b2Vec2(-xPos, 0.f), 0.f);
     m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);//Left
 
     //Left sfml rectangle
     {
-        auto size = sf::Vector2f(static_cast<float>(1.f * sfdd::SCALE),
+        auto size = sf::Vector2f(static_cast<float>(1.f * utils::SCALE),
                                  static_cast<float>(m_Context->window->getSize().y) * 2.f);
         sf::RectangleShape rect(size);
         utils::centerOrigin(rect);
         rect.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        rect.setPosition(16.f, yPos * sfdd::SCALE);
+        rect.setPosition(16.f, yPos * utils::SCALE);
 
         auto entity = m_Context->registry->create();
         m_Context->registry->emplace<BodyShape>(entity, rect);
     }
 
-    boxShape.SetAsBox(0.5f, (m_Context->window->getSize().y) / sfdd::SCALE, b2Vec2(xPos, 0.f), 0.f);
+    boxShape.SetAsBox(0.5f, (m_Context->window->getSize().y) / utils::SCALE, b2Vec2(xPos, 0.f), 0.f);
     m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);//Right
 
     //Right sfml rectangle
     {
-        auto size = sf::Vector2f(1.f * sfdd::SCALE,
+        auto size = sf::Vector2f(1.f * utils::SCALE,
                                 static_cast<float>(m_Context->window->getSize().y) * 2.f);
         sf::RectangleShape rect(size);
         utils::centerOrigin(rect);
         rect.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        rect.setPosition(xPos * sfdd::SCALE + m_Context->window->getSize().x / 2.f, yPos * sfdd::SCALE);
+        rect.setPosition(xPos * utils::SCALE + m_Context->window->getSize().x / 2.f, yPos * utils::SCALE);
 
         auto entity = m_Context->registry->create();
         m_Context->registry->emplace<BodyShape>(entity, rect);

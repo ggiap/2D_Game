@@ -2,6 +2,7 @@
 #include <SFML/System/Time.hpp>
 #include "../Components/C_Shape.hpp"
 #include "../Components/C_Animation.hpp"
+#include "../Utils//Context.hpp"
 
 RenderSystem::RenderSystem(Context& context) :
 BaseSystem(context)

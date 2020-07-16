@@ -75,10 +75,6 @@ class ResourceHolder;
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
 
-namespace sfdd
-{
-    const float SCALE = 32.f;
-}
 
 namespace utils
 {
@@ -87,17 +83,20 @@ namespace utils
     void centerOrigin(sf::RectangleShape& rect);
     const char* getKeyName(const sf::Keyboard::Key key);
 
+    // Box2D to SFML space conversion constant
+    const auto SCALE = 32.f;
+
     //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS units
     template <typename T>
     b2Vec2 sfVecToB2Vec(sf::Vector2<T> vector)
     {
-        return b2Vec2(vector.x / sfdd::SCALE, vector.y / sfdd::SCALE);
+        return b2Vec2(vector.x / SCALE, vector.y / SCALE);
     }
 
     // Convert Box2D's vector to SFML vector [Default - scales the vector up by SCALE constants amount]
     template <typename T>
     T B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = true)
     {
-        return T(vector.x * (scaleToPixels ? sfdd::SCALE : 1.f), vector.y * (scaleToPixels ? sfdd::SCALE : 1.f));
+        return T(vector.x * (scaleToPixels ? SCALE : 1.f), vector.y * (scaleToPixels ? SCALE : 1.f));
     }
 }

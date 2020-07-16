@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Utils/Context.hpp"
+class Context;
 
 namespace sf 
 {
@@ -11,7 +11,7 @@ class BaseSystem
 {
 public:
 	BaseSystem() = default;
-	BaseSystem(Context& context);
+	explicit BaseSystem(Context& context);
 
 	virtual void update(sf::Time dt) = 0;
 

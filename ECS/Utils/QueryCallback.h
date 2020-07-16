@@ -6,13 +6,13 @@
 class QueryCallback : public b2QueryCallback
 {
 public:
-	QueryCallback(const b2Vec2& point)
+	explicit QueryCallback(const b2Vec2& point)
 	{
 		m_point = point;
-		m_fixture = NULL;
+		m_fixture = nullptr;
 	}
 
-	bool ReportFixture(b2Fixture* fixture)
+	bool ReportFixture(b2Fixture* fixture) override
 	{
 		b2Body* body = fixture->GetBody();
 		if (body->GetType() == b2_dynamicBody)
