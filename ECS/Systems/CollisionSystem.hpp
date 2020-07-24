@@ -2,8 +2,7 @@
 
 #include "BaseSystem.hpp"
 #include <SFML/System/Vector2.hpp>
-
-class Body;
+#include "../Utils/RayCastCallback.hpp"
 
 class CollisionSystem : public BaseSystem
 {
@@ -14,6 +13,7 @@ public:
 	void update(sf::Time dt) override;
 
 private:
-//	void checkOutOFBorder(Body& body) const;
-//	bool checkOutOFBorder2(Body& body) const;
+    void drawDebugInfo();
+
+    RayCastCallback m_Callback{};
 };

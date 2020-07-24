@@ -2,7 +2,7 @@
 #include "StateStack.h"
 #include "../Utils/QueryCallback.h"
 #include <SFML/Window/Event.hpp>
-#include "../Components/C_Shape.hpp"
+#include "../Components/C_Rigidbody.hpp"
 
 GameState::GameState(StateStack& stack, Context& context)
 	:
@@ -33,7 +33,7 @@ bool GameState::handleEvent(const sf::Event& event)
     // Copyright (c) 2011 Erin Catto http://box2d.org
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseJoint == nullptr)
     {
-        b2Vec2 mousePos = utils::sfVecToB2Vec(sf::Mouse::getPosition(*m_Context.window));
+        b2Vec2 mousePos = utils::sfVecToB2Vec(m_Context.window->mapPixelToCoords(sf::Mouse::getPosition(*m_Context.window)));
 
         // Make a small box.
         b2AABB aabb;
@@ -61,7 +61,7 @@ bool GameState::handleEvent(const sf::Event& event)
     }
     else if (event.type == sf::Event::MouseMoved && mouseJoint != nullptr)
     {
-        b2Vec2 mousePos = utils::sfVecToB2Vec(sf::Mouse::getPosition(*m_Context.window));
+        b2Vec2 mousePos = utils::sfVecToB2Vec(m_Context.window->mapPixelToCoords(sf::Mouse::getPosition(*m_Context.window)));
         mouseJoint->SetTarget(mousePos);
     }
     else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && mouseJoint != nullptr)
@@ -69,13 +69,6 @@ bool GameState::handleEvent(const sf::Event& event)
         mouseJoint->GetBodyB()->SetBullet(false);
         m_Context.b2_World->DestroyJoint(mouseJoint);
         mouseJoint = nullptr;
-    }
-    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::BackSpace)
-    {
-        m_Context.registry->view<BodyShape>().each([&](auto& bodyShape)
-        {
-            bodyShape.shape.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        });
     }
 
 	return true;

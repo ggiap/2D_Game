@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/Transformable.hpp>
 
-struct Transform
+struct Transform : public sf::Transformable
 {
-    sf::Transformable transform;
+
 };

@@ -20,6 +20,7 @@ private:
 	void buildScene();
 	void createWalls();
 	void createAnimations();
+	void createPlayer();
 
 private:
 	sf::View m_WorldView;

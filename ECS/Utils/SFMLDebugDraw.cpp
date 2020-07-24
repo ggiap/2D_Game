@@ -34,6 +34,7 @@ void SFMLDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const
 
 	m_window->draw(polygon);
 }
+
 void SFMLDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
 	sf::ConvexShape polygon(vertexCount);
@@ -49,10 +50,11 @@ void SFMLDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, 
 
 	m_window->draw(polygon);
 }
+
 void SFMLDebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
-	sf::CircleShape circle(radius * utils::SCALE);
-	circle.setOrigin(radius * utils::SCALE, radius * utils::SCALE);
+	sf::CircleShape circle(radius * utils::PIXELS_PER_METERS);
+	circle.setOrigin(radius * utils::PIXELS_PER_METERS, radius * utils::PIXELS_PER_METERS);
 	circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(center));
 	circle.setFillColor(sf::Color::Transparent);
 	circle.setOutlineThickness(-1.f);
@@ -60,10 +62,11 @@ void SFMLDebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color
 
 	m_window->draw(circle);
 }
+
 void SFMLDebugDraw::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color)
 {
-	sf::CircleShape circle(radius * utils::SCALE);
-	circle.setOrigin(radius * utils::SCALE, radius * utils::SCALE);
+	sf::CircleShape circle(radius * utils::PIXELS_PER_METERS);
+	circle.setOrigin(radius * utils::PIXELS_PER_METERS, radius * utils::PIXELS_PER_METERS);
 	circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(center));
 	circle.setFillColor(SFMLDebugDraw::GLColorToSFML(color, 60));
 	circle.setOutlineThickness(1.f);
@@ -79,10 +82,17 @@ void SFMLDebugDraw::DrawSolidCircle(const b2Vec2& center, float radius, const b2
 	m_window->draw(circle);
 	m_window->draw(line, 2, sf::Lines);
 }
+
 void SFMLDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
 {
-	printf("Draw point\n");
+    sf::CircleShape circle;
+    circle.setRadius(size);
+    circle.setFillColor(SFMLDebugDraw::GLColorToSFML(color));
+    circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(p));
+
+    m_window->draw(circle);
 }
+
 void SFMLDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
 	sf::Vertex line[] =
@@ -93,6 +103,7 @@ void SFMLDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Colo
 
 	m_window->draw(line, 2, sf::Lines);
 }
+
 void SFMLDebugDraw::DrawTransform(const b2Transform& xf)
 {
 	float lineLength = 0.4f;

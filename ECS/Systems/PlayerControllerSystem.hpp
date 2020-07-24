@@ -7,6 +7,7 @@
 
 #include "BaseSystem.hpp"
 #include "../Utils/Utility.hpp"
+#include "../Utils/RayCastCallback.hpp"
 
 namespace sf
 {
@@ -18,6 +19,8 @@ struct Context;
 class PlayerControllerSystem : public BaseSystem
 {
 public:
+    friend class CollisionSystem;
+
     PlayerControllerSystem() = default;
     explicit PlayerControllerSystem(Context& context);
 
@@ -25,7 +28,10 @@ public:
     void handleEvents(sf::Time dt);
 
 private:
+    void UpdateRaycastOrigins();
+
     PlayerState::State m_State{};
+    RayCastCallback m_RaycastCallback{};
 };
 
 

@@ -22,7 +22,10 @@ private:
 	void registerStates();
 	void updateStatistics(sf::Time dt);
 
+    void zoomViewAt(sf::Vector2i pixel, float zoom);
 private:
+    static const sf::Time TimePerFrame;
+
 	sf::RenderWindow m_window;
 	TextureHolder m_Textures;
 	FontHolder m_Fonts;

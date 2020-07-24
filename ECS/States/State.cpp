@@ -1,9 +1,11 @@
 #include "State.h"
+
+#include <utility>
 #include "StateStack.h"
 
 State::State(StateStack& stack, Context context) :
 	m_Stack(&stack),
-	m_Context(context)
+	m_Context(std::move(context))
 {
 }
 

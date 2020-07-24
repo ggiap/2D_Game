@@ -1,9 +1,11 @@
 #include "StateStack.h"
 
+#include <utility>
+
 StateStack::StateStack(Context context) :
 	m_Stack(),
 	m_PendingList(),
-	m_Context(context),
+	m_Context(std::move(context)),
 	m_Factories()
 {
 }

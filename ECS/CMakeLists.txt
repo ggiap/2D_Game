@@ -39,12 +39,11 @@ add_library(SOURCE
             Systems/AnimationSystem.cpp
             Systems/PlayerControllerSystem.cpp
             Systems/PlayerControllerSystem.hpp
-            Components/C_Shape.hpp
-            Components/C_Rigidbody.hpp
+        Components/C_Rigidbody.hpp
             Components/C_Transform.hpp
             Components/C_Animation.hpp
-            Components/C_PlayerInput.hpp
-            Components/C_Movable.hpp)
+        Components/C_PlayerController.hpp
+            Components/C_Movable.hpp Utils/ContactListener.cpp Utils/ContactListener.hpp Utils/RayCastCallback.cpp Utils/RayCastCallback.hpp Components/C_Tag.h Components/C_Raycast.hpp)
 
 
 target_link_libraries(SOURCE ${SOURCE})

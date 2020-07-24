@@ -81,22 +81,23 @@ namespace utils
     void centerOrigin(sf::Sprite& sprite);
     void centerOrigin(sf::Text& text);
     void centerOrigin(sf::RectangleShape& rect);
+    void centerOrigin(sf::Shape& rect);
     const char* getKeyName(const sf::Keyboard::Key key);
 
     // Box2D to SFML space conversion constant
-    const auto SCALE = 32.f;
+    const auto PIXELS_PER_METERS = 32.f;
 
     //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS units
     template <typename T>
     b2Vec2 sfVecToB2Vec(sf::Vector2<T> vector)
     {
-        return b2Vec2(vector.x / SCALE, vector.y / SCALE);
+        return b2Vec2(vector.x / PIXELS_PER_METERS, vector.y / PIXELS_PER_METERS);
     }
 
-    // Convert Box2D's vector to SFML vector [Default - scales the vector up by SCALE constants amount]
+    // Convert Box2D's vector to SFML vector [Default - scales the vector up by PIXELS_PER_METERS constants amount]
     template <typename T>
     T B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = true)
     {
-        return T(vector.x * (scaleToPixels ? SCALE : 1.f), vector.y * (scaleToPixels ? SCALE : 1.f));
+        return T(vector.x * (scaleToPixels ? PIXELS_PER_METERS : 1.f), vector.y * (scaleToPixels ? PIXELS_PER_METERS : 1.f));
     }
 }
