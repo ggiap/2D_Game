@@ -1,5 +1,6 @@
 #pragma once
-#include <Box2D/Box2D.h>
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Dynamics/b2Fixture.h>
 
 //Class copied from http://code.google.com/p/box2d/source/browse/trunk/Box2D/Testbed/Framework/Test.cpp
 //Copyright (c) 2011 Erin Catto http://box2d.org

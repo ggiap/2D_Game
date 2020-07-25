@@ -40,9 +40,9 @@ void MoveSystem::update(sf::Time dt)
         auto bounds = shape->getGlobalBounds();
         auto size = shape->getSize();
 
-        raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(sf::Vector2f(bounds.left, bounds.top));
-        raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(sf::Vector2f(bounds.left + size.x, bounds.top));
-        raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(sf::Vector2f(bounds.left, bounds.top + size.y));
-        raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(sf::Vector2f(bounds.left + size.x, bounds.top + size.y));
+        raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(sf::Vector2f(bounds.left, bounds.top) + sf::Vector2f(1.f,   1.f));
+        raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(sf::Vector2f(bounds.left + size.x, bounds.top) + sf::Vector2f(-1.f, 1.f));
+        raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(sf::Vector2f(bounds.left, bounds.top + size.y) + sf::Vector2f( 1.f, -1.f));
+        raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(sf::Vector2f(bounds.left + size.x, bounds.top + size.y) + sf::Vector2f(-1.f, -1.f));
     });
 }

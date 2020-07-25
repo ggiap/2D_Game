@@ -33,8 +33,9 @@ struct C_Raycast
 {
     C_Raycast() = default;
 
-    CollisionInfo collisionInfo;
-    RaycastOrigins raycastOrigins;
+    CollisionInfo collisionInfo{};
+    RaycastOrigins raycastOrigins{};
+    float rayLength{};
 };
 
 #endif //ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP

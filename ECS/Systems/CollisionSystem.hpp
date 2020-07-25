@@ -13,7 +13,7 @@ public:
 	void update(sf::Time dt) override;
 
 private:
-    void drawDebugInfo();
+    void handleRaycasts();
 
     RayCastCallback m_Callback{};
 };

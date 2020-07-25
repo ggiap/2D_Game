@@ -20,7 +20,7 @@ struct Contacts
     }
 };
 
-class ContactListener : b2ContactListener
+class ContactListener : public b2ContactListener
 {
 public:
     ContactListener() = default;

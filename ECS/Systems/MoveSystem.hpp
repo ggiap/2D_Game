@@ -6,7 +6,7 @@ class MoveSystem : public BaseSystem
 {
 public:
 	MoveSystem() = default;
-	MoveSystem(Context& context);
+	explicit MoveSystem(Context& context);
 
 	void update(sf::Time dt) override;
 };

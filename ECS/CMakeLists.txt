@@ -1,49 +1,54 @@
 add_library(SOURCE
         core/SystemManager.cpp
         core/SystemManager.hpp
-            core/Game.h
-            core/Game.cpp
-            core/World.cpp
-            core/World.h
-            core/SceneNode.cpp
-            core/SceneNode.h
-            Systems/BaseSystem.hpp
-            Systems/BaseSystem.cpp
-            Systems/CollisionSystem.hpp
-            Systems/CollisionSystem.cpp
-            States/State.h
-            States/StateStack.h
-            States/State.cpp
-            States/StateStack.cpp
-            States/GameState.h
-            States/GameState.cpp
-            States/StateIdentifiers.h 
-            Utils/ResourceHolder.h
-            Utils/Utility.hpp
-            Utils/Utility.cpp 
-            Utils/Math.hpp          
-            Utils/Context.hpp 
-            Utils/SFMLDebugDraw.h
-            Utils/SFMLDebugDraw.cpp
-            Utils/QueryCallback.h
-            Utils/QueryCallback.cpp
-            Utils/Animation.h
-            Utils/Animation.cpp
-            Utils/AnimatedSprite.h
-            Utils/AnimatedSprite.cpp
-            Systems/MoveSystem.hpp
-            Systems/MoveSystem.cpp 
-            Systems/RenderSystem.hpp 
-            Systems/RenderSystem.cpp
-            Systems/AnimationSystem.hpp
-            Systems/AnimationSystem.cpp
-            Systems/PlayerControllerSystem.cpp
-            Systems/PlayerControllerSystem.hpp
+        core/Game.h
+        core/Game.cpp
+        core/World.cpp
+        core/World.h
+        core/SceneNode.cpp
+        core/SceneNode.h
+        Systems/BaseSystem.hpp
+        Systems/BaseSystem.cpp
+        Systems/CollisionSystem.hpp
+        Systems/CollisionSystem.cpp
+        States/State.h
+        States/StateStack.h
+        States/State.cpp
+        States/StateStack.cpp
+        States/GameState.h
+        States/GameState.cpp
+        States/StateIdentifiers.h
+        Utils/ResourceHolder.h
+        Utils/Utility.hpp
+        Utils/Utility.cpp
+        Utils/Math.hpp
+        Utils/Context.hpp
+        Utils/SFMLDebugDraw.h
+        Utils/SFMLDebugDraw.cpp
+        Utils/QueryCallback.cpp
+        Utils/QueryCallback.h
+        Utils/Animation.cpp
+        Utils/AnimatedSprite.h
+        Utils/AnimatedSprite.cpp
+        Utils/Animation.h
+        Utils/ContactListener.cpp
+        Utils/ContactListener.hpp
+        Utils/RayCastCallback.cpp
+        Utils/RayCastCallback.hpp
+        Systems/MoveSystem.cpp
+        Systems/MoveSystem.hpp
+        Systems/RenderSystem.cpp
+        Systems/RenderSystem.hpp
+        Systems/AnimationSystem.cpp
+        Systems/AnimationSystem.hpp
+        Systems/PlayerControllerSystem.hpp
+        Systems/PlayerControllerSystem.cpp
         Components/C_Rigidbody.hpp
-            Components/C_Transform.hpp
-            Components/C_Animation.hpp
+        Components/C_Animation.hpp
         Components/C_PlayerController.hpp
-            Components/C_Movable.hpp Utils/ContactListener.cpp Utils/ContactListener.hpp Utils/RayCastCallback.cpp Utils/RayCastCallback.hpp Components/C_Tag.h Components/C_Raycast.hpp)
+        Components/C_Movable.hpp
+        Components/C_Tag.h
+        Components/C_Raycast.hpp)
 
 
 target_link_libraries(SOURCE ${SOURCE})

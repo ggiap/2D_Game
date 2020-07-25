@@ -6,6 +6,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <spdlog/spdlog.h>
+#include <ECS/Utils/Math.hpp>
 
 CollisionSystem::CollisionSystem(Context& context) :
     BaseSystem(context),
@@ -18,10 +19,10 @@ void CollisionSystem::update(sf::Time dt)
 {
     m_Context->b2_World->Step(dt.asSeconds(), 8, 5);
 
-   drawDebugInfo();
+    handleRaycasts();
 }
 
-void CollisionSystem::drawDebugInfo()
+void CollisionSystem::handleRaycasts()
 {
     auto view = m_Context->registry->view<C_PlayerTag>();
 
@@ -31,65 +32,62 @@ void CollisionSystem::drawDebugInfo()
 
         auto &rb = m_Context->registry->get<C_Rigidbody>(entity);
         auto &raycastComp = m_Context->registry->get<C_Raycast>(entity);
+        raycastComp.collisionInfo.reset();
+        raycastComp.rayLength = 1.7f;
 
         for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
         {
             auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
             if (shape == nullptr) return;
 
-//            auto bounds = shape->getGlobalBounds();
-//            auto size = shape->getSize();
-//            auto halfSize = size / 2.f;
-//
-//            auto topLeft = sf::Vector2f(bounds.left, bounds.top);
-//            auto topRight = sf::Vector2f(bounds.left + size.x, bounds.top);
-//            auto bottomLeft = sf::Vector2f(bounds.left, bounds.top + size.y);
-//            auto bottomRight = sf::Vector2f(bounds.left + size.x, bounds.top + size.y);
-
             // Check above
-            auto point1 = raycastComp.raycastOrigins.topLeft + utils::sfVecToB2Vec(sf::Vector2f(0.f,   1.f));
-            auto point2 = raycastComp.raycastOrigins.topLeft + utils::sfVecToB2Vec(sf::Vector2f(0.f,  -5.f ));
+            auto point1 = raycastComp.raycastOrigins.topLeft;
+            auto point2 = raycastComp.raycastOrigins.topLeft + utils::sfVecToB2Vec(math::VECTOR_UP * raycastComp.rayLength);
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
                 auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
                 fixtureB->setFillColor(sf::Color::Red);
+                raycastComp.collisionInfo.collisionAbove = true;
             }
 
             m_Callback = RayCastCallback();
 
             // Check right
-            point1 = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(sf::Vector2f(-1.f, 0.f));
-            point2 = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(sf::Vector2f(5.f, 0.f));
+            point1 = raycastComp.raycastOrigins.topRight;
+            point2 = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(math::VECTOR_RIGHT * raycastComp.rayLength);
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
                 auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
                 fixtureB->setFillColor(sf::Color::Green);
+                raycastComp.collisionInfo.collisionRight = true;
             }
 
             m_Callback = RayCastCallback();
 
             // Check Left
-            point1 = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(sf::Vector2f( 1.f, 0.f));
-            point2 = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(sf::Vector2f(-5.f, 0.f));
+            point1 = raycastComp.raycastOrigins.bottomLeft;
+            point2 = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength);
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
                 auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
                 fixtureB->setFillColor(sf::Color::Yellow);
+                raycastComp.collisionInfo.collisionLeft = true;
             }
 
             m_Callback = RayCastCallback();
 
             // Check Below
-            point1 = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(sf::Vector2f(0.f, -1.f));
-            point2 = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(sf::Vector2f(0.f, 5.f));
+            point1 = raycastComp.raycastOrigins.bottomRight;
+            point2 = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength);
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
                 auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
                 fixtureB->setFillColor(sf::Color::Blue);
+                raycastComp.collisionInfo.collisionBelow = true;
             }
 
             m_Callback = RayCastCallback();

@@ -49,7 +49,7 @@ namespace Category
     };
 }
 
-namespace PlayerState
+namespace GameObjectState
 {
     enum State
     {

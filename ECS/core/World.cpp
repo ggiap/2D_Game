@@ -190,6 +190,7 @@ void World::createPlayer()
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = utils::sfVecToB2Vec(position);
     bodyDef.fixedRotation = true;
+    bodyDef.gravityScale = 1.5f;
 
     // Fixture shape
     b2PolygonShape bShape;

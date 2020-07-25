@@ -6,6 +6,11 @@
 namespace math
 {
     constexpr const double PI = 3.141592653589793238462643383;
+    const sf::Vector2f VECTOR_UP     = { 0.f, -1.f};
+    const sf::Vector2f VECTOR_DOWN   = { 0.f,  1.f};
+    const sf::Vector2f VECTOR_RIGHT  = { 1.f,  0.f};
+    const sf::Vector2f VECTOR_LEFT   = {-1.f,  0.f};
+    const sf::Vector2f VECTOR_ZERO   = { 0.f,  0.f};
 
     template <typename T>
     T dotProduct(const sf::Vector2<T>& v, const sf::Vector2<T>& u)
