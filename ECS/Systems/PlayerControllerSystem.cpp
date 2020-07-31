@@ -64,7 +64,6 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
             m_State = GameObjectState::Jumping;
         }
 
-        spdlog::info("{}, {}", velocity.x, velocity.y);
         if(velocity.x == 0 && raycastComp.collisionInfo.collisionBelow)
             m_State = GameObjectState::Standing;
 

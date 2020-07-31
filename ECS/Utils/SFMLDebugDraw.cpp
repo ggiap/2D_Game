@@ -87,6 +87,7 @@ void SFMLDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
 {
     sf::CircleShape circle;
     circle.setRadius(size);
+    circle.setOrigin(circle.getRadius(), circle.getRadius());
     circle.setFillColor(SFMLDebugDraw::GLColorToSFML(color));
     circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(p));
 

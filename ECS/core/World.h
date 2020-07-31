@@ -21,6 +21,7 @@ private:
 	void createWalls();
 	void createAnimations();
 	void createPlayer();
+	void createCamera();
 
 private:
 	sf::View m_WorldView;

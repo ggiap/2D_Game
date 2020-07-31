@@ -5,6 +5,7 @@
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
+#include "../Components/C_Camera.hpp"
 #include "../Systems/CollisionSystem.hpp"
 #include "../Systems/MoveSystem.hpp"
 #include "../Systems/RenderSystem.hpp"
@@ -57,8 +58,9 @@ void World::createWalls()
     /* Create the bounding box */
     b2BodyDef boundingBoxDef;
     boundingBoxDef.type = b2_staticBody;
+
     float xPos = (m_Context->window->getSize().x / 2.f) / utils::PIXELS_PER_METERS;
-    float yPos = 0.5f;
+    float yPos = 16.f / utils::PIXELS_PER_METERS;
     boundingBoxDef.position.Set(xPos, yPos);
 
     auto entity = m_Context->registry->create();
@@ -69,8 +71,10 @@ void World::createWalls()
 
     b2PolygonShape boxShape;
     // Top b2d Wall
-    boxShape.SetAsBox(m_Context->window->getSize().x / utils::PIXELS_PER_METERS, 0.5f, b2Vec2(0.f, 0.f), 0.f);
-    auto fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.0); //Top
+    auto hx = m_Context->window->getSize().x / 2.f / utils::PIXELS_PER_METERS;
+    auto hy = m_Context->window->getSize().x / 37.f / 2.f / utils::PIXELS_PER_METERS;
+    boxShape.SetAsBox(hx, hy, b2Vec2(0.f, 0.f), 0.f);
+    auto fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.0);
 
     //Top sfml rectangle
     {
@@ -86,9 +90,10 @@ void World::createWalls()
     }
 
     // Bottom b2d Wall
-    yPos = (m_Context->window->getSize().y) / utils::PIXELS_PER_METERS - 1.f;
-    boxShape.SetAsBox((m_Context->window->getSize().x) / utils::PIXELS_PER_METERS, 0.5f, b2Vec2(0.f, yPos), 0.f);
-    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f); //Bottom
+    xPos = (m_Context->window->getSize().x / 2.f) / utils::PIXELS_PER_METERS;
+    yPos = (m_Context->window->getSize().y - 32.f) / utils::PIXELS_PER_METERS;
+    boxShape.SetAsBox(hx, hy, b2Vec2(0.f, yPos), 0.f);
+    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);
 
     //Bottom sfml rectangle
     {
@@ -104,35 +109,39 @@ void World::createWalls()
 
     // Left b2d Wall
     xPos -= 0.5f;
-    boxShape.SetAsBox(0.5f, (m_Context->window->getSize().y) / utils::PIXELS_PER_METERS, b2Vec2(-xPos, 0.f), 0.f);
-    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);//Left
+    yPos = (m_Context->window->getSize().y - 32.f) / 2.f / utils::PIXELS_PER_METERS;
+    hx = m_Context->window->getSize().x / 2.f / 37.f / utils::PIXELS_PER_METERS;
+    hy = m_Context->window->getSize().y / 2.f / utils::PIXELS_PER_METERS;
+    boxShape.SetAsBox(hx, hy, b2Vec2(-xPos, yPos), 0.f);
+    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);
 
     //Left sfml rectangle
     {
-        auto size = sf::Vector2f(static_cast<float>(1.f * utils::PIXELS_PER_METERS),
-                                 static_cast<float>(m_Context->window->getSize().y) * 2.f);
+        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
+                                 hy * 2.f * utils::PIXELS_PER_METERS);
         auto shape = new sf::RectangleShape(size);
         utils::centerOrigin(*shape);
         shape->setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        shape->setPosition(16.f, yPos * utils::PIXELS_PER_METERS);
+        shape->setPosition(15.f, 16.f + yPos * utils::PIXELS_PER_METERS);
 
         fixture->SetUserData(shape);
     }
 
-
     // Right b2d Wall
-    boxShape.SetAsBox(0.5f, (m_Context->window->getSize().y) / utils::PIXELS_PER_METERS, b2Vec2(xPos, 0.f), 0.f);
-    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);//Right
+    hx = m_Context->window->getSize().x / 2.f / 37.f / utils::PIXELS_PER_METERS;
+    hy = m_Context->window->getSize().y / 2.f / utils::PIXELS_PER_METERS;
+    boxShape.SetAsBox(hx, hy, b2Vec2(xPos, yPos), 0.f);
+    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);
 
     //Right sfml rectangle
     {
-        auto size = sf::Vector2f(1.f * utils::PIXELS_PER_METERS,
-                                 static_cast<float>(m_Context->window->getSize().y) * 2.f);
+        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
+                                 hy * 2.f * utils::PIXELS_PER_METERS);
         auto shape = new sf::RectangleShape(size);
         utils::centerOrigin(*shape);
         shape->setFillColor(sf::Color(sf::Color::Blue));
         shape->setPosition(xPos * utils::PIXELS_PER_METERS + m_Context->window->getSize().x / 2.f,
-                           yPos * utils::PIXELS_PER_METERS);
+                           16.f + yPos * utils::PIXELS_PER_METERS);
 
         fixture->SetUserData(shape);
     }
@@ -176,7 +185,7 @@ void World::createAnimations()
 void World::createPlayer()
 {
     const auto entity = m_Context->registry->create();
-    auto shape = new sf::RectangleShape(sf::Vector2f(20.f, 20.f));
+    auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
     utils::centerOrigin(*shape);
     shape->setFillColor(sf::Color::Transparent);
     shape->setOutlineThickness(-1);
@@ -214,4 +223,17 @@ void World::createPlayer()
     m_Context->registry->emplace<C_Animation>(entity);
     m_Context->registry->emplace<C_PlayerTag>(entity);
     m_Context->registry->emplace<C_Raycast>(entity);
+}
+
+void World::createCamera()
+{
+    const auto entity = m_Context->registry->create();
+    entt::entity playerEntity = entt::null;
+
+    m_Context->registry->view<C_PlayerTag>().each([&](auto entity)
+    {
+        playerEntity = entity;
+    });
+
+    m_Context->registry->emplace<C_Camera>(entity, playerEntity);
 }
