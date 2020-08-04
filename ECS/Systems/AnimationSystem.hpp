@@ -16,7 +16,7 @@ public:
     AnimationSystem() = default;
     explicit AnimationSystem(Context &context);
 
-    void update(sf::Time dt) override;
+    void update(sf::Time& dt) override;
 };
 
 #endif //ENTITY_COMPONENT_SYSTEM_ANIMATIONSYSTEM_HPP

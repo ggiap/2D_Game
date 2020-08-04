@@ -12,12 +12,11 @@ public:
 	SystemManager() = default;
 
 	void update(sf::Time dt);
+	void handleEvents(const sf::Event& event);
 	void draw();
 
 	void addSystem(std::unique_ptr<BaseSystem> sys);
-	void addRenderSystem(std::unique_ptr<BaseSystem> sys);
 	
 private:
 	std::vector<std::unique_ptr<BaseSystem>> m_Systems{};
-	std::vector<std::unique_ptr<BaseSystem>> m_RenderSystems{};
 };

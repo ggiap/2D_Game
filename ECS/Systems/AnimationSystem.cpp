@@ -12,7 +12,7 @@ BaseSystem(context)
 
 }
 
-void AnimationSystem::update(sf::Time dt)
+void AnimationSystem::update(sf::Time& dt)
 {
     m_Context->registry->view<C_Animation>().each([&](auto entity, auto& anim)
     {

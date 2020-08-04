@@ -21,7 +21,7 @@ public:
     PlayerControllerSystem() = default;
     explicit PlayerControllerSystem(Context& context);
 
-    void update(sf::Time dt) override;
+    void update(sf::Time& dt) override;
     void handleEvents(sf::Time dt);
 
 private:

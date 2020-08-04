@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <SFML/Window/Event.hpp>
 #include "../Utils/Utility.hpp"
 #include "../core/SystemManager.hpp"
 
@@ -13,6 +14,7 @@ public:
 	explicit World(Context& context);
 
 	void update(sf::Time dt);
+	void handleEvents(const sf::Event& event);
 	void draw();
 
 private:

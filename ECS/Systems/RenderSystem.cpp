@@ -20,7 +20,7 @@ debugDraw()
 }
 
 
-void RenderSystem::update(sf::Time dt)
+void RenderSystem::draw()
 {
 	m_Context->registry->view<C_Rigidbody>().each([&](auto entity, auto& rb)
 		{

@@ -43,12 +43,15 @@ add_library(SOURCE
         Systems/AnimationSystem.hpp
         Systems/PlayerControllerSystem.hpp
         Systems/PlayerControllerSystem.cpp
+        Systems/CameraSystem.cpp
+        Systems/CameraSystem.hpp
         Components/C_Rigidbody.hpp
         Components/C_Animation.hpp
         Components/C_PlayerController.hpp
         Components/C_Movable.hpp
         Components/C_Tag.h
-        Components/C_Raycast.hpp)
+        Components/C_Raycast.hpp
+        Components/C_Camera.hpp)
 
 
 target_link_libraries(SOURCE ${SOURCE})

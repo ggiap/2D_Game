@@ -11,7 +11,9 @@
 #include "../Systems/RenderSystem.hpp"
 #include "../Systems/PlayerControllerSystem.hpp"
 #include "../Systems/AnimationSystem.hpp"
+#include "../Systems/CameraSystem.hpp"
 #include "../Utils//Context.hpp"
+#include "../Utils//Math.hpp"
 
 #include <Box2D/Box2D.h>
 
@@ -23,12 +25,16 @@ World::World(Context& context) :
 {
 	loadTextures();
 	buildScene();
-	createAnimations();
 }
 
 void World::update(const sf::Time dt)
 {
     m_SystemManager.update(dt);
+}
+
+void World::handleEvents(const sf::Event &event)
+{
+    m_SystemManager.handleEvents(event);
 }
 
 void World::draw()
@@ -45,12 +51,15 @@ void World::buildScene()
 {
     createWalls();
     createPlayer();
+    createAnimations();
+    createCamera();
 
     m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context));
     m_SystemManager.addSystem(std::make_unique<AnimationSystem>(*m_Context));
     m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context));
     m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context));
-    m_SystemManager.addRenderSystem(std::make_unique<RenderSystem>(*m_Context));
+    m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context));
+    m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context));
 }
 
 void World::createWalls()
@@ -145,6 +154,66 @@ void World::createWalls()
 
         fixture->SetUserData(shape);
     }
+
+    {
+        b2BodyDef platformDef;
+        platformDef.type = b2_staticBody;
+        platformDef.position.Set(150.f / utils::PIXELS_PER_METERS,
+                                 (m_Context->window->getSize().y - 100.f) / utils::PIXELS_PER_METERS);
+
+        auto platformEntity = m_Context->registry->create();
+        m_Context->registry->emplace<C_Rigidbody>(platformEntity, m_Context->bodies[platformEntity]);
+
+        m_Context->bodies[platformEntity] = m_Context->b2_World->CreateBody(&platformDef);
+
+        hx = m_Context->window->getSize().x / 16.f / utils::PIXELS_PER_METERS;
+        hy = 10.f / utils::PIXELS_PER_METERS;
+        b2PolygonShape platformShape;
+        platformShape.SetAsBox(hx, hy);
+
+        auto platFixture = m_Context->bodies[platformEntity]->CreateFixture(&platformShape, 1.f);
+
+        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
+                                 hy * 2.f * utils::PIXELS_PER_METERS);
+        auto shape = new sf::RectangleShape(size);
+        utils::centerOrigin(*shape);
+        shape->setFillColor(sf::Color(sf::Color::Blue));
+        shape->setPosition(m_Context->bodies[platformEntity]->GetPosition().x * utils::PIXELS_PER_METERS,
+                           m_Context->bodies[platformEntity]->GetPosition().y * utils::PIXELS_PER_METERS);
+
+        platFixture->SetUserData(shape);
+    }
+
+    {
+        b2BodyDef platformDef;
+        platformDef.type = b2_staticBody;
+        platformDef.position.Set(650.f / utils::PIXELS_PER_METERS,
+                                 (m_Context->window->getSize().y - 200.f) / utils::PIXELS_PER_METERS);
+        platformDef.angle = -0.45;
+
+        auto platformEntity = m_Context->registry->create();
+        m_Context->registry->emplace<C_Rigidbody>(platformEntity, m_Context->bodies[platformEntity]);
+
+        m_Context->bodies[platformEntity] = m_Context->b2_World->CreateBody(&platformDef);
+
+        hx = m_Context->window->getSize().x / 16.f / utils::PIXELS_PER_METERS;
+        hy = 10.f / utils::PIXELS_PER_METERS;
+        b2PolygonShape platformShape;
+        platformShape.SetAsBox(hx, hy);
+
+        auto platFixture = m_Context->bodies[platformEntity]->CreateFixture(&platformShape, 1.f);
+
+        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
+                                 hy * 2.f * utils::PIXELS_PER_METERS);
+        auto shape = new sf::RectangleShape(size);
+        utils::centerOrigin(*shape);
+        shape->setFillColor(sf::Color(sf::Color::Blue));
+        shape->setPosition(m_Context->bodies[platformEntity]->GetPosition().x * utils::PIXELS_PER_METERS,
+                           m_Context->bodies[platformEntity]->GetPosition().y * utils::PIXELS_PER_METERS);
+        shape->setRotation(math::radToDeg(m_Context->bodies[platformEntity]->GetAngle()));
+
+        platFixture->SetUserData(shape);
+    }
 }
 
 void World::createAnimations()
@@ -227,13 +296,16 @@ void World::createPlayer()
 
 void World::createCamera()
 {
-    const auto entity = m_Context->registry->create();
+    const auto cameraEntity = m_Context->registry->create();
     entt::entity playerEntity = entt::null;
+
+    sf::View view;
+    view.setSize(400,300);
 
     m_Context->registry->view<C_PlayerTag>().each([&](auto entity)
     {
         playerEntity = entity;
     });
 
-    m_Context->registry->emplace<C_Camera>(entity, playerEntity);
+    m_Context->registry->emplace<C_Camera>(cameraEntity, view, playerEntity);
 }

@@ -8,5 +8,5 @@ public:
 	MoveSystem() = default;
 	explicit MoveSystem(Context& context);
 
-	void update(sf::Time dt) override;
+	void update(sf::Time& dt) override;
 };

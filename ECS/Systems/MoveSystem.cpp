@@ -12,7 +12,7 @@ MoveSystem::MoveSystem(Context& context) :
 
 }
 
-void MoveSystem::update(sf::Time dt)
+void MoveSystem::update(sf::Time& dt)
 {
     m_Context->registry->view<C_Rigidbody, C_Animation>().each([&](auto entity, auto& rb, auto& anim)
         {

@@ -4,8 +4,7 @@
 #include <SFML/Window/Event.hpp>
 #include "../Components/C_Rigidbody.hpp"
 
-GameState::GameState(StateStack& stack, Context& context)
-	:
+GameState::GameState(StateStack& stack, Context& context) :
 	State(stack, context),
 	m_World(context)
 {
@@ -29,6 +28,8 @@ bool GameState::update(const sf::Time dt)
 
 bool GameState::handleEvent(const sf::Event& event)
 {
+    m_World.handleEvents(event);
+
     // Following three events are copied almost completely from http://code.google.com/p/box2d/source/browse/trunk/Box2D/Testbed/Framework/Test.cpp
     // Copyright (c) 2011 Erin Catto http://box2d.org
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseJoint == nullptr)

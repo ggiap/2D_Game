@@ -12,7 +12,7 @@ public:
 	RenderSystem() = default;
 	explicit RenderSystem(Context& context);
 	
-	void update(sf::Time dt) override;
+	void draw() override;
 
 private:
     void drawDebugInfo(entt::entity& entity, C_Rigidbody& rb);

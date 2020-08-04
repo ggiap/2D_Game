@@ -15,7 +15,7 @@ CollisionSystem::CollisionSystem(Context& context) :
 
 }
 
-void CollisionSystem::update(sf::Time dt)
+void CollisionSystem::update(sf::Time& dt)
 {
     m_Context->b2_World->Step(dt.asSeconds(), 8, 5);
 

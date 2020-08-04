@@ -10,7 +10,7 @@ public:
 	CollisionSystem() = default;
 	explicit CollisionSystem(Context& context);
 
-	void update(sf::Time dt) override;
+	void update(sf::Time& dt) override;
 
 private:
     void handleRaycasts();
