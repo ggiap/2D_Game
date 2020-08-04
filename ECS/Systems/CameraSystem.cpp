@@ -10,8 +10,6 @@
 #include "../Utils/Context.hpp"
 #include "../Components/C_Camera.hpp"
 
-#include <spdlog/spdlog.h>
-
 CameraSystem::CameraSystem(Context &context) :
 BaseSystem(context),
 freeRoaming(false)

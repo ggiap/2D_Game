@@ -26,6 +26,8 @@ conan_cmake_run(REQUIRES
         BASIC_SETUP
         BUILD missing)
 
+find_package(TMXLITE)
+
 # Link this 'library' to use the standard warnings
 add_library(project_warnings INTERFACE)
 
@@ -116,7 +118,7 @@ include_directories(${CMAKE_SOURCE_DIR} ECS/utils)
 add_subdirectory(ECS)
 
 add_executable(${CMAKE_PROJECT_NAME} ECS/main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS})
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} ${TMXLITE_LIBRARIES})
 
 add_custom_command(
         TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
