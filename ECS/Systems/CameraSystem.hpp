@@ -13,7 +13,7 @@ namespace sf
     template<typename T>
     class Vector2;
 }
-class C_Camera;
+struct C_Camera;
 
 class CameraSystem : public BaseSystem
 {

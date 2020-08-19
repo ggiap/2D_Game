@@ -1,12 +1,11 @@
 #include "CollisionSystem.hpp"
 #include "../Utils/Context.hpp"
+#include "../Utils/Math.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
-#include <spdlog/spdlog.h>
-#include <ECS/Utils/Math.hpp>
 
 CollisionSystem::CollisionSystem(Context& context) :
     BaseSystem(context),

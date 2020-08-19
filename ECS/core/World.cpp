@@ -300,7 +300,7 @@ void World::createCamera()
     entt::entity playerEntity = entt::null;
 
     sf::View view;
-    view.setSize(400,300);
+    view.setSize(500,400);
 
     m_Context->registry->view<C_PlayerTag>().each([&](auto entity)
     {

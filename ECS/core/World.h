@@ -6,7 +6,7 @@
 #include "../Utils/Utility.hpp"
 #include "../core/SystemManager.hpp"
 
-class Context;
+struct Context;
 
 class World
 {

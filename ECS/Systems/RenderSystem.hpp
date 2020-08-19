@@ -4,7 +4,7 @@
 #include "../Utils/SFMLDebugDraw.h"
 #include <entt/entity/entity.hpp>
 
-class C_Rigidbody;
+struct C_Rigidbody;
 
 class RenderSystem : public BaseSystem
 {
