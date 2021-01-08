@@ -19,7 +19,8 @@ conan_add_remote(NAME bincrafters URL
 
 conan_cmake_run(REQUIRES
         box2d/2.3.2.ef96a4f@conan/stable 
-        sfml/2.5.1@bincrafters/stable 
+        sfml/2.5.1@bincrafters/stable
+        flac/1.3.2@bincrafters/stable 
         entt/3.4.0 
         fmt/6.1.2
         spdlog/1.5.0
