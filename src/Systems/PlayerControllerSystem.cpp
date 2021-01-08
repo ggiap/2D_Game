@@ -6,6 +6,7 @@
 #include <SFML/Window/Event.hpp>
 #include "../Utils/AnimatedSprite.h"
 #include "../Utils//Context.hpp"
+#include "../Utils//Math.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Raycast.hpp"
@@ -52,7 +53,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
             if(raycastComp.collisionInfo.collisionBelow)
                 m_State = GameObjectState::Walking;
         }
-        velocity.x = std::lerp(velocity.x, velocity.x, 0.4f);
+        velocity.x = math::lerp(velocity.x, velocity.x, 0.4f);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {

@@ -24,6 +24,7 @@ private:
 	void createAnimations();
 	void createPlayer();
 	void createCamera();
+	void createTilemap();
 
 private:
 	sf::View m_WorldView;

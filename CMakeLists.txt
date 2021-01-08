@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("Entity_Component_System" CXX)
+project("2D_Game" CXX)
 
 set(CMAKE_MODULE_PATH
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
@@ -18,15 +18,16 @@ conan_add_remote(NAME bincrafters URL
                  https://api.bintray.com/conan/bincrafters/public-conan)
 
 conan_cmake_run(REQUIRES
-        box2d/2.3.2.ef96a4f@conan/stable 
-        sfml/2.5.1@bincrafters/stable 
-        entt/3.4.0 
-        fmt/6.1.2
+        box2d/2.3.2.ef96a4f@conan/stable
+        entt/3.4.0
         spdlog/1.5.0
         BASIC_SETUP
         BUILD missing)
 
 find_package(TMXLITE)
+find_package(SFML 2.5 COMPONENTS audio graphics window system network REQUIRED)
+include_directories(${SFML_INCLUDE_DIR})
+
 
 # Link this 'library' to use the standard warnings
 add_library(project_warnings INTERFACE)
@@ -59,7 +60,7 @@ else()
             # destructor. This helps
             # catch hard to track down
             # memory errors
-            -Wold-style-cast # warn for c-style casts
+            #-Wold-style-cast # warn for c-style casts
             -Wcast-align # warn for potential performance
             # problem casts
             -Wunused # warn on anything being unused
@@ -69,7 +70,7 @@ else()
             -Wpedantic # warn if non-standard C++ is used
             -Wconversion # warn on type conversions that
             # may lose data
-            -Wsign-conversion # warn on sign conversions
+            #-Wsign-conversion # warn on sign conversions
             -Wnull-dereference # warn if a null
             # dereference is detected
             -Wdouble-promotion # warn if float is
@@ -96,7 +97,7 @@ else()
                 -Wlogical-op # warn about logical
                 # operations being used where
                 # bitwise were probably wanted
-                -Wuseless-cast # warn if you perform a cast
+                #-Wuseless-cast # warn if you perform a cast
                 # to the same type
                 )
         target_link_libraries(project_options INTERFACE stdc++fs)
@@ -109,19 +110,19 @@ else()
     endif()
 endif (MSVC)
 
-include_directories(${CMAKE_SOURCE_DIR} ECS)
-include_directories(${CMAKE_SOURCE_DIR} ECS/core)
-include_directories(${CMAKE_SOURCE_DIR} ECS/Components)
-include_directories(${CMAKE_SOURCE_DIR} ECS/Systems)
-include_directories(${CMAKE_SOURCE_DIR} ECS/States)
-include_directories(${CMAKE_SOURCE_DIR} ECS/utils)
-add_subdirectory(ECS)
+include_directories(${CMAKE_SOURCE_DIR} src)
+include_directories(${CMAKE_SOURCE_DIR} src/core)
+include_directories(${CMAKE_SOURCE_DIR} src/Components)
+include_directories(${CMAKE_SOURCE_DIR} src/Systems)
+include_directories(${CMAKE_SOURCE_DIR} src/States)
+include_directories(${CMAKE_SOURCE_DIR} src/utils)
+add_subdirectory(src)
 
-add_executable(${CMAKE_PROJECT_NAME} ECS/main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} ${TMXLITE_LIBRARIES})
+add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} ${TMXLITE_LIBRARIES} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 
 add_custom_command(
         TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/ECS/res
+        ${CMAKE_SOURCE_DIR}/src/res
         ${CMAKE_CURRENT_BINARY_DIR}/res)
