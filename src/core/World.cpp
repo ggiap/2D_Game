@@ -6,7 +6,6 @@
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
 #include "../Components/C_Camera.hpp"
-#include "../Components/C_Tilemap.hpp"
 #include "../Systems/CollisionSystem.hpp"
 #include "../Systems/MoveSystem.hpp"
 #include "../Systems/RenderSystem.hpp"
@@ -309,12 +308,4 @@ void World::createCamera()
     });
 
     m_Context->registry->emplace<C_Camera>(cameraEntity, view, playerEntity);
-}
-
-void World::createTilemap()
-{
-    const auto tilemapEntity = m_Context->registry->create();
-    std::string filepath = "res/testmap.tmx";
-
-    m_Context->registry->emplace<C_Tilemap>(tilemapEntity, filepath);
 }

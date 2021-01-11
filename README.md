@@ -1,2 +1,1 @@
-# Entity-Component-System
- ECS for my c++ game framework
+#2D C++ Game

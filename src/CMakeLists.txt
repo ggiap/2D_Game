@@ -52,7 +52,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
-        Components/C_Tilemap.hpp Systems/TilemapSystem.cpp Systems/TilemapSystem.hpp)
+        )
 
 
 target_link_libraries(SOURCE ${SOURCE})
