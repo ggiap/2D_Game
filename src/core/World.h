@@ -20,7 +20,6 @@ public:
 private:
 	void loadTextures();
 	void buildScene();
-	void createWalls();
 	void createAnimations();
 	void createPlayer();
 	void createCamera();

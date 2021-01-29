@@ -75,6 +75,8 @@ class ResourceHolder;
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
 
+class AnimatedSprite;
+
 
 namespace utils
 {
@@ -82,12 +84,15 @@ namespace utils
     void centerOrigin(sf::Text& text);
     void centerOrigin(sf::RectangleShape& rect);
     void centerOrigin(sf::Shape& rect);
+    void centerOrigin(AnimatedSprite& animatedSprite);
     const char* getKeyName(const sf::Keyboard::Key key);
 
     // Box2D to SFML space conversion constant
     const auto PIXELS_PER_METERS = 32.f;
 
     //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS units
+    b2Vec2 sfVecToB2Vec(const float x, const float y);
+    
     template <typename T>
     b2Vec2 sfVecToB2Vec(sf::Vector2<T> vector)
     {

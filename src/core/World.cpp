@@ -6,12 +6,14 @@
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
 #include "../Components/C_Camera.hpp"
+#include "../Components/C_Tilemap.hpp"
 #include "../Systems/CollisionSystem.hpp"
 #include "../Systems/MoveSystem.hpp"
 #include "../Systems/RenderSystem.hpp"
 #include "../Systems/PlayerControllerSystem.hpp"
 #include "../Systems/AnimationSystem.hpp"
 #include "../Systems/CameraSystem.hpp"
+#include "../Systems/TilemapSystem.hpp"
 #include "../Utils//Context.hpp"
 #include "../Utils//Math.hpp"
 
@@ -49,171 +51,20 @@ void World::loadTextures()
 
 void World::buildScene()
 {
-    createWalls();
+	createTilemap();
+	m_SystemManager.addSystem(std::make_unique<TilemapSystem>(*m_Context));
+
     createPlayer();
+	m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context));
+	m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context));
+	m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context));
+
     createAnimations();
+	m_SystemManager.addSystem(std::make_unique<AnimationSystem>(*m_Context));
+
     createCamera();
-
-    m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context));
-    m_SystemManager.addSystem(std::make_unique<AnimationSystem>(*m_Context));
-    m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context));
-    m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context));
-    m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context));
+	m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context));
     m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context));
-}
-
-void World::createWalls()
-{
-    /* Create the bounding box */
-    b2BodyDef boundingBoxDef;
-    boundingBoxDef.type = b2_staticBody;
-
-    float xPos = (m_Context->window->getSize().x / 2.f) / utils::PIXELS_PER_METERS;
-    float yPos = 16.f / utils::PIXELS_PER_METERS;
-    boundingBoxDef.position.Set(xPos, yPos);
-
-    auto entity = m_Context->registry->create();
-    m_Context->registry->emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
-
-    // Map b2Bodies from the world with entities
-    m_Context->bodies[entity] = m_Context->b2_World->CreateBody(&boundingBoxDef);
-
-    b2PolygonShape boxShape;
-    // Top b2d Wall
-    auto hx = m_Context->window->getSize().x / 2.f / utils::PIXELS_PER_METERS;
-    auto hy = m_Context->window->getSize().x / 37.f / 2.f / utils::PIXELS_PER_METERS;
-    boxShape.SetAsBox(hx, hy, b2Vec2(0.f, 0.f), 0.f);
-    auto fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.0);
-
-    //Top sfml rectangle
-    {
-        auto size = sf::Vector2f(static_cast<float>(m_Context->window->getSize().x),
-                                 static_cast<float>(1.f * utils::PIXELS_PER_METERS));
-
-        auto *shape = new sf::RectangleShape(size);
-        utils::centerOrigin(*shape);
-        shape->setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        shape->setPosition(xPos * utils::PIXELS_PER_METERS, yPos * utils::PIXELS_PER_METERS);
-
-        fixture->SetUserData(shape);
-    }
-
-    // Bottom b2d Wall
-    xPos = (m_Context->window->getSize().x / 2.f) / utils::PIXELS_PER_METERS;
-    yPos = (m_Context->window->getSize().y - 32.f) / utils::PIXELS_PER_METERS;
-    boxShape.SetAsBox(hx, hy, b2Vec2(0.f, yPos), 0.f);
-    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);
-
-    //Bottom sfml rectangle
-    {
-        auto size = sf::Vector2f(static_cast<float>(m_Context->window->getSize().x),
-                            static_cast<float>(1.f * utils::PIXELS_PER_METERS));
-        auto shape = new sf::RectangleShape(size);
-        utils::centerOrigin(*shape);
-        shape->setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        shape->setPosition(xPos * utils::PIXELS_PER_METERS, yPos * utils::PIXELS_PER_METERS + 16.f);
-
-        fixture->SetUserData(shape);
-    }
-
-    // Left b2d Wall
-    xPos -= 0.5f;
-    yPos = (m_Context->window->getSize().y - 32.f) / 2.f / utils::PIXELS_PER_METERS;
-    hx = m_Context->window->getSize().x / 2.f / 37.f / utils::PIXELS_PER_METERS;
-    hy = m_Context->window->getSize().y / 2.f / utils::PIXELS_PER_METERS;
-    boxShape.SetAsBox(hx, hy, b2Vec2(-xPos, yPos), 0.f);
-    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);
-
-    //Left sfml rectangle
-    {
-        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
-                                 hy * 2.f * utils::PIXELS_PER_METERS);
-        auto shape = new sf::RectangleShape(size);
-        utils::centerOrigin(*shape);
-        shape->setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-        shape->setPosition(15.f, 16.f + yPos * utils::PIXELS_PER_METERS);
-
-        fixture->SetUserData(shape);
-    }
-
-    // Right b2d Wall
-    hx = m_Context->window->getSize().x / 2.f / 37.f / utils::PIXELS_PER_METERS;
-    hy = m_Context->window->getSize().y / 2.f / utils::PIXELS_PER_METERS;
-    boxShape.SetAsBox(hx, hy, b2Vec2(xPos, yPos), 0.f);
-    fixture = m_Context->bodies[entity]->CreateFixture(&boxShape, 1.f);
-
-    //Right sfml rectangle
-    {
-        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
-                                 hy * 2.f * utils::PIXELS_PER_METERS);
-        auto shape = new sf::RectangleShape(size);
-        utils::centerOrigin(*shape);
-        shape->setFillColor(sf::Color(sf::Color::Blue));
-        shape->setPosition(xPos * utils::PIXELS_PER_METERS + m_Context->window->getSize().x / 2.f,
-                           16.f + yPos * utils::PIXELS_PER_METERS);
-
-        fixture->SetUserData(shape);
-    }
-
-    {
-        b2BodyDef platformDef;
-        platformDef.type = b2_staticBody;
-        platformDef.position.Set(150.f / utils::PIXELS_PER_METERS,
-                                 (m_Context->window->getSize().y - 100.f) / utils::PIXELS_PER_METERS);
-
-        auto platformEntity = m_Context->registry->create();
-        m_Context->registry->emplace<C_Rigidbody>(platformEntity, m_Context->bodies[platformEntity]);
-
-        m_Context->bodies[platformEntity] = m_Context->b2_World->CreateBody(&platformDef);
-
-        hx = m_Context->window->getSize().x / 16.f / utils::PIXELS_PER_METERS;
-        hy = 10.f / utils::PIXELS_PER_METERS;
-        b2PolygonShape platformShape;
-        platformShape.SetAsBox(hx, hy);
-
-        auto platFixture = m_Context->bodies[platformEntity]->CreateFixture(&platformShape, 1.f);
-
-        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
-                                 hy * 2.f * utils::PIXELS_PER_METERS);
-        auto shape = new sf::RectangleShape(size);
-        utils::centerOrigin(*shape);
-        shape->setFillColor(sf::Color(sf::Color::Blue));
-        shape->setPosition(m_Context->bodies[platformEntity]->GetPosition().x * utils::PIXELS_PER_METERS,
-                           m_Context->bodies[platformEntity]->GetPosition().y * utils::PIXELS_PER_METERS);
-
-        platFixture->SetUserData(shape);
-    }
-
-    {
-        b2BodyDef platformDef;
-        platformDef.type = b2_staticBody;
-        platformDef.position.Set(650.f / utils::PIXELS_PER_METERS,
-                                 (m_Context->window->getSize().y - 200.f) / utils::PIXELS_PER_METERS);
-        platformDef.angle = -0.45;
-
-        auto platformEntity = m_Context->registry->create();
-        m_Context->registry->emplace<C_Rigidbody>(platformEntity, m_Context->bodies[platformEntity]);
-
-        m_Context->bodies[platformEntity] = m_Context->b2_World->CreateBody(&platformDef);
-
-        hx = m_Context->window->getSize().x / 16.f / utils::PIXELS_PER_METERS;
-        hy = 10.f / utils::PIXELS_PER_METERS;
-        b2PolygonShape platformShape;
-        platformShape.SetAsBox(hx, hy);
-
-        auto platFixture = m_Context->bodies[platformEntity]->CreateFixture(&platformShape, 1.f);
-
-        auto size = sf::Vector2f(hx * 2.f * utils::PIXELS_PER_METERS,
-                                 hy * 2.f * utils::PIXELS_PER_METERS);
-        auto shape = new sf::RectangleShape(size);
-        utils::centerOrigin(*shape);
-        shape->setFillColor(sf::Color(sf::Color::Blue));
-        shape->setPosition(m_Context->bodies[platformEntity]->GetPosition().x * utils::PIXELS_PER_METERS,
-                           m_Context->bodies[platformEntity]->GetPosition().y * utils::PIXELS_PER_METERS);
-        shape->setRotation(math::radToDeg(m_Context->bodies[platformEntity]->GetAngle()));
-
-        platFixture->SetUserData(shape);
-    }
 }
 
 void World::createAnimations()
@@ -243,10 +94,7 @@ void World::createAnimations()
             animComp.animatedSprite.addAnimation(Animations::Jumping, jumping);
             animComp.animatedSprite.play(Animations::Jumping);
 
-            // Center origin
-            auto bounds = animComp.animatedSprite.getLocalBounds();
-            animComp.animatedSprite.setOrigin(std::floor(bounds.left + bounds.width / 2.f),
-                                              std::floor(bounds.top + bounds.height / 2.f));
+			utils::centerOrigin(animComp.animatedSprite);
         }
     }
 }
@@ -260,10 +108,26 @@ void World::createPlayer()
     shape->setOutlineThickness(-1);
     shape->setOutlineColor(sf::Color::Green);
 
-    // Create the body definition
-    sf::Vector2f position(static_cast<float>(m_Context->window->getSize().x) / 2.f,
-                          static_cast<float>(m_Context->window->getSize().y) / 2.f);
+	sf::Vector2f position;
+    m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto &c_t)
+    {
+    	for(const auto &og : c_t.m_ObjectLayers)
+	    {
+    		if(og->getName() == "Spawner Locations")
+		    {
+    			for(const auto &o : og->getObjects())
+			    {
+    				if(o.getName() == "Player Spawn Location")
+				    {
+    				    position.x = o.getPosition().x;
+    				    position.y = o.getPosition().y;
+				    }
+			    }
+		    }
+	    }
+    });
 
+    // Create the body definition
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = utils::sfVecToB2Vec(position);
@@ -308,4 +172,12 @@ void World::createCamera()
     });
 
     m_Context->registry->emplace<C_Camera>(cameraEntity, view, playerEntity);
+}
+
+void World::createTilemap()
+{
+    const auto tilemapEntity = m_Context->registry->create();
+    
+    m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/Tilemap_Test.tmx");
+    // m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
 }

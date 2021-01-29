@@ -45,8 +45,6 @@ void CollisionSystem::handleRaycasts()
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
-                auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
-                fixtureB->setFillColor(sf::Color::Red);
                 raycastComp.collisionInfo.collisionAbove = true;
             }
 
@@ -58,8 +56,6 @@ void CollisionSystem::handleRaycasts()
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
-                auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
-                fixtureB->setFillColor(sf::Color::Green);
                 raycastComp.collisionInfo.collisionRight = true;
             }
 
@@ -71,8 +67,6 @@ void CollisionSystem::handleRaycasts()
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
-                auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
-                fixtureB->setFillColor(sf::Color::Yellow);
                 raycastComp.collisionInfo.collisionLeft = true;
             }
 
@@ -84,8 +78,6 @@ void CollisionSystem::handleRaycasts()
             m_Context->b2_World->RayCast(&m_Callback, point1, point2);
             if(m_Callback.m_fixture != nullptr)
             {
-                auto fixtureB = static_cast<sf::RectangleShape *>(m_Callback.m_fixture->GetUserData());
-                fixtureB->setFillColor(sf::Color::Blue);
                 raycastComp.collisionInfo.collisionBelow = true;
             }
 

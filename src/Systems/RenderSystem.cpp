@@ -4,6 +4,7 @@
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
+#include "../Components/C_Tilemap.hpp"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
 
@@ -31,6 +32,12 @@ void RenderSystem::draw()
 	{
 	    m_Context->window->draw(anim.animatedSprite);
 	});
+
+     m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto& tilemap)
+	 {
+         for(const auto &l : tilemap.m_TileLayers)
+	         m_Context->window->draw(*l);
+	 });
 }
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
@@ -83,5 +90,5 @@ void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
             m_Context->window->draw(line4, 2, sf::Lines);
         }
     }
-    //m_Context->b2_World->DrawDebugData();
+//    m_Context->b2_World->DrawDebugData();
 }

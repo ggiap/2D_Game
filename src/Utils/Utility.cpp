@@ -1,4 +1,5 @@
 #include "Utility.hpp"
+#include "AnimatedSprite.h"
 
 namespace utils
 {
@@ -24,6 +25,18 @@ namespace utils
     {
         const sf::FloatRect bounds = shape.getLocalBounds();
         shape.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+    }
+
+	void centerOrigin(AnimatedSprite& animatedSprite)
+	{
+		auto bounds = animatedSprite.getLocalBounds();
+		animatedSprite.setOrigin(std::floor(bounds.left + bounds.width / 2.f),
+		                                  std::floor(bounds.top + bounds.height / 2.f));
+	}
+
+    b2Vec2 sfVecToB2Vec(const float x, const float y)
+    {
+        return {x / PIXELS_PER_METERS, y / PIXELS_PER_METERS};
     }
 
     const char* getKeyName(const sf::Keyboard::Key key)

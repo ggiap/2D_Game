@@ -7,10 +7,6 @@ add_library(SOURCE
         core/World.h
         core/SceneNode.cpp
         core/SceneNode.h
-        Systems/BaseSystem.hpp
-        Systems/BaseSystem.cpp
-        Systems/CollisionSystem.hpp
-        Systems/CollisionSystem.cpp
         States/State.h
         States/StateStack.h
         States/State.cpp
@@ -35,6 +31,12 @@ add_library(SOURCE
         Utils/ContactListener.hpp
         Utils/RayCastCallback.cpp
         Utils/RayCastCallback.hpp
+        Utils/Timer.h
+        Utils/BodyCreator.h
+        Systems/BaseSystem.hpp
+        Systems/BaseSystem.cpp
+        Systems/CollisionSystem.hpp
+        Systems/CollisionSystem.cpp
         Systems/MoveSystem.cpp
         Systems/MoveSystem.hpp
         Systems/RenderSystem.cpp
@@ -45,6 +47,8 @@ add_library(SOURCE
         Systems/PlayerControllerSystem.cpp
         Systems/CameraSystem.cpp
         Systems/CameraSystem.hpp
+        Systems/TilemapSystem.cpp
+        Systems/TilemapSystem.hpp
         Components/C_Rigidbody.hpp
         Components/C_Animation.hpp
         Components/C_PlayerController.hpp
@@ -52,6 +56,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
+        Tilemaps/SFMLOrthogonalLayer.hpp
         )
 
 
