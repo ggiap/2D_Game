@@ -1,5 +1,8 @@
 #include "Utility.hpp"
 #include "AnimatedSprite.h"
+#include <tmxlite/Object.hpp>
+#include <../Components/C_Tilemap.hpp>
+#include <spdlog/spdlog.h>
 
 namespace utils
 {
@@ -37,6 +40,32 @@ namespace utils
     b2Vec2 sfVecToB2Vec(const float x, const float y)
     {
         return {x / PIXELS_PER_METERS, y / PIXELS_PER_METERS};
+    }
+
+    tmx::Object getObjectByName(entt::registry &reg, const std::string& layerName, const std::string& objName)
+    {
+    	tmx::Object retObj;
+
+	    reg.view<C_Tilemap>().each([&](auto entity, auto &c_t)
+	                                {
+		                                for (const auto &objGroup : c_t.m_ObjectLayers)
+		                                {
+			                                if (objGroup->getName() == layerName)
+			                                {
+				                                for (const auto &obj : objGroup->getObjects())
+				                                {
+					                                if (obj.getName() == objName)
+					                                {
+					                                	retObj = obj;
+					                                }
+				                                }
+			                                }
+		                                }
+	                                });
+
+	    assert(retObj.getUID() != 0);
+
+	    return retObj;
     }
 
     const char* getKeyName(const sf::Keyboard::Key key)

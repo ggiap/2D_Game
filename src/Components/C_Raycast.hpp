@@ -36,6 +36,11 @@ struct C_Raycast
     CollisionInfo collisionInfo{};
     RaycastOrigins raycastOrigins{};
     float rayLength{};
+	int horizontalRayCount{};
+	int verticalRayCount{};
+	float dstBetweenRays = .9f;
+	float horizontalRaySpacing{};
+	float verticalRaySpacing{};
 };
 
 #endif //ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP

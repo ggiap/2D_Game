@@ -65,8 +65,14 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
             m_State = GameObjectState::Jumping;
         }
 
+        if(!raycastComp.collisionInfo.collisionBelow)
+        	m_State = GameObjectState::Jumping;
+
         if(velocity.x == 0 && raycastComp.collisionInfo.collisionBelow)
             m_State = GameObjectState::Standing;
+
+        if(velocity.x != 0 && raycastComp.collisionInfo.collisionBelow)
+        	m_State = GameObjectState::Walking;
 
         velocity.x = std::clamp(velocity.x, -5.f, 5.f);
         velocity.y = std::clamp(velocity.y, -10.f, 10.f);

@@ -14,6 +14,8 @@ public:
 
 private:
     void handleRaycasts();
+    void CalculateRaySpacing();
+    void UpdateRaycastOrigins();
 
     RayCastCallback m_Callback{};
 };

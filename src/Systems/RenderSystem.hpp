@@ -1,8 +1,9 @@
 #pragma once
 
 #include "BaseSystem.hpp"
-#include "../Utils/SFMLDebugDraw.h"
+
 #include <entt/entity/entity.hpp>
+#include "../Utils/SFMLDebugDraw.h"
 
 struct C_Rigidbody;
 
@@ -17,5 +18,5 @@ public:
 private:
     void drawDebugInfo(entt::entity& entity, C_Rigidbody& rb);
 
-    SFMLDebugDraw debugDraw{};
+    SFMLDebugDraw debugDraw;
 };

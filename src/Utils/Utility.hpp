@@ -8,6 +8,7 @@
 #include <Box2D/Box2D.h>
 #include <cassert>
 #include <cmath>
+#include <entt/entity/registry.hpp>
 
 #include "../Utils/ResourceHolder.h"
 
@@ -77,6 +78,10 @@ using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
 
 class AnimatedSprite;
 
+namespace tmx
+{
+	class Object;
+}
 
 namespace utils
 {
@@ -85,6 +90,7 @@ namespace utils
     void centerOrigin(sf::RectangleShape& rect);
     void centerOrigin(sf::Shape& rect);
     void centerOrigin(AnimatedSprite& animatedSprite);
+    tmx::Object getObjectByName(entt::registry &reg, const std::string& layerName, const std::string& name);
     const char* getKeyName(const sf::Keyboard::Key key);
 
     // Box2D to SFML space conversion constant

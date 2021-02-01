@@ -18,6 +18,8 @@
 #include "../Utils//Math.hpp"
 
 #include <Box2D/Box2D.h>
+#include <entt/entt.hpp>
+#include "../Utils/SFMLDebugDraw.h"
 
 World::World(Context& context) :
 	m_WorldView(context.window->getDefaultView()),
@@ -65,6 +67,8 @@ void World::buildScene()
     createCamera();
 	m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context));
     m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context));
+
+    createEnemy();
 }
 
 void World::createAnimations()
@@ -109,23 +113,9 @@ void World::createPlayer()
     shape->setOutlineColor(sf::Color::Green);
 
 	sf::Vector2f position;
-    m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto &c_t)
-    {
-    	for(const auto &og : c_t.m_ObjectLayers)
-	    {
-    		if(og->getName() == "Spawner Locations")
-		    {
-    			for(const auto &o : og->getObjects())
-			    {
-    				if(o.getName() == "Player Spawn Location")
-				    {
-    				    position.x = o.getPosition().x;
-    				    position.y = o.getPosition().y;
-				    }
-			    }
-		    }
-	    }
-    });
+    auto obj = utils::getObjectByName(*m_Context->registry, "Spawner Locations", "Player Spawn Location");
+	position.x = obj.getPosition().x;
+	position.y = obj.getPosition().y;
 
     // Create the body definition
     b2BodyDef bodyDef;
@@ -180,4 +170,46 @@ void World::createTilemap()
     
     m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/Tilemap_Test.tmx");
     // m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
+}
+
+void World::createEnemy()
+{
+	const auto entity = m_Context->registry->create();
+	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+	utils::centerOrigin(*shape);
+	shape->setFillColor(sf::Color::Transparent);
+	shape->setOutlineThickness(-1);
+	shape->setOutlineColor(sf::Color::Green);
+
+	sf::Vector2f position;
+	auto obj = utils::getObjectByName(*m_Context->registry, "Spawner Locations", "Enemy Spawn Location 1");
+	position.x = obj.getPosition().x;
+	position.y = obj.getPosition().y;
+
+	// Create the body definition
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_kinematicBody;
+	bodyDef.position = utils::sfVecToB2Vec(position);
+	bodyDef.fixedRotation = true;
+	bodyDef.gravityScale = 1.5f;
+
+	// Fixture shape
+	b2PolygonShape bShape;
+	b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
+	bShape.SetAsBox(size.x, size.y);
+
+	// Fixture definition
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &bShape;
+	fixtureDef.density = 1.f;
+	fixtureDef.friction = 1.f;
+	fixtureDef.restitution = 0.f;
+
+	// Create and register the body in the world
+	m_Context->bodies[entity] = m_Context->b2_World->CreateBody(&bodyDef);
+	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
+	fixture->SetUserData(shape);
+
+	m_Context->registry->emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
+	m_Context->registry->emplace<C_Raycast>(entity);
 }

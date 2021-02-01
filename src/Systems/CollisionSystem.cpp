@@ -11,13 +11,14 @@ CollisionSystem::CollisionSystem(Context& context) :
     BaseSystem(context),
     m_Callback()
 {
-
+	CalculateRaySpacing();
 }
 
 void CollisionSystem::update(sf::Time& dt)
 {
     m_Context->b2_World->Step(dt.asSeconds(), 8, 5);
 
+    UpdateRaycastOrigins();
     handleRaycasts();
 }
 
@@ -36,52 +37,114 @@ void CollisionSystem::handleRaycasts()
 
         for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
         {
-            auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
-            if (shape == nullptr) return;
+	        auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
+	        if (shape == nullptr) return;
 
-            // Check above
-            auto point1 = raycastComp.raycastOrigins.topLeft;
-            auto point2 = raycastComp.raycastOrigins.topLeft + utils::sfVecToB2Vec(math::VECTOR_UP * raycastComp.rayLength);
-            m_Context->b2_World->RayCast(&m_Callback, point1, point2);
-            if(m_Callback.m_fixture != nullptr)
-            {
-                raycastComp.collisionInfo.collisionAbove = true;
+	        // Check Above
+	        for (int i = 0; i < raycastComp.verticalRayCount; ++i)
+	        {
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topLeft +
+		                           utils::sfVecToB2Vec(math::VECTOR_UP * (raycastComp.verticalRaySpacing * i));
+		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin,
+		                                     rayOrigin + utils::sfVecToB2Vec(math::VECTOR_UP * raycastComp.rayLength));
+		        if (m_Callback.m_fixture != nullptr)
+		        {
+			        raycastComp.collisionInfo.collisionAbove = true;
+			        break;
+		        }
+	        }
+	        m_Callback = RayCastCallback();
+
+	        // Check Below
+	        for (int i = 0; i < raycastComp.verticalRayCount; ++i)
+	        {
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_LEFT* (raycastComp.verticalRaySpacing * i));
+		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin, rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength));
+		        if (m_Callback.m_fixture != nullptr)
+		        {
+			        raycastComp.collisionInfo.collisionBelow = true;
+			        break;
+		        }
+	        }
+	        m_Callback = RayCastCallback();
+
+	        // Check Right
+	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
+	        {
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topRight +
+		                           utils::sfVecToB2Vec(math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i));
+		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin, rayOrigin + (utils::sfVecToB2Vec(
+				        math::VECTOR_RIGHT * raycastComp.rayLength)));
+		        if (m_Callback.m_fixture != nullptr)
+		        {
+			        raycastComp.collisionInfo.collisionRight = true;
+			        break;
+		        }
+	        }
+	        m_Callback = RayCastCallback();
+
+	        // Check Left
+	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
+	        {
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i));
+		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin, rayOrigin + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength));
+		        if(m_Callback.m_fixture != nullptr)
+                {
+                    raycastComp.collisionInfo.collisionLeft = true;
+                    break;
+                }
             }
-
-            m_Callback = RayCastCallback();
-
-            // Check right
-            point1 = raycastComp.raycastOrigins.topRight;
-            point2 = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(math::VECTOR_RIGHT * raycastComp.rayLength);
-            m_Context->b2_World->RayCast(&m_Callback, point1, point2);
-            if(m_Callback.m_fixture != nullptr)
-            {
-                raycastComp.collisionInfo.collisionRight = true;
-            }
-
-            m_Callback = RayCastCallback();
-
-            // Check Left
-            point1 = raycastComp.raycastOrigins.bottomLeft;
-            point2 = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength);
-            m_Context->b2_World->RayCast(&m_Callback, point1, point2);
-            if(m_Callback.m_fixture != nullptr)
-            {
-                raycastComp.collisionInfo.collisionLeft = true;
-            }
-
-            m_Callback = RayCastCallback();
-
-            // Check Below
-            point1 = raycastComp.raycastOrigins.bottomRight;
-            point2 = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength);
-            m_Context->b2_World->RayCast(&m_Callback, point1, point2);
-            if(m_Callback.m_fixture != nullptr)
-            {
-                raycastComp.collisionInfo.collisionBelow = true;
-            }
-
-            m_Callback = RayCastCallback();
+	        m_Callback = RayCastCallback();
         }
     }
+}
+
+void CollisionSystem::CalculateRaySpacing()
+{
+	auto view = m_Context->registry->view<C_PlayerTag>();
+
+	for(auto entity : view)
+	{
+		auto &rb = m_Context->registry->get<C_Rigidbody>(entity);
+		auto &raycastComp = m_Context->registry->get<C_Raycast>(entity);
+		for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
+		{
+			auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
+			if (shape == nullptr) return;
+
+			auto bounds = shape->getGlobalBounds();
+
+			float boundsWidth = bounds.width;
+			float boundsHeight = bounds.height;
+
+			raycastComp.horizontalRayCount = std::floor(boundsHeight / raycastComp.dstBetweenRays);
+			raycastComp.verticalRayCount = std::floor(boundsWidth / raycastComp.dstBetweenRays);
+
+			raycastComp.horizontalRaySpacing = boundsHeight / (raycastComp.horizontalRayCount);
+			raycastComp.verticalRaySpacing = boundsWidth / (raycastComp.verticalRayCount);
+		}
+	}
+}
+
+void CollisionSystem::UpdateRaycastOrigins()
+{
+	m_Context->registry->view<C_Raycast, C_Rigidbody>().each([&](auto entity, auto& raycastComp, auto& rb)
+	{
+		auto fixture = rb.rigidbody->GetFixtureList();
+
+		auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
+		if (shape == nullptr) return;
+
+		auto bounds = shape->getGlobalBounds();
+		auto size = shape->getSize();
+
+		raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
+				sf::Vector2f(bounds.left, bounds.top) + sf::Vector2f(1.f, 1.f));
+		raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(
+				sf::Vector2f(bounds.left + size.x, bounds.top) + sf::Vector2f(-1.f, 1.f));
+		raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(
+				sf::Vector2f(bounds.left, bounds.top + size.y) + sf::Vector2f(1.f, -1.f));
+		raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(
+				sf::Vector2f(bounds.left + size.x, bounds.top + size.y) + sf::Vector2f(-1.f, -1.f));
+	});
 }
