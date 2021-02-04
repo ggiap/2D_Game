@@ -1,7 +1,6 @@
 #include "RenderSystem.hpp"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Rigidbody.hpp"
-#include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
 #include "../Components/C_Tilemap.hpp"
 #include "../Utils/Context.hpp"
@@ -24,15 +23,15 @@ debugDraw()
 
 void RenderSystem::draw()
 {
-	m_Context->registry->view<C_Rigidbody>().each([&](auto entity, auto& rb)
-		{
-	        drawDebugInfo(entity, rb);
-		});
+	m_Context->registry->view<C_Animation>().each([&](auto entity, auto &anim)
+	{
+		m_Context->window->draw(anim.animatedSprite);
+	});
 
-//	m_Context->registry->view<C_Animation>().each([&](auto entity, auto& anim)
-//	{
-//	    m_Context->window->draw(anim.animatedSprite);
-//	});
+	m_Context->registry->view<C_Rigidbody>().each([&](auto entity, auto& rb)
+	{
+		drawDebugInfo(entity, rb);
+	});
 
      m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto& tilemap)
 	 {
