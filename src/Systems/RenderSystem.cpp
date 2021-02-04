@@ -23,6 +23,12 @@ debugDraw()
 
 void RenderSystem::draw()
 {
+	m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto& tilemap)
+	{
+		for(const auto &l : tilemap.m_TileLayers)
+			m_Context->window->draw(*l);
+	});
+
 	m_Context->registry->view<C_Animation>().each([&](auto entity, auto &anim)
 	{
 		m_Context->window->draw(anim.animatedSprite);
@@ -32,12 +38,6 @@ void RenderSystem::draw()
 	{
 		drawDebugInfo(entity, rb);
 	});
-
-     m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto& tilemap)
-	 {
-         for(const auto &l : tilemap.m_TileLayers)
-	         m_Context->window->draw(*l);
-	 });
 }
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
