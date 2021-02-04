@@ -14,7 +14,7 @@ MoveSystem::MoveSystem(Context& context) :
 
 void MoveSystem::update(sf::Time& dt)
 {
-    m_Context->registry->view<C_Rigidbody, C_Animation>().each([&](auto entity, auto& rb, auto& anim)
+    m_Context->registry->view<C_Rigidbody>().each([&](auto entity, auto& rb)
         {
             if(rb.rigidbody->GetType() != b2_staticBody)
             {
@@ -24,9 +24,15 @@ void MoveSystem::update(sf::Time& dt)
                     if (shape == nullptr) return;
                     shape->setPosition(utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition()));
                     shape->setRotation(math::radToDeg(rb.rigidbody->GetAngle()));
-
-                    anim.animatedSprite.setPosition(shape->getPosition() + sf::Vector2f(0, -6.f));
                 }
+            }
+
+            if(m_Context->registry->has<C_Animation>(entity))
+            {
+            	auto &anim = m_Context->registry->get<C_Animation>(entity);
+
+            	auto bodyPos = utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition());
+	            anim.animatedSprite.setPosition(bodyPos + sf::Vector2f(0, -6.f));
             }
         });
 }
