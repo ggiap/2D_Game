@@ -20,12 +20,11 @@ conan_add_remote(NAME bincrafters URL
 conan_cmake_run(REQUIRES
         box2d/2.3.2.ef96a4f@conan/stable
         sfml/2.5.1@bincrafters/stable
+        flac/1.3.2@bincrafters/stable
         entt/3.4.0
         spdlog/1.5.0
         BASIC_SETUP
         BUILD missing)
-
-find_package(TMXLITE)
 
 # Link this 'library' to use the standard warnings
 add_library(project_warnings INTERFACE)
@@ -114,10 +113,12 @@ include_directories(${CMAKE_SOURCE_DIR} src/Components)
 include_directories(${CMAKE_SOURCE_DIR} src/Systems)
 include_directories(${CMAKE_SOURCE_DIR} src/States)
 include_directories(${CMAKE_SOURCE_DIR} src/utils)
+include_directories(${CMAKE_SOURCE_DIR} extlib/tmxlite/tmxlite/include)
+add_subdirectory(extlib/tmxlite/tmxlite)
 add_subdirectory(src)
 
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} ${TMXLITE_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} tmxlite)
 
 add_custom_command(
         TARGET ${CMAKE_PROJECT_NAME} POST_BUILD

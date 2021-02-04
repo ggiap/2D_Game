@@ -1,0 +1,3 @@
+[submodule "extlib/tmxlite"]
+	path = extlib/tmxlite
+	url = https://github.com/fallahn/tmxlite.git
