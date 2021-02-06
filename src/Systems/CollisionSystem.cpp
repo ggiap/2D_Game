@@ -117,11 +117,14 @@ void CollisionSystem::CalculateRaySpacing()
 			float boundsWidth = bounds.width;
 			float boundsHeight = bounds.height;
 
-			raycastComp.horizontalRayCount = std::floor(boundsHeight / raycastComp.dstBetweenRays);
-			raycastComp.verticalRayCount = std::floor(boundsWidth / raycastComp.dstBetweenRays);
+			raycastComp.horizontalRayCount = std::ceil(boundsHeight / raycastComp.dstBetweenRays);
+			raycastComp.verticalRayCount = std::ceil(boundsWidth / raycastComp.dstBetweenRays);
 
 			raycastComp.horizontalRaySpacing = boundsHeight / (raycastComp.horizontalRayCount);
 			raycastComp.verticalRaySpacing = boundsWidth / (raycastComp.verticalRayCount);
+
+			raycastComp.horizontalRayCount += 1;
+			raycastComp.verticalRayCount += 1;
 		}
 	}
 }
@@ -138,13 +141,22 @@ void CollisionSystem::UpdateRaycastOrigins()
 		auto bounds = shape->getGlobalBounds();
 		auto size = shape->getSize();
 
-		raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
-				sf::Vector2f(bounds.left, bounds.top) + sf::Vector2f(1.f, 1.f));
+		// raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
+		// 		sf::Vector2f(bounds.left, bounds.top) + sf::Vector2f(.5f, .5f));
+		// raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(
+		// 		sf::Vector2f(bounds.left + size.x, bounds.top) + sf::Vector2f(-.5f, .5f));
+		// raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(
+		// 		sf::Vector2f(bounds.left, bounds.top + size.y) + sf::Vector2f(.5f, -.5f));
+		// raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(
+		// 		sf::Vector2f(bounds.left + size.x, bounds.top + size.y) + sf::Vector2f(-.5f, -.5f));
+
+				raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
+				sf::Vector2f(bounds.left, bounds.top));
 		raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(
-				sf::Vector2f(bounds.left + size.x, bounds.top) + sf::Vector2f(-1.f, 1.f));
+				sf::Vector2f(bounds.left + size.x, bounds.top));
 		raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(
-				sf::Vector2f(bounds.left, bounds.top + size.y) + sf::Vector2f(1.f, -1.f));
+				sf::Vector2f(bounds.left, bounds.top + size.y));
 		raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(
-				sf::Vector2f(bounds.left + size.x, bounds.top + size.y) + sf::Vector2f(-1.f, -1.f));
+				sf::Vector2f(bounds.left + size.x, bounds.top + size.y));
 	});
 }
