@@ -6,6 +6,7 @@
 #include "../States/StateStack.h"
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"
+#include "../Utils/Timer.hpp"
 
 class Game : private sf::NonCopyable
 {
@@ -36,5 +37,8 @@ private:
 	sf::Text m_StatisticsText;
 	sf::Time m_StatisticsUpdateTime;
 	std::size_t	m_StatisticsNumFrames;
+
+	Timer m_CountdownTimer;
+	sf::Text m_TimerLabel;
 };
 

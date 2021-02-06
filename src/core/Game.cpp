@@ -13,7 +13,8 @@ Game::Game() :
 	m_StateStack(Context(m_window, m_Textures, m_Fonts, m_Registry, m_B2DWorld)),
 	m_StatisticsText(),
 	m_StatisticsUpdateTime(),
-	m_StatisticsNumFrames(0)
+	m_StatisticsNumFrames(0),
+	m_CountdownTimer(sf::seconds(10))
 {
 	m_window.setKeyRepeatEnabled(false);
 
@@ -23,12 +24,16 @@ Game::Game() :
 
 	m_StatisticsText.setFont(m_Fonts.get(Fonts::ARJULIAN));
 	m_StatisticsText.setOutlineThickness(3);
-	m_StatisticsText.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f + 5.f,
-                                 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 5.f);
+
 	m_StatisticsText.setCharacterSize(20u);
 
 	registerStates();
 	m_StateStack.pushState(States::Game);
+
+	m_CountdownTimer.start();
+	m_TimerLabel.setFont(m_Fonts.get(Fonts::ARJULIAN));
+	m_TimerLabel.setOutlineThickness(3);
+	m_TimerLabel.setCharacterSize(20u);
 }
 
 void Game::Run()
@@ -75,6 +80,14 @@ void Game::Update(sf::Time dt)
                                  m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 0.f);
     m_StatisticsText.setScale(m_window.getView().getSize().x /  m_window.getDefaultView().getSize().x,
                               m_window.getView().getSize().y /  m_window.getDefaultView().getSize().y);
+
+	m_TimerLabel.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f + 55.f,
+							 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 0.f);
+	m_TimerLabel.setScale(m_window.getView().getSize().x / m_window.getDefaultView().getSize().x,
+						  m_window.getView().getSize().y / m_window.getDefaultView().getSize().y);
+	m_CountdownTimer.update(dt);
+	if (m_CountdownTimer.getRemainingTime() <= 0)
+		m_window.close();
 }
 
 void Game::Render()
@@ -82,6 +95,7 @@ void Game::Render()
 	m_window.clear();
 	m_StateStack.draw();
 	m_window.draw(m_StatisticsText);
+	m_window.draw(m_TimerLabel);
 	m_window.display();
 }
 
@@ -105,4 +119,5 @@ void Game::updateStatistics(sf::Time dt)
 		m_StatisticsUpdateTime -= sf::seconds(1.0f);
 		m_StatisticsNumFrames = 0;
 	}
+	m_TimerLabel.setString("Time: " + std::to_string(static_cast<int>(m_CountdownTimer.getRemainingTime())));
 }

@@ -31,7 +31,8 @@ add_library(SOURCE
         Utils/ContactListener.hpp
         Utils/RayCastCallback.cpp
         Utils/RayCastCallback.hpp
-        Utils/Timer.h
+        Utils/Timer.hpp 
+        Utils/Timer.cpp
         Utils/BodyCreator.h
         Systems/BaseSystem.hpp
         Systems/BaseSystem.cpp
@@ -56,8 +57,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
-        Tilemaps/SFMLOrthogonalLayer.hpp
-        )
+        Tilemaps/SFMLOrthogonalLayer.hpp)
 
 
 target_link_libraries(SOURCE ${SOURCE})
