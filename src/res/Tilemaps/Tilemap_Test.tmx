@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="29">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="31">
  <tileset firstgid="1" name="Tileset1" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="../Sprites/Tilemap/monochrome_tilemap_packed.png" width="320" height="320"/>
   <tile id="18">
@@ -13,12 +13,12 @@
  </tileset>
  <layer id="1" name="Far Tile Layer" width="100" height="50">
   <data encoding="base64" compression="zlib">
-   eJztmMtKAzEUhjNguxIvOy/LtqCC+gLWh/AhfAlRF+I7+CLqUrtUlyKoiCt1peKydOUJJkzmkOnM0KGK/T74mUsmoeTjpJMxBgAAAAAAAAAAAAAAAAAAAAAAAAAAAMbJyR/LJHMcudcIzleSbNuT5EPyFdxbdc+sBc8OJPdq3H5BH89R/s/991T14edPz3XYZpmW81eTzUxk7h8j4+AjSzM41z78/G3J/W7yUyv++KnG0X01D4b60Ggfi5IlybK7fjfpnNvoOR+GrqE29VGI9rEu2ZBs1jC2ddmN1FGYmF98jIcplyLwMR4aJvuukAc+xsOCSxH4iDMr6/2cZL7gPaks+ChmmI+WeLAqOs6H96NT1hc+iqnio5Uz752SPpomu7fJAx9x6vTh9zXh3iaPSfYRW3986vTh9zVl9jaT7CMZkrrXq7LgI007wcdvUrY+/DfaN9cv/BYVe++q8o58Ibl06Rl8VFmvBpExYnVj++zL8UByqNq2Teqgp9ruDD7q9OHrJlzD9Hq2I7nNabPX+EjzYtK1adT6iJ1bdoM++MiiffRNtfo4lZwFuXbH8+CZ2P89PuKM6uNKXT+7401wz/bfM9ngI843fz5xIQ==
+   eAHtmM1OFFEQhZvEYWUEdqhLIAET5AXUh/AhfAkjLgzvwIsAS5ylsDQkQIwrx5Ual5NZeY7TlT59c+2en3YyyZybFFW36t5u+A51p3uKwsMETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETGCRBE5xs2WyRf7ty3avk8wv1JPc/ppMEH6B/YT9lvRBueaZrB2hfitrGA5lntsT5Q8RrKCfVo9gnrImuqgxfghtBvBqj0QvruG4H7vaT+tRw1GsyzTtj+D3Amxfwtgr4X/JPobp3qRc3CGhGkbdegSJoniM8AnsaZn6AR/MyT1lXi7LurSHdt0fWU6aTM+rQxSfw4500YwxtaSG0T/hqW9YTl/3x4zAp9z2AOtpbcN6tBHqpt7DZWhtw3q0Eeqmvo3L0NqG9cgT2sDZvwnbynwO53c0Z61HMx9W089z3bEDHSjFXqlH6EON1CbVy3oo3Xw8jR7UJzdCr1xNc3yv0XcbrWns80ppVHHaH/PoEe81+m5T3akerbIeeu6kcZd6xHvNJO82q6wHj6B/WZd61DugeWY9Kk34nUboYz2a/2/+RzXY57zqMcDNad/LX0K/i8o9d036zMXLXcI+ltaHd39UPaG6qB7AVHA+YpAM5tPBZ653SB7D3ifFV5iHBv2kdoO59ehOj+gbfQbWmPhfwz4zwEhrnFuPSo9vYBRn07z98Rd4hvkb5KKnrEdQGnseNWpDmU+ixxnWn4tdlfEFfIyUOfPWI+jUvWrBeFo9PtUvV3wt59eSpx5vMVezHgJIwj9/PnEh
   </data>
  </layer>
  <layer id="6" name="Near Tile Layer" width="100" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt0bEJgDAQQNHsoBOkcgLd3ezgTNomhU2MJ/geXHGQwIdLCQAAAAAAAAAAAAAAAIDWHB1AxT2et3b8dY/xpmbfbt4uI0OAXyrX5OgIgA/YowOoHNEBAAAvOgGZpQNK
+   eAHt0cENgCAMBVB20Ak8OYHurjs4kx5JD8aEJgbyOFECP/S1FIsAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEosAcD9S/CphHPv/WEGkeDXgfn07h3h7qulzrwp4AAQIJAueTsSTkiCBAgEDvAkfvDQz2/2uwfrRDgAABAgQIEHgTuAGZpQNK
   </data>
  </layer>
  <objectgroup id="3" name="Static Object Layer">
@@ -66,14 +66,14 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="Kinematic Object Layer">
-  <object id="5" x="64" y="528">
-   <polyline points="0,0 48,0"/>
-  </object>
-  <object id="6" x="416" y="656">
-   <polyline points="0,0 64,0"/>
-  </object>
   <object id="7" x="416" y="720">
    <polyline points="0,0 -48,0"/>
+  </object>
+  <object id="29" x="64" y="528">
+   <polygon points="0,0 0,6.18182 47.9091,6.27273 48,0"/>
+  </object>
+  <object id="30" x="416" y="656">
+   <polygon points="0,0 64,0 64,6.36364 0.181818,6.18182"/>
   </object>
  </objectgroup>
  <objectgroup id="7" name="Dynamic Object Layer"/>

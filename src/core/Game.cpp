@@ -14,7 +14,7 @@ Game::Game() :
 	m_StatisticsText(),
 	m_StatisticsUpdateTime(),
 	m_StatisticsNumFrames(0),
-	m_CountdownTimer(sf::seconds(10))
+	m_CountdownTimer(sf::seconds(1001))
 {
 	m_window.setKeyRepeatEnabled(false);
 
@@ -76,15 +76,16 @@ void Game::Update(sf::Time dt)
 {
 	m_StateStack.update(dt);
 
-    m_StatisticsText.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f + 0.f,
-                                 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 0.f);
+    m_StatisticsText.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f,
+                                 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f);
     m_StatisticsText.setScale(m_window.getView().getSize().x /  m_window.getDefaultView().getSize().x,
                               m_window.getView().getSize().y /  m_window.getDefaultView().getSize().y);
 
-	m_TimerLabel.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f + 55.f,
-							 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 0.f);
+	m_TimerLabel.setPosition(m_window.getView().getCenter().x + m_window.getView().getSize().x / 2.4f,
+							 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f);
 	m_TimerLabel.setScale(m_window.getView().getSize().x / m_window.getDefaultView().getSize().x,
 						  m_window.getView().getSize().y / m_window.getDefaultView().getSize().y);
+						  
 	m_CountdownTimer.update(dt);
 	if (m_CountdownTimer.getRemainingTime() <= 0)
 		m_window.close();
