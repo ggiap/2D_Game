@@ -12,6 +12,7 @@ class World
 {
 public:
 	explicit World(Context& context);
+	~World();
 
 	void update(sf::Time dt);
 	void handleEvents(const sf::Event& event);
@@ -25,6 +26,8 @@ private:
 	void createCamera();
 	void createTilemap();
 	void createEnemy();
+
+	void unloadScene();
 
 private:
 	sf::View m_WorldView;

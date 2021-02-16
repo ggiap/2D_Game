@@ -23,8 +23,3 @@ void State::requestStackClear() const
 {
 	m_Stack->clearStates();
 }
-
-//Context State::getContext() const
-//{
-//	return m_Context;
-//}

@@ -11,7 +11,6 @@
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Raycast.hpp"
 #include <cmath>
-#include <spdlog/spdlog.h>
 
 PlayerControllerSystem::PlayerControllerSystem(Context& context) :
 BaseSystem(context),

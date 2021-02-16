@@ -57,7 +57,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
-        Tilemaps/SFMLOrthogonalLayer.hpp)
+        Tilemaps/SFMLOrthogonalLayer.hpp "States/MenuState.hpp" "States/MenuState.cpp" "States/PauseState.hpp" "States/PauseState.cpp" "States/SplashScreenState.hpp" "States/SplashScreenState.cpp")
 
 
 target_link_libraries(SOURCE ${SOURCE})

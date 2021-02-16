@@ -47,21 +47,21 @@ namespace utils
     	tmx::Object retObj;
 
 	    reg.view<C_Tilemap>().each([&](auto entity, auto &c_t)
-	                                {
-		                                for (const auto &objGroup : c_t.m_ObjectLayers)
-		                                {
-			                                if (objGroup->getName() == layerName)
-			                                {
-				                                for (const auto &obj : objGroup->getObjects())
-				                                {
-					                                if (obj.getName() == objName)
-					                                {
-					                                	retObj = obj;
-					                                }
-				                                }
-			                                }
-		                                }
-	                                });
+	    {
+		    for (const auto &objGroup : c_t.m_ObjectLayers)
+		    {
+		        if (objGroup->getName() == layerName)
+		        {
+		            for (const auto &obj : objGroup->getObjects())
+		            {
+		                if (obj.getName() == objName)
+		                {
+		                	retObj = obj;
+		                }
+		            }
+		        }
+		    }
+	    });
 
 	    assert(retObj.getUID() != 0);
 

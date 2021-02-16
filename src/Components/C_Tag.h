@@ -11,7 +11,7 @@ struct C_PlayerTag
 
 };
 
-struct C_GroundTag
+struct C_EnemyTag
 {
 
 };

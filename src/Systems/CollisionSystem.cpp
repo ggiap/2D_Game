@@ -141,16 +141,7 @@ void CollisionSystem::UpdateRaycastOrigins()
 		auto bounds = shape->getGlobalBounds();
 		auto size = shape->getSize();
 
-		// raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
-		// 		sf::Vector2f(bounds.left, bounds.top) + sf::Vector2f(.5f, .5f));
-		// raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(
-		// 		sf::Vector2f(bounds.left + size.x, bounds.top) + sf::Vector2f(-.5f, .5f));
-		// raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(
-		// 		sf::Vector2f(bounds.left, bounds.top + size.y) + sf::Vector2f(.5f, -.5f));
-		// raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(
-		// 		sf::Vector2f(bounds.left + size.x, bounds.top + size.y) + sf::Vector2f(-.5f, -.5f));
-
-				raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
+		raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left, bounds.top));
 		raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left + size.x, bounds.top));

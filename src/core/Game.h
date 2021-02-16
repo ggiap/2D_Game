@@ -40,5 +40,7 @@ private:
 
 	Timer m_CountdownTimer;
 	sf::Text m_TimerLabel;
+
+	bool m_IsPaused{ false };
 };
 

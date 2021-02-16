@@ -30,6 +30,9 @@ bool GameState::handleEvent(const sf::Event& event)
 {
     m_World.handleEvents(event);
 
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+        requestStackPush(States::Pause);
+
     // Following three events are copied almost completely from http://code.google.com/p/box2d/source/browse/trunk/Box2D/Testbed/Framework/Test.cpp
     // Copyright (c) 2011 Erin Catto http://box2d.org
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseJoint == nullptr)

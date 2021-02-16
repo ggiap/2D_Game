@@ -22,3 +22,9 @@ void SystemManager::addSystem(std::unique_ptr<BaseSystem> sys)
 {
 	m_Systems.push_back(std::move(sys));
 }
+
+void SystemManager::deleteAllSystems()
+{
+	for (auto& sys : m_Systems)
+		sys.reset();
+}

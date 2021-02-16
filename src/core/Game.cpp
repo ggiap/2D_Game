@@ -1,6 +1,9 @@
 #include "Game.h"
 #include <SFML/Window/Event.hpp>
 #include "../States/GameState.h"
+#include "../States/MenuState.hpp"
+#include "../States/SplashScreenState.hpp"
+#include "../States/PauseState.hpp"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1 / 60.f);
 
@@ -28,7 +31,7 @@ Game::Game() :
 	m_StatisticsText.setCharacterSize(20u);
 
 	registerStates();
-	m_StateStack.pushState(States::Game);
+	m_StateStack.pushState(States::Title);
 
 	m_CountdownTimer.start();
 	m_TimerLabel.setFont(m_Fonts.get(Fonts::ARJULIAN));
@@ -49,7 +52,9 @@ void Game::Run()
 		{
 			timeSinceLastUpdate -= TimePerFrame;
 			HandleEvents();
-			Update(TimePerFrame);
+
+			if(!m_IsPaused)
+				Update(TimePerFrame);
 
 			// Check inside this loop, because stack might be empty before the update() call
 			if (m_StateStack.isEmpty())
@@ -66,6 +71,16 @@ void Game::HandleEvents()
 	while (m_window.pollEvent(event))
 	{
 		m_StateStack.handleEvent(event);
+
+		if (event.type == sf::Event::LostFocus)
+		{
+			m_IsPaused = true;
+		}
+
+		if (event.type == sf::Event::GainedFocus)
+		{
+			m_IsPaused = false;
+		}
 
 		if (event.type == sf::Event::Closed)
 			m_window.close();
@@ -87,8 +102,6 @@ void Game::Update(sf::Time dt)
 						  m_window.getView().getSize().y / m_window.getDefaultView().getSize().y);
 						  
 	m_CountdownTimer.update(dt);
-	if (m_CountdownTimer.getRemainingTime() <= 0)
-		m_window.close();
 }
 
 void Game::Render()
@@ -103,11 +116,16 @@ void Game::Render()
 void Game::loadResources()
 {
 	m_Fonts.load(Fonts::ARJULIAN, "../res/Font/ARJULIAN.ttf");
+	m_Textures.load(Textures::SplashScreen, "../res/Sprites/bg.png");
+	m_Textures.load(Textures::CharactersSpriteSheet, "../res/Sprites/SMB_Characters2.png");
 }
 
 void Game::registerStates()
 {
+	m_StateStack.registerState<SplashScreenState>(States::Title);
+	m_StateStack.registerState<MenuState>(States::Menu);
 	m_StateStack.registerState<GameState>(States::Game);
+	m_StateStack.registerState<PauseState>(States::Pause);
 }
 
 void Game::updateStatistics(sf::Time dt)

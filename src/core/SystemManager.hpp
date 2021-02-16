@@ -16,6 +16,7 @@ public:
 	void draw();
 
 	void addSystem(std::unique_ptr<BaseSystem> sys);
+	void deleteAllSystems();
 	
 private:
 	std::vector<std::unique_ptr<BaseSystem>> m_Systems{};

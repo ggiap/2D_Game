@@ -24,8 +24,6 @@ protected:
 	void requestStackPop() const;
 	void requestStackClear() const;
 
-	//[[nodiscard]] Context getContext() const;
-
 private:
 	StateStack* m_Stack;
 

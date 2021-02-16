@@ -25,30 +25,35 @@ World::World(Context& context) :
 	m_WorldView(context.window->getDefaultView()),
 	m_WorldBounds(0, 0, m_WorldView.getSize().x, 600),
 	m_Context(&context),
-    m_SystemManager()
+	m_SystemManager()
 {
 	loadTextures();
 	buildScene();
 }
 
+World::~World()
+{
+	unloadScene();
+}
+
 void World::update(const sf::Time dt)
 {
-    m_SystemManager.update(dt);
+	m_SystemManager.update(dt);
 }
 
 void World::handleEvents(const sf::Event &event)
 {
-    m_SystemManager.handleEvents(event);
+	m_SystemManager.handleEvents(event);
 }
 
 void World::draw()
 {
-    m_SystemManager.draw();
+	m_SystemManager.draw();
 }
 
 void World::loadTextures()
 {
-    m_Context->textures->load(Textures::CharactersSpriteSheet, "../res/Sprites/SMB_Characters2.png");
+	//m_Context->textures->load(Textures::CharactersSpriteSheet, "../res/Sprites/SMB_Characters2.png");
 }
 
 void World::buildScene()
@@ -56,120 +61,120 @@ void World::buildScene()
 	createTilemap();
 	m_SystemManager.addSystem(std::make_unique<TilemapSystem>(*m_Context));
 
-    createPlayer();
+	createPlayer();
 	m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context));
 	m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context));
 	m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context));
 
-    createAnimations();
+	createAnimations();
 	m_SystemManager.addSystem(std::make_unique<AnimationSystem>(*m_Context));
 
-    createCamera();
+	createCamera();
 	m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context));
-    m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context));
+	m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context));
 
-    createEnemy();
+	createEnemy();
 }
 
 void World::createAnimations()
 {
-    Animation standing;
-    standing.setSpriteSheet(m_Context->textures->get(Textures::CharactersSpriteSheet));
-    standing.addFrame(sf::IntRect( 1, 22, 32, 32));
+	Animation standing;
+	standing.setSpriteSheet(m_Context->textures->get(Textures::CharactersSpriteSheet));
+	standing.addFrame(sf::IntRect( 1, 22, 32, 32));
 
-    Animation walking;
-    walking.setSpriteSheet(m_Context->textures->get(Textures::CharactersSpriteSheet));
-    walking.addFrame(sf::IntRect( 145, 22, 32, 32));
-    walking.addFrame(sf::IntRect( 178, 22, 32, 32));
+	Animation walking;
+	walking.setSpriteSheet(m_Context->textures->get(Textures::CharactersSpriteSheet));
+	walking.addFrame(sf::IntRect( 145, 22, 32, 32));
+	walking.addFrame(sf::IntRect( 178, 22, 32, 32));
 
-    Animation jumping;
-    jumping.setSpriteSheet(m_Context->textures->get(Textures::CharactersSpriteSheet));
-    jumping.addFrame(sf::IntRect( 322, 22, 32, 32));
+	Animation jumping;
+	jumping.setSpriteSheet(m_Context->textures->get(Textures::CharactersSpriteSheet));
+	jumping.addFrame(sf::IntRect( 322, 22, 32, 32));
 
-    auto view = m_Context->registry->view<C_Animation>();
+	auto view = m_Context->registry->view<C_Animation>();
 
-    for (auto &entity : view)
-    {
-        if(m_Context->registry->has<C_PlayerController>(entity))
-        {
-            auto &animComp = m_Context->registry->get<C_Animation>(entity);
-            animComp.animatedSprite.addAnimation(Animations::Standing, standing);
-            animComp.animatedSprite.addAnimation(Animations::Walking, walking);
-            animComp.animatedSprite.addAnimation(Animations::Jumping, jumping);
-            animComp.animatedSprite.play(Animations::Jumping);
+	for (auto &entity : view)
+	{
+		if(m_Context->registry->has<C_PlayerController>(entity))
+		{
+			auto &animComp = m_Context->registry->get<C_Animation>(entity);
+			animComp.animatedSprite.addAnimation(Animations::Standing, standing);
+			animComp.animatedSprite.addAnimation(Animations::Walking, walking);
+			animComp.animatedSprite.addAnimation(Animations::Jumping, jumping);
+			animComp.animatedSprite.play(Animations::Jumping);
 
 			utils::centerOrigin(animComp.animatedSprite);
-        }
-    }
+		}
+	}
 }
 
 void World::createPlayer()
 {
-    const auto entity = m_Context->registry->create();
-    auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
-    utils::centerOrigin(*shape);
-    shape->setFillColor(sf::Color::Transparent);
-    shape->setOutlineThickness(-1);
-    shape->setOutlineColor(sf::Color::Green);
+	const auto entity = m_Context->registry->create();
+	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+	utils::centerOrigin(*shape);
+	shape->setFillColor(sf::Color::Transparent);
+	shape->setOutlineThickness(-1);
+	shape->setOutlineColor(sf::Color::Green);
 
 	sf::Vector2f position;
-    auto obj = utils::getObjectByName(*m_Context->registry, "Spawner Locations", "Player Spawn Location");
+	auto obj = utils::getObjectByName(*m_Context->registry, "Spawner Locations", "Player Spawn Location");
 	position.x = obj.getPosition().x;
 	position.y = obj.getPosition().y;
 
-    // Create the body definition
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.position = utils::sfVecToB2Vec(position);
-    bodyDef.fixedRotation = true;
-    bodyDef.gravityScale = 1.5f;
+	// Create the body definition
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = utils::sfVecToB2Vec(position);
+	bodyDef.fixedRotation = true;
+	bodyDef.gravityScale = 1.5f;
 
-    // Fixture shape
-    b2PolygonShape bShape;
-    b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
-    bShape.SetAsBox(size.x, size.y);
+	// Fixture shape
+	b2PolygonShape bShape;
+	b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
+	bShape.SetAsBox(size.x, size.y);
 
-    // Fixture definition
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &bShape;
-    fixtureDef.density = 1.f;
-    fixtureDef.friction = 1.f;
-    fixtureDef.restitution = 0.f;
+	// Fixture definition
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &bShape;
+	fixtureDef.density = 1.f;
+	fixtureDef.friction = 1.f;
+	fixtureDef.restitution = 0.f;
 
-    // Create and register the body in the world
-    m_Context->bodies[entity] = m_Context->b2_World->CreateBody(&bodyDef);
-    auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
-    fixture->SetUserData(shape);
+	// Create and register the body in the world
+	m_Context->bodies[entity] = m_Context->b2_World->CreateBody(&bodyDef);
+	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
+	fixture->SetUserData(shape);
 
-    m_Context->registry->emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
-    m_Context->registry->emplace<C_PlayerController>(entity);
-    m_Context->registry->emplace<C_Animation>(entity);
-    m_Context->registry->emplace<C_PlayerTag>(entity);
-    m_Context->registry->emplace<C_Raycast>(entity);
+	m_Context->registry->emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
+	m_Context->registry->emplace<C_PlayerController>(entity);
+	m_Context->registry->emplace<C_Animation>(entity);
+	m_Context->registry->emplace<C_PlayerTag>(entity);
+	m_Context->registry->emplace<C_Raycast>(entity);
 }
 
 void World::createCamera()
 {
-    const auto cameraEntity = m_Context->registry->create();
-    entt::entity playerEntity = entt::null;
+	const auto cameraEntity = m_Context->registry->create();
+	entt::entity playerEntity = entt::null;
 
-    sf::View view;
-    view.setSize(500,400);
+	sf::View view;
+	view.setSize(500,400);
 
-    m_Context->registry->view<C_PlayerTag>().each([&](auto entity)
-    {
-        playerEntity = entity;
-    });
+	m_Context->registry->view<C_PlayerTag>().each([&](auto &entity)
+	{
+		playerEntity = entity;
+	});
 
-    m_Context->registry->emplace<C_Camera>(cameraEntity, view, playerEntity);
+	m_Context->registry->emplace<C_Camera>(cameraEntity, view, playerEntity);
 }
 
 void World::createTilemap()
 {
-    const auto tilemapEntity = m_Context->registry->create();
-    
-    m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/Tilemap_Test.tmx");
-    // m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
+	const auto tilemapEntity = m_Context->registry->create();
+	
+	m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/Tilemap_Test.tmx");
+	// m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
 }
 
 void World::createEnemy()
@@ -212,4 +217,36 @@ void World::createEnemy()
 
 	m_Context->registry->emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
 	m_Context->registry->emplace<C_Raycast>(entity);
+	m_Context->registry->emplace<C_EnemyTag>(entity);
+}
+
+void World::unloadScene()
+{
+	//m_Context->textures->unload(Textures::CharactersSpriteSheet);
+
+	m_Context->registry->view<C_PlayerTag>().each([&](auto &entity) 
+		{
+			m_Context->b2_World->DestroyBody(m_Context->bodies[entity]);
+			m_Context->bodies.erase(entity);
+			m_Context->registry->destroy(entity);
+		});
+
+	m_Context->registry->view<C_EnemyTag>().each([&](auto &entity) 
+		{
+			m_Context->b2_World->DestroyBody(m_Context->bodies[entity]);
+			m_Context->bodies.erase(entity);
+			m_Context->registry->destroy(entity);
+		});
+
+	m_Context->registry->view<C_Tilemap>().each([&](auto& entity, auto &tileMap)
+		{
+			m_Context->registry->destroy(entity);
+		});
+
+	m_Context->registry->view<C_Camera>().each([&](auto& entity, auto& tileMap)
+		{
+			m_Context->registry->destroy(entity);
+		});
+	
+	m_SystemManager.deleteAllSystems();
 }

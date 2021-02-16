@@ -13,6 +13,7 @@
 #include "../Utils/ResourceHolder.h"
 
 
+// ======= FORWARD DECLARATIONS =======
 namespace sf
 {
     class Texture;
@@ -22,12 +23,25 @@ namespace sf
     class RectangleShape;
 }
 
+template<typename Resource, typename Identifier>
+class ResourceHolder;
+
+class AnimatedSprite;
+
+namespace tmx
+{
+    class Object;
+}
+// ====================================
+
+
 namespace Textures
 {
     enum ID
     {
         CharactersSpriteSheet,
         Background,
+        SplashScreen,
     };
 }
 
@@ -70,18 +84,8 @@ namespace Animations
     };
 }
 
-template<typename Resource, typename Identifier>
-class ResourceHolder;
-
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
-
-class AnimatedSprite;
-
-namespace tmx
-{
-	class Object;
-}
 
 namespace utils
 {
