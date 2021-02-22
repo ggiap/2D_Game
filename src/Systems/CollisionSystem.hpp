@@ -8,7 +8,7 @@ class CollisionSystem : public BaseSystem
 {
 public:
 	CollisionSystem() = default;
-	explicit CollisionSystem(Context& context);
+	explicit CollisionSystem(Context& context, World* world);
 
 	void update(sf::Time& dt) override;
 

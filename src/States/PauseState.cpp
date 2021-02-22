@@ -1,15 +1,16 @@
 #include "PauseState.hpp"
 #include "../Utils/Utility.hpp"
 #include <SFML/Window/Event.hpp>
+#include "../utils/Context.hpp"
 
 PauseState::PauseState(StateStack& stack, Context& context) :
 	State(stack, context)
 {
-	utils::centerOrigin(m_Text);
 	m_Text.setFont(m_Context.fonts->get(Fonts::ARJULIAN));
 	m_Text.setString("Paused");
 	m_Text.setCharacterSize(20u);
 	m_Text.setOutlineThickness(3.f);
+	utils::centerOrigin(m_Text);
 }
 
 void PauseState::draw()
@@ -24,7 +25,6 @@ void PauseState::draw()
 
 bool PauseState::update(sf::Time dt)
 {
-	//m_Text.setPosition(m_Context.window->getView().getCenter());
 	m_Text.setPosition(m_Context.window->getView().getCenter());
 	m_Text.setScale(m_Context.window->getView().getSize().x / m_Context.window->getDefaultView().getSize().x,
 					m_Context.window->getView().getSize().y / m_Context.window->getDefaultView().getSize().y);
@@ -40,6 +40,7 @@ bool PauseState::handleEvent(const sf::Event& event)
 	if (event.key.code == sf::Keyboard::Escape)
 	{
 		requestStackPop();
+		m_Context.isPaused = false;
 	}
 
 	if (event.key.code == sf::Keyboard::BackSpace)

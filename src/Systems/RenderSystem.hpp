@@ -11,7 +11,7 @@ class RenderSystem : public BaseSystem
 {
 public:
 	RenderSystem() = default;
-	explicit RenderSystem(Context& context);
+	explicit RenderSystem(Context& context, World *world);
 	
 	void draw() override;
 

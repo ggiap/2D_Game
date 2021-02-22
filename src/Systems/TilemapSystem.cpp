@@ -5,10 +5,11 @@
 #include "../Components/C_Tilemap.hpp"
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/Map.hpp>
+#include "../core/World.h"
 
-TilemapSystem::TilemapSystem(Context &context) : BaseSystem(context)
+TilemapSystem::TilemapSystem(Context &context, World *world) : BaseSystem(context, world)
 {
-	m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto &tilemapComp)
+	m_World->getEntityRegistry()->view<C_Tilemap>().each([&](auto entity, auto &tilemapComp)
 	{
 		tmx::Map map;
 		map.load(tilemapComp.m_MapPath);
@@ -31,7 +32,7 @@ TilemapSystem::TilemapSystem(Context &context) : BaseSystem(context)
 					const auto &objects = l->getLayerAs<tmx::ObjectGroup>().getObjects();
 					for (const auto &obj : objects)
 					{
-						auto *body = BodyCreator::createBody(*m_Context->b2_World, obj, b2BodyType::b2_staticBody);
+						auto *body = BodyCreator::createBody(*m_World->getB2World(), obj, b2BodyType::b2_staticBody);
 					}
 				}
 				else if (l->getName() == "Dynamic Object Layer")
@@ -39,7 +40,7 @@ TilemapSystem::TilemapSystem(Context &context) : BaseSystem(context)
 					auto objects = l->getLayerAs<tmx::ObjectGroup>().getObjects();
 					for (const auto &obj : objects)
 					{
-						auto *body = BodyCreator::createBody(*m_Context->b2_World, obj, b2BodyType::b2_dynamicBody);
+						auto *body = BodyCreator::createBody(*m_World->getB2World(), obj, b2BodyType::b2_dynamicBody);
 					}
 				}
 
@@ -48,7 +49,7 @@ TilemapSystem::TilemapSystem(Context &context) : BaseSystem(context)
 					auto objects = l->getLayerAs<tmx::ObjectGroup>().getObjects();
 					for (const auto &obj : objects)
 					{
-						auto *body = BodyCreator::createBody(*m_Context->b2_World, obj, b2BodyType::b2_kinematicBody);
+						auto *body = BodyCreator::createBody(*m_World->getB2World(), obj, b2BodyType::b2_kinematicBody);
 					}
 				}
 			}
@@ -58,7 +59,7 @@ TilemapSystem::TilemapSystem(Context &context) : BaseSystem(context)
 
 void TilemapSystem::update(sf::Time &dt)
 {
-     m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto &tilemapComp)
+	m_World->getEntityRegistry()->view<C_Tilemap>().each([&](auto entity, auto &tilemapComp)
     {
      	for(const auto &l : tilemapComp.m_TileLayers)
             l->update(dt);

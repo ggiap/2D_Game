@@ -67,9 +67,6 @@ inline void ResourceHolder<Resource, Identifier>::unload(Identifier ID)
 template<typename Resource, typename Identifier>
 inline void ResourceHolder<Resource, Identifier>::unloadAll()
 {
-	for (auto& item : m_ResourceMap)
-		item->second.reset();
-
 	m_ResourceMap.clear();
 }
 

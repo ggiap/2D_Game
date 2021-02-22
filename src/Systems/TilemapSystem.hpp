@@ -7,7 +7,7 @@ class TilemapSystem : public BaseSystem
 {
 public:
     TilemapSystem() = default;
-    explicit TilemapSystem(Context &context);
+    explicit TilemapSystem(Context &context, World *world);
 
     void update(sf::Time &dt) override;
 };

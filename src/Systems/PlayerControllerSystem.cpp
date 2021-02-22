@@ -11,9 +11,10 @@
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Raycast.hpp"
 #include <cmath>
+#include "../core/World.h"
 
-PlayerControllerSystem::PlayerControllerSystem(Context& context) :
-BaseSystem(context),
+PlayerControllerSystem::PlayerControllerSystem(Context& context, World *world) :
+BaseSystem(context, world),
 m_State()
 {
 
@@ -26,7 +27,7 @@ void PlayerControllerSystem::update(sf::Time& dt)
 
 void PlayerControllerSystem::handleEvents(sf::Time dt)
 {
-    auto view = m_Context->registry->view<C_PlayerTag, C_Animation, C_Raycast>();
+    auto view = m_World->getEntityRegistry()->view<C_PlayerTag, C_Animation, C_Raycast>();
 
     for (auto &entity : view)
     {

@@ -5,6 +5,7 @@
 #include <SFML/Window/Event.hpp>
 #include "../Utils/Utility.hpp"
 #include "../core/SystemManager.hpp"
+#include "../Utils/Timer.hpp"
 
 struct Context;
 
@@ -18,8 +19,11 @@ public:
 	void handleEvents(const sf::Event& event);
 	void draw();
 
+	b2World* getB2World();
+	entt::registry* getEntityRegistry();
+	float getRemainingTime();
+
 private:
-	void loadTextures();
 	void buildScene();
 	void createAnimations();
 	void createPlayer();
@@ -28,6 +32,7 @@ private:
 	void createEnemy();
 
 	void unloadScene();
+	void updateHUD(const sf::Time& dt);
 
 private:
 	sf::View m_WorldView;
@@ -35,5 +40,10 @@ private:
 
 	Context* m_Context;
 	SystemManager m_SystemManager;
+	b2World m_b2World;
+	entt::registry m_WorldRegistry;
+
+	Timer m_CountdownTimer;
+	sf::Text m_TimerLabel;
 };
 

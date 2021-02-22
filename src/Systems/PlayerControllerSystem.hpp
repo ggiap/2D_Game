@@ -19,7 +19,7 @@ class PlayerControllerSystem : public BaseSystem
 {
 public:
     PlayerControllerSystem() = default;
-    explicit PlayerControllerSystem(Context& context);
+    explicit PlayerControllerSystem(Context& context, World *world);
 
     void update(sf::Time& dt) override;
     void handleEvents(sf::Time dt);

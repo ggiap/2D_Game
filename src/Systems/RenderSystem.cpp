@@ -5,11 +5,12 @@
 #include "../Components/C_Tilemap.hpp"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
+#include "../core/World.h"
 
 #include <vector>
 
-RenderSystem::RenderSystem(Context& context) :
-BaseSystem(context),
+RenderSystem::RenderSystem(Context& context, World *world) :
+BaseSystem(context, world),
 debugDraw()
 {
     // Initialize SFML Debug Draw
@@ -17,24 +18,24 @@ debugDraw()
     debugDraw.ClearFlags(debugDraw.e_aabbBit & debugDraw.e_centerOfMassBit &
                          debugDraw.e_jointBit & debugDraw.e_pairBit & debugDraw.e_shapeBit);
     debugDraw.SetFlags( b2Draw::e_jointBit | debugDraw.e_shapeBit); // Debug draw shapes and joints only
-    m_Context->b2_World->SetDebugDraw(&debugDraw);
+	m_World->getB2World()->SetDebugDraw(&debugDraw);
 }
 
 
 void RenderSystem::draw()
 {
-	m_Context->registry->view<C_Tilemap>().each([&](auto entity, auto& tilemap)
+	m_World->getEntityRegistry()->view<C_Tilemap>().each([&](auto entity, auto& tilemap)
 	{
 		for(const auto &l : tilemap.m_TileLayers)
 			m_Context->window->draw(*l);
 	});
 
-	m_Context->registry->view<C_Animation>().each([&](auto entity, auto &anim)
+	m_World->getEntityRegistry()->view<C_Animation>().each([&](auto entity, auto &anim)
 	{
 		m_Context->window->draw(anim.animatedSprite);
 	});
 
-	m_Context->registry->view<C_Rigidbody>().each([&](auto entity, auto& rb)
+	m_World->getEntityRegistry()->view<C_Rigidbody>().each([&](auto entity, auto& rb)
 	{
 		drawDebugInfo(entity, rb);
 	});
@@ -48,9 +49,9 @@ void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
         if (shape == nullptr) return;
         m_Context->window->draw(*shape);
 
-        if(m_Context->registry->has<C_Raycast>(entity))
+        if(m_World->getEntityRegistry()->has<C_Raycast>(entity))
         {
-            auto &raycastComp = m_Context->registry->get<C_Raycast>(entity);
+            auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
 
 	        for(size_t i = 0; i < raycastComp.verticalRayCount; ++i)
 	        {

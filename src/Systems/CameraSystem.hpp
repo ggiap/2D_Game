@@ -19,7 +19,7 @@ class CameraSystem : public BaseSystem
 {
 public:
     CameraSystem() = default;
-    explicit CameraSystem(Context& context);
+    explicit CameraSystem(Context& context, World* world);
 
     void update(sf::Time& dt) override;
     void handleEvents(const sf::Event& event) override;

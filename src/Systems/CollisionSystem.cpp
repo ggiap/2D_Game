@@ -6,9 +6,10 @@
 #include "../Components/C_Raycast.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include "../core/World.h"
 
-CollisionSystem::CollisionSystem(Context& context) :
-    BaseSystem(context),
+CollisionSystem::CollisionSystem(Context& context, World* world) :
+    BaseSystem(context, world),
     m_Callback()
 {
 	CalculateRaySpacing();
@@ -16,7 +17,8 @@ CollisionSystem::CollisionSystem(Context& context) :
 
 void CollisionSystem::update(sf::Time& dt)
 {
-    m_Context->b2_World->Step(dt.asSeconds(), 8, 5);
+
+    m_World->getB2World()->Step(dt.asSeconds(), 8, 5);
 
     UpdateRaycastOrigins();
     handleRaycasts();
@@ -24,14 +26,14 @@ void CollisionSystem::update(sf::Time& dt)
 
 void CollisionSystem::handleRaycasts()
 {
-    auto view = m_Context->registry->view<C_PlayerTag>();
+    auto view = m_World->getEntityRegistry()->view<C_PlayerTag>();
 
     for(auto entity : view)
     {
-        if(!m_Context->registry->has<C_Rigidbody>(entity)) continue;
+        if(!m_World->getEntityRegistry()->has<C_Rigidbody>(entity)) continue;
 
-        auto &rb = m_Context->registry->get<C_Rigidbody>(entity);
-        auto &raycastComp = m_Context->registry->get<C_Raycast>(entity);
+        auto &rb = m_World->getEntityRegistry()->get<C_Rigidbody>(entity);
+        auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
         raycastComp.collisionInfo.reset();
         raycastComp.rayLength = 1.7f;
 
@@ -45,7 +47,7 @@ void CollisionSystem::handleRaycasts()
 	        {
 		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topLeft +
 		                           utils::sfVecToB2Vec(math::VECTOR_UP * (raycastComp.verticalRaySpacing * i));
-		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin,
+		        m_World->getB2World()->RayCast(&m_Callback, rayOrigin,
 		                                     rayOrigin + utils::sfVecToB2Vec(math::VECTOR_UP * raycastComp.rayLength));
 		        if (m_Callback.m_fixture != nullptr)
 		        {
@@ -59,7 +61,7 @@ void CollisionSystem::handleRaycasts()
 	        for (int i = 0; i < raycastComp.verticalRayCount; ++i)
 	        {
 		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_LEFT* (raycastComp.verticalRaySpacing * i));
-		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin, rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength));
+				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength));
 		        if (m_Callback.m_fixture != nullptr)
 		        {
 			        raycastComp.collisionInfo.collisionBelow = true;
@@ -73,7 +75,7 @@ void CollisionSystem::handleRaycasts()
 	        {
 		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topRight +
 		                           utils::sfVecToB2Vec(math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i));
-		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin, rayOrigin + (utils::sfVecToB2Vec(
+				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayOrigin + (utils::sfVecToB2Vec(
 				        math::VECTOR_RIGHT * raycastComp.rayLength)));
 		        if (m_Callback.m_fixture != nullptr)
 		        {
@@ -87,7 +89,7 @@ void CollisionSystem::handleRaycasts()
 	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
 	        {
 		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i));
-		        m_Context->b2_World->RayCast(&m_Callback, rayOrigin, rayOrigin + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength));
+		        m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayOrigin + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength));
 		        if(m_Callback.m_fixture != nullptr)
                 {
                     raycastComp.collisionInfo.collisionLeft = true;
@@ -101,12 +103,12 @@ void CollisionSystem::handleRaycasts()
 
 void CollisionSystem::CalculateRaySpacing()
 {
-	auto view = m_Context->registry->view<C_PlayerTag>();
+	auto view = m_World->getEntityRegistry()->view<C_PlayerTag>();
 
 	for(auto entity : view)
 	{
-		auto &rb = m_Context->registry->get<C_Rigidbody>(entity);
-		auto &raycastComp = m_Context->registry->get<C_Raycast>(entity);
+		auto &rb = m_World->getEntityRegistry()->get<C_Rigidbody>(entity);
+		auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
 		for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
 		{
 			auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
@@ -131,7 +133,7 @@ void CollisionSystem::CalculateRaySpacing()
 
 void CollisionSystem::UpdateRaycastOrigins()
 {
-	m_Context->registry->view<C_Raycast, C_Rigidbody>().each([&](auto entity, auto& raycastComp, auto& rb)
+	m_World->getEntityRegistry()->view<C_Raycast, C_Rigidbody>().each([&](auto entity, auto& raycastComp, auto& rb)
 	{
 		auto fixture = rb.rigidbody->GetFixtureList();
 

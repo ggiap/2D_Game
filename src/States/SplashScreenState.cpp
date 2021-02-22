@@ -16,7 +16,7 @@ SplashScreenState::SplashScreenState(StateStack& stack, Context context) :
 	sf::Vector2f windowSize(context.window->getSize().x, context.window->getSize().y);
 	m_Text.setPosition(windowSize.x / 2.f, windowSize.y / 1.1f);
 
-	m_BackgroundSprite.setTexture(context.textures->get(Textures::SplashScreen));
+	m_BackgroundSprite.setTexture(m_Context.textures->get(Textures::SplashScreen));
 	m_BackgroundSprite.setScale(sf::Vector2f(4.5f, 4.5f));
 	utils::centerOrigin(m_BackgroundSprite);
 	m_BackgroundSprite.setPosition(windowSize.x / 2.f, windowSize.y / 2.2f);
