@@ -95,6 +95,7 @@ namespace utils
     void centerOrigin(sf::Shape& rect);
     void centerOrigin(AnimatedSprite& animatedSprite);
     tmx::Object getObjectByName(entt::registry &reg, const std::string& layerName, const std::string& name);
+    std::vector<tmx::Object> getObjectsByName(entt::registry &reg, const std::string& layerName, const std::string& substr);
     const char* getKeyName(const sf::Keyboard::Key key);
 
     // Box2D to SFML space conversion constant

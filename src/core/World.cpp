@@ -28,7 +28,7 @@ World::World(Context& context) :
 	m_SystemManager(),
 	m_b2World(b2Vec2(0, 9.81)),
 	m_WorldRegistry(),
-	m_CountdownTimer(sf::seconds(5))
+	m_CountdownTimer(sf::seconds(50))
 {
 	buildScene();
 
@@ -205,45 +205,89 @@ void World::createTilemap()
 
 void World::createEnemy()
 {
-	const auto entity = m_WorldRegistry.create();
-	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
-	utils::centerOrigin(*shape);
-	shape->setFillColor(sf::Color::Transparent);
-	shape->setOutlineThickness(-1);
-	shape->setOutlineColor(sf::Color::Green);
+	auto objects = utils::getObjectsByName(m_WorldRegistry, "Spawner Locations", "Enemy");
 
-	sf::Vector2f position;
-	auto obj = utils::getObjectByName(m_WorldRegistry, "Spawner Locations", "Enemy Spawn Location 1");
-	position.x = obj.getPosition().x;
-	position.y = obj.getPosition().y;
+	for (const auto& obj : objects)
+	{
+		const auto entity = m_WorldRegistry.create();
+		auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+		utils::centerOrigin(*shape);
+		shape->setFillColor(sf::Color::Transparent);
+		shape->setOutlineThickness(-1);
+		shape->setOutlineColor(sf::Color::Green);
 
-	// Create the body definition
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_kinematicBody;
-	bodyDef.position = utils::sfVecToB2Vec(position);
-	bodyDef.fixedRotation = true;
-	bodyDef.gravityScale = 1.5f;
+		sf::Vector2f position;
+		position.x = obj.getPosition().x;
+		position.y = obj.getPosition().y;
 
-	// Fixture shape
-	b2PolygonShape bShape;
-	b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
-	bShape.SetAsBox(size.x, size.y);
+		// Create the body definition
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_kinematicBody;
+		bodyDef.position = utils::sfVecToB2Vec(position);
+		bodyDef.fixedRotation = true;
+		bodyDef.gravityScale = 1.5f;
 
-	// Fixture definition
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &bShape;
-	fixtureDef.density = 1.f;
-	fixtureDef.friction = 1.f;
-	fixtureDef.restitution = 0.f;
+		// Fixture shape
+		b2PolygonShape bShape;
+		b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
+		bShape.SetAsBox(size.x, size.y);
 
-	// Create and register the body in the world
-	m_Context->bodies[entity] = m_b2World.CreateBody(&bodyDef);
-	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
-	fixture->SetUserData(shape);
+		// Fixture definition
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &bShape;
+		fixtureDef.density = 1.f;
+		fixtureDef.friction = 1.f;
+		fixtureDef.restitution = 0.f;
 
-	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
-	m_WorldRegistry.emplace<C_Raycast>(entity);
-	m_WorldRegistry.emplace<C_EnemyTag>(entity);
+		// Create and register the body in the world
+		m_Context->bodies[entity] = m_b2World.CreateBody(&bodyDef);
+		auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
+		fixture->SetUserData(shape);
+
+		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
+		m_WorldRegistry.emplace<C_Raycast>(entity);
+		m_WorldRegistry.emplace<C_EnemyTag>(entity);
+	}
+
+	//const auto entity = m_WorldRegistry.create();
+	//auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+	//utils::centerOrigin(*shape);
+	//shape->setFillColor(sf::Color::Transparent);
+	//shape->setOutlineThickness(-1);
+	//shape->setOutlineColor(sf::Color::Green);
+
+	//sf::Vector2f position;
+	//auto obj = utils::getObjectByName(m_WorldRegistry, "Spawner Locations", "Enemy Spawn Location 1");
+	//position.x = obj.getPosition().x;
+	//position.y = obj.getPosition().y;
+
+	//// Create the body definition
+	//b2BodyDef bodyDef;
+	//bodyDef.type = b2_kinematicBody;
+	//bodyDef.position = utils::sfVecToB2Vec(position);
+	//bodyDef.fixedRotation = true;
+	//bodyDef.gravityScale = 1.5f;
+
+	//// Fixture shape
+	//b2PolygonShape bShape;
+	//b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
+	//bShape.SetAsBox(size.x, size.y);
+
+	//// Fixture definition
+	//b2FixtureDef fixtureDef;
+	//fixtureDef.shape = &bShape;
+	//fixtureDef.density = 1.f;
+	//fixtureDef.friction = 1.f;
+	//fixtureDef.restitution = 0.f;
+
+	//// Create and register the body in the world
+	//m_Context->bodies[entity] = m_b2World.CreateBody(&bodyDef);
+	//auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
+	//fixture->SetUserData(shape);
+
+	//m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
+	//m_WorldRegistry.emplace<C_Raycast>(entity);
+	//m_WorldRegistry.emplace<C_EnemyTag>(entity);
 }
 
 void World::unloadScene()

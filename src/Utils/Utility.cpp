@@ -68,6 +68,30 @@ namespace utils
 	    return retObj;
     }
 
+    std::vector<tmx::Object> getObjectsByName(entt::registry& reg, const std::string& layerName, const std::string& substr)
+    {
+        std::vector<tmx::Object> objects{};
+
+        reg.view<C_Tilemap>().each([&](auto entity, auto& c_t)
+            {
+                for (const auto& objGroup : c_t.m_ObjectLayers)
+                {
+                    if (objGroup->getName() == layerName)
+                    {
+                        for (const auto& obj : objGroup->getObjects())
+                        {
+                            if (obj.getName().find(substr) != std::string::npos)
+                            {
+                                objects.push_back(obj);
+                            }
+                        }
+                    }
+                }
+            });
+
+        return objects;
+    }
+
     const char* getKeyName(const sf::Keyboard::Key key)
     {
         switch (key) {
