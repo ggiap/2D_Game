@@ -1,11 +1,9 @@
 #pragma once
 
-#include <entt/entt.hpp>
-#include <Box2D/Box2D.h>
-
 #include "../States/StateStack.h"
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"
+#include "../core/MusicPlayer.hpp"
 
 class Game : private sf::NonCopyable
 {
@@ -29,6 +27,7 @@ private:
 	FontHolder m_Fonts;
 	TextureHolder m_Textures;
 	StateStack m_StateStack;
+	MusicPlayer m_MusicPlayer;
 
 	sf::Text m_StatisticsText;
 	sf::Time m_StatisticsUpdateTime;

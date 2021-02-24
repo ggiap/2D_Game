@@ -2,6 +2,7 @@
 #include "../Utils/Utility.hpp"
 #include <SFML/Window/Event.hpp>
 #include "../utils/Context.hpp"
+#include "../core/MusicPlayer.hpp"
 
 PauseState::PauseState(StateStack& stack, Context& context) :
 	State(stack, context)
@@ -11,6 +12,13 @@ PauseState::PauseState(StateStack& stack, Context& context) :
 	m_Text.setCharacterSize(20u);
 	m_Text.setOutlineThickness(3.f);
 	utils::centerOrigin(m_Text);
+
+	m_Context.music->setPaused(true);
+}
+
+PauseState::~PauseState()
+{
+	m_Context.music->setPaused(false);
 }
 
 void PauseState::draw()

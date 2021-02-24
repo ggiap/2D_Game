@@ -35,6 +35,24 @@ namespace tmx
 // ====================================
 
 
+namespace Music
+{
+    enum ID
+    {
+        MenuTheme,
+        GameTheme,
+    };
+}
+
+namespace Sounds
+{
+    enum ID
+    {
+        Jump,
+        CoinPickup,
+    };
+}
+
 namespace Textures
 {
     enum ID

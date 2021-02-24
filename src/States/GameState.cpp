@@ -3,6 +3,7 @@
 #include "../Utils/QueryCallback.h"
 #include <SFML/Window/Event.hpp>
 #include "../Components/C_Rigidbody.hpp"
+#include "../core/MusicPlayer.hpp"
 
 GameState::GameState(StateStack& stack, Context& context) :
 	State(stack, context),
@@ -21,6 +22,8 @@ GameState::GameState(StateStack& stack, Context& context) :
     youLoseLabel.setOutlineThickness(3.f);
     youLoseLabel.setOutlineColor(sf::Color::Black);
     utils::centerOrigin(youLoseLabel);
+
+    m_Context.music->play(Music::GameTheme);
 }
 
 void GameState::draw()

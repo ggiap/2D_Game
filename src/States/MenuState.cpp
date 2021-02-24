@@ -2,6 +2,7 @@
 #include <SFML/Window/Event.hpp>
 #include "../Utils/Utility.hpp"
 #include "../Components/C_Camera.hpp"
+#include "../core/MusicPlayer.hpp"
 
 
 MenuState::MenuState(StateStack& stack, Context& context) :
@@ -24,6 +25,8 @@ MenuState::MenuState(StateStack& stack, Context& context) :
 	m_Options.push_back(exitText);
 
 	updateOptionsText();
+
+	m_Context.music->play(Music::MenuTheme);
 }
 
 void MenuState::draw()

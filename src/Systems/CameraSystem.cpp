@@ -52,7 +52,7 @@ void CameraSystem::handleEvents(const sf::Event& event)
             zoomViewAt({event.mouseWheelScroll.x, event.mouseWheelScroll.y}, zoomAmount);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
     {
         freeRoaming = false;
         resetView();
