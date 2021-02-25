@@ -86,6 +86,7 @@ void World::buildScene()
 	m_SystemManager.addSystem(std::make_unique<TilemapSystem>(*m_Context, this));
 
 	createPlayer();
+	createEnemy();
 	m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context, this));
@@ -96,13 +97,12 @@ void World::buildScene()
 	createCamera();
 	m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context, this));
-
-	createEnemy();
 }
 
 void World::createAnimations()
 {
 	auto& texture = m_Context->textures->get(Textures::CharactersSpriteSheet);
+	auto& monochrome_texture = m_Context->textures->get(Textures::MonochromeSpriteSheet);
 
 	Animation standing;
 	standing.setSpriteSheet(texture);
@@ -117,17 +117,31 @@ void World::createAnimations()
 	jumping.setSpriteSheet(texture);
 	jumping.addFrame(sf::IntRect( 322, 22, 32, 32));
 
+	Animation enemyMoving;
+	enemyMoving.setSpriteSheet(monochrome_texture);
+	enemyMoving.addFrame(sf::IntRect(16, 256, 16, 16));
+	enemyMoving.addFrame(sf::IntRect(32, 256, 16, 16));
+
 	auto view = m_WorldRegistry.view<C_Animation>();
 
 	for (auto &entity : view)
 	{
-		if(m_WorldRegistry.has<C_PlayerController>(entity))
+		if(m_WorldRegistry.has<C_PlayerTag>(entity))
 		{
 			auto &animComp = m_WorldRegistry.get<C_Animation>(entity);
 			animComp.animatedSprite.addAnimation(Animations::Standing, standing);
 			animComp.animatedSprite.addAnimation(Animations::Walking, walking);
 			animComp.animatedSprite.addAnimation(Animations::Jumping, jumping);
-			animComp.animatedSprite.play(Animations::Jumping);
+			animComp.animatedSprite.play(Animations::Standing);
+
+			utils::centerOrigin(animComp.animatedSprite);
+		}
+
+		if (m_WorldRegistry.has<C_EnemyTag>(entity))
+		{
+			auto& animComp = m_WorldRegistry.get<C_Animation>(entity);
+			animComp.animatedSprite.addAnimation(Animations::Walking, enemyMoving);
+			animComp.animatedSprite.play(Animations::Walking);
 
 			utils::centerOrigin(animComp.animatedSprite);
 		}
@@ -245,49 +259,10 @@ void World::createEnemy()
 		fixture->SetUserData(shape);
 
 		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
-		m_WorldRegistry.emplace<C_Raycast>(entity);
+		m_WorldRegistry.emplace<C_Animation>(entity);
 		m_WorldRegistry.emplace<C_EnemyTag>(entity);
+		m_WorldRegistry.emplace<C_Raycast>(entity);
 	}
-
-	//const auto entity = m_WorldRegistry.create();
-	//auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
-	//utils::centerOrigin(*shape);
-	//shape->setFillColor(sf::Color::Transparent);
-	//shape->setOutlineThickness(-1);
-	//shape->setOutlineColor(sf::Color::Green);
-
-	//sf::Vector2f position;
-	//auto obj = utils::getObjectByName(m_WorldRegistry, "Spawner Locations", "Enemy Spawn Location 1");
-	//position.x = obj.getPosition().x;
-	//position.y = obj.getPosition().y;
-
-	//// Create the body definition
-	//b2BodyDef bodyDef;
-	//bodyDef.type = b2_kinematicBody;
-	//bodyDef.position = utils::sfVecToB2Vec(position);
-	//bodyDef.fixedRotation = true;
-	//bodyDef.gravityScale = 1.5f;
-
-	//// Fixture shape
-	//b2PolygonShape bShape;
-	//b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
-	//bShape.SetAsBox(size.x, size.y);
-
-	//// Fixture definition
-	//b2FixtureDef fixtureDef;
-	//fixtureDef.shape = &bShape;
-	//fixtureDef.density = 1.f;
-	//fixtureDef.friction = 1.f;
-	//fixtureDef.restitution = 0.f;
-
-	//// Create and register the body in the world
-	//m_Context->bodies[entity] = m_b2World.CreateBody(&bodyDef);
-	//auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
-	//fixture->SetUserData(shape);
-
-	//m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
-	//m_WorldRegistry.emplace<C_Raycast>(entity);
-	//m_WorldRegistry.emplace<C_EnemyTag>(entity);
 }
 
 void World::unloadScene()

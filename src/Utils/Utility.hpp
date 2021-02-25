@@ -60,6 +60,7 @@ namespace Textures
     enum ID
     {
         CharactersSpriteSheet,
+        MonochromeSpriteSheet,
         Background,
         SplashScreen,
     };

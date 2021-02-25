@@ -17,7 +17,6 @@ CollisionSystem::CollisionSystem(Context& context, World* world) :
 
 void CollisionSystem::update(sf::Time& dt)
 {
-
     m_World->getB2World()->Step(dt.asSeconds(), 8, 5);
 
     UpdateRaycastOrigins();
@@ -26,12 +25,10 @@ void CollisionSystem::update(sf::Time& dt)
 
 void CollisionSystem::handleRaycasts()
 {
-    auto view = m_World->getEntityRegistry()->view<C_PlayerTag>();
+    auto view = m_World->getEntityRegistry()->view<C_Raycast>();
 
     for(auto entity : view)
     {
-        if(!m_World->getEntityRegistry()->has<C_Rigidbody>(entity)) continue;
-
         auto &rb = m_World->getEntityRegistry()->get<C_Rigidbody>(entity);
         auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
         raycastComp.collisionInfo.reset();
@@ -103,7 +100,7 @@ void CollisionSystem::handleRaycasts()
 
 void CollisionSystem::CalculateRaySpacing()
 {
-	auto view = m_World->getEntityRegistry()->view<C_PlayerTag>();
+	auto view = m_World->getEntityRegistry()->view<C_Raycast>();
 
 	for(auto entity : view)
 	{
