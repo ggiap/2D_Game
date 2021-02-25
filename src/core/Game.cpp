@@ -12,7 +12,8 @@ Game::Game() :
 	        sf::Style::Close | sf::Style::Resize, sf::ContextSettings(0,0,0,1,1)),
 	m_Fonts(),
 	m_MusicPlayer(),
-	m_StateStack(Context(m_window, m_Fonts, m_Textures, m_MusicPlayer)),
+	m_SoundPlayer(),
+	m_StateStack(Context(m_window, m_Fonts, m_Textures, m_MusicPlayer, m_SoundPlayer)),
 	m_StatisticsText(),
 	m_StatisticsUpdateTime(),
 	m_StatisticsNumFrames(0)

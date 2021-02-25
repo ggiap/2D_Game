@@ -4,6 +4,7 @@
 #include <SFML/Window/Event.hpp>
 #include "../Components/C_Rigidbody.hpp"
 #include "../core/MusicPlayer.hpp"
+#include "../core/SoundEffectPlayer.hpp"
 
 GameState::GameState(StateStack& stack, Context& context) :
 	State(stack, context),
@@ -70,6 +71,7 @@ bool GameState::handleEvent(const sf::Event& event)
     }
     else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
+        m_Context.sounds->play(Sounds::Pause);
         requestStackPush(States::Pause);
         m_Context.isPaused = true;
     } 

@@ -4,6 +4,7 @@
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"
 #include "../core/MusicPlayer.hpp"
+#include "../core/SoundEffectPlayer.hpp"
 
 class Game : private sf::NonCopyable
 {
@@ -28,6 +29,7 @@ private:
 	TextureHolder m_Textures;
 	StateStack m_StateStack;
 	MusicPlayer m_MusicPlayer;
+	SoundEffectPlayer m_SoundPlayer;
 
 	sf::Text m_StatisticsText;
 	sf::Time m_StatisticsUpdateTime;

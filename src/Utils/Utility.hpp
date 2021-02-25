@@ -21,6 +21,7 @@ namespace sf
     class Sprite;
     class Text;
     class RectangleShape;
+    class SoundBuffer;
 }
 
 template<typename Resource, typename Identifier>
@@ -50,6 +51,7 @@ namespace Sounds
     {
         Jump,
         CoinPickup,
+        Pause,
     };
 }
 
@@ -104,6 +106,7 @@ namespace Animations
 
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
+using SoundBufferHolder = ResourceHolder<sf::SoundBuffer, Sounds::ID>;
 
 namespace utils
 {
