@@ -33,7 +33,7 @@ void MoveSystem::update(sf::Time& dt)
             	auto &anim = m_World->getEntityRegistry()->get<C_Animation>(entity);
 
             	auto bodyPos = utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition());
-	            anim.animatedSprite.setPosition(bodyPos + sf::Vector2f(0, -6.f));
+	            anim.animatedSprite.setPosition(bodyPos);
             }
         });
 }

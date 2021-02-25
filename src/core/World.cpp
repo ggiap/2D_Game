@@ -106,16 +106,16 @@ void World::createAnimations()
 
 	Animation standing;
 	standing.setSpriteSheet(texture);
-	standing.addFrame(sf::IntRect( 1, 22, 32, 32));
+	standing.addFrame(sf::IntRect( 9, 32, 16, 22));
 
 	Animation walking;
 	walking.setSpriteSheet(texture);
-	walking.addFrame(sf::IntRect( 145, 22, 32, 32));
-	walking.addFrame(sf::IntRect( 178, 22, 32, 32));
+	walking.addFrame(sf::IntRect( 153, 32, 16, 22));
+	walking.addFrame(sf::IntRect( 186, 32, 16, 22));
 
 	Animation jumping;
 	jumping.setSpriteSheet(texture);
-	jumping.addFrame(sf::IntRect( 322, 22, 32, 32));
+	jumping.addFrame(sf::IntRect( 330, 31, 16, 22));
 
 	Animation enemyMoving;
 	enemyMoving.setSpriteSheet(monochrome_texture);
@@ -224,7 +224,7 @@ void World::createEnemy()
 	for (const auto& obj : objects)
 	{
 		const auto entity = m_WorldRegistry.create();
-		auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+		auto shape = new sf::RectangleShape(sf::Vector2f(14.f, 14.f));
 		utils::centerOrigin(*shape);
 		shape->setFillColor(sf::Color::Transparent);
 		shape->setOutlineThickness(-1);
