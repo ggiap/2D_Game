@@ -22,6 +22,8 @@ public:
 	b2World* getB2World();
 	entt::registry* getEntityRegistry();
 	float getRemainingTime();
+	bool& sfmlDebugging();
+	bool& b2dDebugging();
 
 private:
 	void buildScene();
@@ -45,5 +47,8 @@ private:
 
 	Timer m_CountdownTimer;
 	sf::Text m_TimerLabel;
+
+	bool sfmlDebug;
+	bool b2dDebug;
 };
 

@@ -35,10 +35,16 @@ void RenderSystem::draw()
 		m_Context->window->draw(anim.animatedSprite);
 	});
 
-	m_World->getEntityRegistry()->view<C_Rigidbody>().each([&](auto entity, auto& rb)
+	if (m_World->sfmlDebugging())
 	{
-		drawDebugInfo(entity, rb);
-	});
+		m_World->getEntityRegistry()->view<C_Rigidbody>().each([&](auto entity, auto& rb)
+			{
+				drawDebugInfo(entity, rb);
+			});
+	}
+
+	if (m_World->b2dDebugging())
+		m_World->getB2World()->DrawDebugData();
 }
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
@@ -94,5 +100,4 @@ void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
             }
         }
     }
-    //m_Context->b2_World->DrawDebugData();
 }

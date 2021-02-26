@@ -62,6 +62,16 @@ bool GameState::handleEvent(const sf::Event& event)
         requestStackPush(States::Game);
     }
 
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
+    {
+        m_World.sfmlDebugging() = !m_World.sfmlDebugging();
+    }
+
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
+    {
+        m_World.b2dDebugging() = !m_World.b2dDebugging();
+    }
+
     if ((event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Escape)) &&
         m_World.getRemainingTime() <= 0)
     {

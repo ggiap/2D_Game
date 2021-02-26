@@ -28,7 +28,9 @@ World::World(Context& context) :
 	m_SystemManager(),
 	m_b2World(b2Vec2(0, 9.81)),
 	m_WorldRegistry(),
-	m_CountdownTimer(sf::seconds(50))
+	m_CountdownTimer(sf::seconds(50)),
+	sfmlDebug(false),
+	b2dDebug(false)
 {
 	buildScene();
 
@@ -76,6 +78,16 @@ entt::registry* World::getEntityRegistry()
 float World::getRemainingTime()
 {
 	return m_CountdownTimer.getRemainingTime();
+}
+
+bool& World::sfmlDebugging()
+{
+	return sfmlDebug;
+}
+
+bool& World::b2dDebugging()
+{
+	return b2dDebug;
 }
 
 void World::buildScene()
