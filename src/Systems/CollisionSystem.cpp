@@ -18,6 +18,7 @@ CollisionSystem::CollisionSystem(Context& context, World* world) :
 void CollisionSystem::update(sf::Time& dt)
 {
     m_World->getB2World()->Step(dt.asSeconds(), 8, 5);
+	m_World->getB2World()->ClearForces();
 
     UpdateRaycastOrigins();
     handleRaycasts();
@@ -51,6 +52,7 @@ void CollisionSystem::handleRaycasts()
 			        raycastComp.collisionInfo.collisionAbove = true;
 			        break;
 		        }
+				m_Callback = RayCastCallback();
 	        }
 	        m_Callback = RayCastCallback();
 
@@ -64,6 +66,7 @@ void CollisionSystem::handleRaycasts()
 			        raycastComp.collisionInfo.collisionBelow = true;
 			        break;
 		        }
+				m_Callback = RayCastCallback();
 	        }
 	        m_Callback = RayCastCallback();
 
@@ -79,6 +82,7 @@ void CollisionSystem::handleRaycasts()
 			        raycastComp.collisionInfo.collisionRight = true;
 			        break;
 		        }
+				m_Callback = RayCastCallback();
 	        }
 	        m_Callback = RayCastCallback();
 
@@ -92,6 +96,7 @@ void CollisionSystem::handleRaycasts()
                     raycastComp.collisionInfo.collisionLeft = true;
                     break;
                 }
+				m_Callback = RayCastCallback();
             }
 	        m_Callback = RayCastCallback();
         }

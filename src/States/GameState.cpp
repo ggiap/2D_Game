@@ -30,7 +30,9 @@ GameState::GameState(StateStack& stack, Context& context) :
 void GameState::draw()
 {
 	m_World.draw();
-    m_Context.window->draw(youLoseLabel);
+
+    if (m_World.getRemainingTime() <= 0)
+        m_Context.window->draw(youLoseLabel);
 }
 
 bool GameState::update(const sf::Time dt)

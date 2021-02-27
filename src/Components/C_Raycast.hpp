@@ -41,6 +41,10 @@ struct C_Raycast
 	float dstBetweenRays = .5f;
 	float horizontalRaySpacing{};
 	float verticalRaySpacing{};
+    sf::Vertex groundDetectionLine1[2];
+    sf::Vertex groundDetectionLine2[2];
+    sf::Vertex groundDetectionLine3[2];
+    sf::Vertex groundDetectionLine4[2];
 };
 
 #endif //ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP

@@ -3,6 +3,7 @@
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
 #include "../Components/C_Tilemap.hpp"
+#include "../Components/C_Tag.h"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
 #include "../core/World.h"
@@ -45,6 +46,17 @@ void RenderSystem::draw()
 
 	if (m_World->b2dDebugging())
 		m_World->getB2World()->DrawDebugData();
+
+	auto view = m_World->getEntityRegistry()->view<C_EnemyTag>();
+	for (auto entity : view)
+	{
+		auto& raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
+
+		m_Context->window->draw(raycastComp.groundDetectionLine1, 2, sf::Lines);
+		m_Context->window->draw(raycastComp.groundDetectionLine2, 2, sf::Lines);
+		m_Context->window->draw(raycastComp.groundDetectionLine3, 2, sf::Lines);
+		m_Context->window->draw(raycastComp.groundDetectionLine4, 2, sf::Lines);
+	}	
 }
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)

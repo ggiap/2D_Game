@@ -54,6 +54,8 @@ add_library(SOURCE
         Systems/CameraSystem.hpp
         Systems/TilemapSystem.cpp
         Systems/TilemapSystem.hpp
+        Systems/EnemyControllerSystem.hpp
+        Systems/EnemyControllerSystem.cpp
         Components/C_Rigidbody.hpp
         Components/C_Animation.hpp
         Components/C_PlayerController.hpp
@@ -61,7 +63,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
-        Tilemaps/SFMLOrthogonalLayer.hpp "States/MenuState.hpp" "States/MenuState.cpp" "States/PauseState.hpp" "States/PauseState.cpp" "States/SplashScreenState.hpp" "States/SplashScreenState.cpp" "core/MusicPlayer.hpp" "core/MusicPlayer.cpp" "core/SoundEffectPlayer.hpp")
+        Tilemaps/SFMLOrthogonalLayer.hpp "States/MenuState.hpp" "States/MenuState.cpp" "States/PauseState.hpp" "States/PauseState.cpp" "States/SplashScreenState.hpp" "States/SplashScreenState.cpp" "core/MusicPlayer.hpp" "core/MusicPlayer.cpp" "core/SoundEffectPlayer.hpp" "Systems/EnemyControllerSystem.hpp")
 
 
 target_link_libraries(SOURCE ${SOURCE})

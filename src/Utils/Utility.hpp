@@ -36,6 +36,16 @@ namespace tmx
 // ====================================
 
 
+namespace b2d
+{
+    enum FilterCategory 
+    {
+        Player = 0x01,
+        Enemy = 0x02,
+        Other = 0x04,
+    };
+}
+
 namespace Music
 {
     enum ID

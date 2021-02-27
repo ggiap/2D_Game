@@ -42,7 +42,7 @@ private:
 
 	Context* m_Context;
 	SystemManager m_SystemManager;
-	b2World m_b2World;
+	std::unique_ptr<b2World> m_b2World;
 	entt::registry m_WorldRegistry;
 
 	Timer m_CountdownTimer;

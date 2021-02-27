@@ -11,6 +11,7 @@
 #include "../Systems/MoveSystem.hpp"
 #include "../Systems/RenderSystem.hpp"
 #include "../Systems/PlayerControllerSystem.hpp"
+#include "../Systems/EnemyControllerSystem.hpp"
 #include "../Systems/AnimationSystem.hpp"
 #include "../Systems/CameraSystem.hpp"
 #include "../Systems/TilemapSystem.hpp"
@@ -26,7 +27,7 @@ World::World(Context& context) :
 	m_WorldBounds(0, 0, m_WorldView.getSize().x, 600),
 	m_Context(&context),
 	m_SystemManager(),
-	m_b2World(b2Vec2(0, 9.81)),
+	m_b2World(new b2World(b2Vec2(0, 9.81))),
 	m_WorldRegistry(),
 	m_CountdownTimer(sf::seconds(50)),
 	sfmlDebug(false),
@@ -67,7 +68,7 @@ void World::draw()
 
 b2World* World::getB2World()
 {
-	return &m_b2World;
+	return m_b2World.get();
 }
 
 entt::registry* World::getEntityRegistry()
@@ -92,22 +93,22 @@ bool& World::b2dDebugging()
 
 void World::buildScene()
 {
-	m_b2World.SetAllowSleeping(true);
+	m_b2World->SetAllowSleeping(true);
 
 	createTilemap();
 	m_SystemManager.addSystem(std::make_unique<TilemapSystem>(*m_Context, this));
 
 	createPlayer();
 	createEnemy();
-	m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context, this));
+	createAnimations();
+	createCamera();
+	
 	m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context, this));
-
-	createAnimations();
 	m_SystemManager.addSystem(std::make_unique<AnimationSystem>(*m_Context, this));
-
-	createCamera();
 	m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context, this));
+	m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context, this));
+	m_SystemManager.addSystem(std::make_unique<EnemyControllerSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context, this));
 }
 
@@ -131,8 +132,8 @@ void World::createAnimations()
 
 	Animation enemyMoving;
 	enemyMoving.setSpriteSheet(monochrome_texture);
-	enemyMoving.addFrame(sf::IntRect(16, 256, 16, 16));
-	enemyMoving.addFrame(sf::IntRect(32, 256, 16, 16));
+	enemyMoving.addFrame(sf::IntRect(16, 261, 16, 12));
+	enemyMoving.addFrame(sf::IntRect(32, 261, 16, 12));
 
 	auto view = m_WorldRegistry.view<C_Animation>();
 
@@ -192,9 +193,10 @@ void World::createPlayer()
 	fixtureDef.density = 1.f;
 	fixtureDef.friction = 1.f;
 	fixtureDef.restitution = 0.f;
+	fixtureDef.filter.categoryBits = b2d::Player;
 
 	// Create and register the body in the world
-	m_Context->bodies[entity] = m_b2World.CreateBody(&bodyDef);
+	m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);
 	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
 	fixture->SetUserData(shape);
 
@@ -236,7 +238,7 @@ void World::createEnemy()
 	for (const auto& obj : objects)
 	{
 		const auto entity = m_WorldRegistry.create();
-		auto shape = new sf::RectangleShape(sf::Vector2f(14.f, 14.f));
+		auto shape = new sf::RectangleShape(sf::Vector2f(12.f, 11.f));
 		utils::centerOrigin(*shape);
 		shape->setFillColor(sf::Color::Transparent);
 		shape->setOutlineThickness(-1);
@@ -248,7 +250,7 @@ void World::createEnemy()
 
 		// Create the body definition
 		b2BodyDef bodyDef;
-		bodyDef.type = b2_kinematicBody;
+		bodyDef.type = b2_dynamicBody;
 		bodyDef.position = utils::sfVecToB2Vec(position);
 		bodyDef.fixedRotation = true;
 		bodyDef.gravityScale = 1.5f;
@@ -264,9 +266,10 @@ void World::createEnemy()
 		fixtureDef.density = 1.f;
 		fixtureDef.friction = 1.f;
 		fixtureDef.restitution = 0.f;
+		fixtureDef.filter.categoryBits = b2d::Enemy;
 
 		// Create and register the body in the world
-		m_Context->bodies[entity] = m_b2World.CreateBody(&bodyDef);
+		m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);
 		auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
 		fixture->SetUserData(shape);
 
@@ -280,7 +283,7 @@ void World::createEnemy()
 void World::unloadScene()
 {
 	for (auto& pair : m_Context->bodies)
-		m_b2World.DestroyBody(pair.second);
+		m_b2World->DestroyBody(pair.second);
 	m_Context->bodies.clear();
 
 	m_WorldRegistry.each([&](auto entity) 

@@ -105,7 +105,7 @@ void Game::loadResources()
 {
 	m_Fonts.load(Fonts::ARJULIAN, "../res/Font/ARJULIAN.ttf");
 	m_Textures.load(Textures::CharactersSpriteSheet, "../res/Sprites/SMB_Characters2.png");
-	m_Textures.load(Textures::MonochromeSpriteSheet, "../res/Sprites/Tilemap/monochrome_tilemap_packed.png");
+	m_Textures.load(Textures::MonochromeSpriteSheet, "../res/Sprites/Tilemap/monochrome_tilemap_transparent_packed.png");
 	m_Textures.load(Textures::SplashScreen, "../res/Sprites/bg.png");
 }
 
