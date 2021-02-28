@@ -6,7 +6,6 @@
 #include "../Components/C_Tag.h"
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
-#include <spdlog/spdlog.h>
 
 EnemyControllerSystem::EnemyControllerSystem(Context &context, World* world) :
 	BaseSystem(context, world),
@@ -34,20 +33,15 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 			if (m_Callback.m_fixture != nullptr)
 			{
-				spdlog::info("touching left");
-
 				leftHit = true;
 			}
-			else
-			{
-				spdlog::info("About to fall off from left");
-				leftHit = false;
-			}
 
-			raycastComp.groundDetectionLine1[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-			raycastComp.groundDetectionLine1[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-			raycastComp.groundDetectionLine1[0].color = sf::Color::Blue;
-			raycastComp.groundDetectionLine1[1].color = sf::Color::Blue;
+			std::array<sf::Vertex, 2> line;
+			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+			line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+			line[0].color = sf::Color::Blue;
+			line[1].color = sf::Color::Blue;
+			raycastComp.raycasts.push_back(line);
 
 			m_Callback = RayCastCallback();
 
@@ -56,20 +50,15 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 			if (m_Callback.m_fixture != nullptr)
 			{
-				spdlog::info("touching left2");
-
 				if (leftHit == false)
 					velocity.x = std::abs(velocity.x);
 			}
-			else
-			{
-				spdlog::info("About to fall off from left2");
-			}
 
-			raycastComp.groundDetectionLine2[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-			raycastComp.groundDetectionLine2[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-			raycastComp.groundDetectionLine2[0].color = sf::Color::Blue;
-			raycastComp.groundDetectionLine2[1].color = sf::Color::Blue;
+			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+			line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+			line[0].color = sf::Color::Blue;
+			line[1].color = sf::Color::Blue;
+			raycastComp.raycasts.push_back(line);
 
 			m_Callback = RayCastCallback();
 
@@ -78,19 +67,14 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 			if (m_Callback.m_fixture != nullptr)
 			{
-				spdlog::info("touching right");
-
 				righttHit = true;
 			}
-			else
-			{
-				spdlog::info("About to fall off from right");
-			}
 
-			raycastComp.groundDetectionLine3[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-			raycastComp.groundDetectionLine3[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-			raycastComp.groundDetectionLine3[0].color = sf::Color::Blue;
-			raycastComp.groundDetectionLine3[1].color = sf::Color::Blue;
+			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+			line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+			line[0].color = sf::Color::Blue;
+			line[1].color = sf::Color::Blue;
+			raycastComp.raycasts.push_back(line);
 
 			m_Callback = RayCastCallback();
 
@@ -99,21 +83,16 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 			if (m_Callback.m_fixture != nullptr)
 			{
-				spdlog::info("touching right2");
-
 				if (righttHit == false)
 					if (velocity.x > 0)
 						velocity.x = -velocity.x;
 			}
-			else
-			{
-				spdlog::info("About to fall off from right2");
-			}
 
-			raycastComp.groundDetectionLine4[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-			raycastComp.groundDetectionLine4[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-			raycastComp.groundDetectionLine4[0].color = sf::Color::Blue;
-			raycastComp.groundDetectionLine4[1].color = sf::Color::Blue;
+			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+			line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+			line[0].color = sf::Color::Blue;
+			line[1].color = sf::Color::Blue;
+			raycastComp.raycasts.push_back(line);
 
 			m_Callback = RayCastCallback();
 

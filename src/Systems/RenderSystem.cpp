@@ -45,18 +45,7 @@ void RenderSystem::draw()
 	}
 
 	if (m_World->b2dDebugging())
-		m_World->getB2World()->DrawDebugData();
-
-	auto view = m_World->getEntityRegistry()->view<C_EnemyTag>();
-	for (auto entity : view)
-	{
-		auto& raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
-
-		m_Context->window->draw(raycastComp.groundDetectionLine1, 2, sf::Lines);
-		m_Context->window->draw(raycastComp.groundDetectionLine2, 2, sf::Lines);
-		m_Context->window->draw(raycastComp.groundDetectionLine3, 2, sf::Lines);
-		m_Context->window->draw(raycastComp.groundDetectionLine4, 2, sf::Lines);
-	}	
+		m_World->getB2World()->DrawDebugData();	
 }
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
@@ -71,45 +60,15 @@ void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
         {
             auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
 
-	        for(size_t i = 0; i < raycastComp.verticalRayCount; ++i)
-	        {
-	        	// Above
-		        sf::Vertex line[2];
-		        line[0].position = utils::B2VecToSFVec<sf::Vector2f>(raycastComp.raycastOrigins.topLeft) + math::VECTOR_RIGHT * (raycastComp.verticalRaySpacing * i);
-		        line[1].position = line[0].position + (math::VECTOR_UP  * raycastComp.rayLength);
-		        line[0].color = sf::Color::Red;
-		        line[1].color = sf::Color::Red;
-
-		        m_Context->window->draw(line, 2, sf::Lines);
-
-		        // Below
-		        line[0].position = utils::B2VecToSFVec<sf::Vector2f>(raycastComp.raycastOrigins.bottomRight) + math::VECTOR_LEFT * (raycastComp.verticalRaySpacing * i);
-		        line[1].position = line[0].position + (math::VECTOR_DOWN  * raycastComp.rayLength );
-		        line[0].color = sf::Color::Red;
-		        line[1].color = sf::Color::Red;
-
-		        m_Context->window->draw(line, 2, sf::Lines);
-	        }
-
-            for(size_t i = 0; i < raycastComp.horizontalRayCount; ++i)
-            {
-	            // Right
-	            sf::Vertex line[2];
-	            line[0].position = utils::B2VecToSFVec<sf::Vector2f>(raycastComp.raycastOrigins.topRight) + math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i);
-	            line[1].position = line[0].position + (math::VECTOR_RIGHT  * raycastComp.rayLength );
-	            line[0].color = sf::Color::Red;
-	            line[1].color = sf::Color::Red;
-
-	            m_Context->window->draw(line, 2, sf::Lines);
-
-	            // Left
-	            line[0].position = utils::B2VecToSFVec<sf::Vector2f>(raycastComp.raycastOrigins.bottomLeft) + math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i);
-		        line[1].position = line[0].position + (math::VECTOR_LEFT * raycastComp.rayLength );
-		        line[0].color = sf::Color::Red;
-		        line[1].color = sf::Color::Red;
-
-		        m_Context->window->draw(line, 2, sf::Lines);
-            }
+			for (auto& ray : raycastComp.raycasts)
+			{
+				sf::Vertex line[2];
+				line[0].position = ray[0].position;
+				line[1].position = ray[1].position;
+				line[0].color = ray[0].color;
+				line[1].color = ray[1].color;
+				m_Context->window->draw(line, 2, sf::Lines);
+			}
         }
     }
 }

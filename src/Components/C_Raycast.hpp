@@ -6,6 +6,8 @@
 #define ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP
 
 #include <Box2D/Common/b2Math.h>
+#include <vector>
+#include <array>
 
 struct CollisionInfo
 {
@@ -41,10 +43,8 @@ struct C_Raycast
 	float dstBetweenRays = .5f;
 	float horizontalRaySpacing{};
 	float verticalRaySpacing{};
-    sf::Vertex groundDetectionLine1[2];
-    sf::Vertex groundDetectionLine2[2];
-    sf::Vertex groundDetectionLine3[2];
-    sf::Vertex groundDetectionLine4[2];
+
+    std::vector<std::array<sf::Vertex, 2>> raycasts;
 };
 
 #endif //ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP
