@@ -78,14 +78,46 @@ void EnemyControllerSystem::update(sf::Time& dt)
 
 			m_Callback = RayCastCallback();
 
-			rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_UP + math::VECTOR_LEFT * 2.f);
+			rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_LEFT + math::VECTOR_UP);
 			rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * (raycastComp.rayLength * 2));
 			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 			if (m_Callback.m_fixture != nullptr)
 			{
 				if (righttHit == false)
 					if (velocity.x > 0)
-						velocity.x = -velocity.x;
+						velocity.x = -std::abs(velocity.x);
+			}
+
+			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+			line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+			line[0].color = sf::Color::Blue;
+			line[1].color = sf::Color::Blue;
+			raycastComp.raycasts.push_back(line);
+
+			m_Callback = RayCastCallback();
+
+			rayOrigin = raycastComp.raycastOrigins.topLeft + utils::sfVecToB2Vec(math::VECTOR_RIGHT);
+			rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_LEFT * (raycastComp.rayLength));
+			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
+			if (m_Callback.m_fixture != nullptr)
+			{
+				velocity.x = std::abs(velocity.x);
+			}
+
+			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+			line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+			line[0].color = sf::Color::Blue;
+			line[1].color = sf::Color::Blue;
+			raycastComp.raycasts.push_back(line);
+
+			m_Callback = RayCastCallback();
+
+			rayOrigin = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(math::VECTOR_LEFT);
+			rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_RIGHT * (raycastComp.rayLength));
+			m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
+			if (m_Callback.m_fixture != nullptr)
+			{
+				velocity.x = -std::abs(velocity.x);
 			}
 
 			line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);

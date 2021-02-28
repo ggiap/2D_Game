@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="35">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="36">
  <tileset firstgid="1" name="Tileset1" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="../Sprites/Tilemap/monochrome_tilemap_packed.png" width="320" height="320"/>
   <tile id="18">
@@ -13,7 +13,7 @@
  </tileset>
  <layer id="1" name="Far Tile Layer" width="100" height="50">
   <data encoding="base64" compression="zlib">
-   eAHtmM1OFFEQhZvEYWUEdqhLIAET5AXUh/AhfAkjLgzvwIsAS5ylsDQkQIwrx5Ual5NZeY7TlT59c+2en3YyyZybFFW36t5u+A51p3uKwsMETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETMAETGCRBE5xs2WyRf7ty3avk8wv1JPc/ppMEH6B/YT9lvRBueaZrB2hfitrGA5lntsT5Q8RrKCfVo9gnrImuqgxfghtBvBqj0QvruG4H7vaT+tRw1GsyzTtj+D3Amxfwtgr4X/JPobp3qRc3CGhGkbdegSJoniM8AnsaZn6AR/MyT1lXi7LurSHdt0fWU6aTM+rQxSfw4500YwxtaSG0T/hqW9YTl/3x4zAp9z2AOtpbcN6tBHqpt7DZWhtw3q0Eeqmvo3L0NqG9cgT2sDZvwnbynwO53c0Z61HMx9W089z3bEDHSjFXqlH6EON1CbVy3oo3Xw8jR7UJzdCr1xNc3yv0XcbrWns80ppVHHaH/PoEe81+m5T3akerbIeeu6kcZd6xHvNJO82q6wHj6B/WZd61DugeWY9Kk34nUboYz2a/2/+RzXY57zqMcDNad/LX0K/i8o9d036zMXLXcI+ltaHd39UPaG6qB7AVHA+YpAM5tPBZ653SB7D3ifFV5iHBv2kdoO59ehOj+gbfQbWmPhfwz4zwEhrnFuPSo9vYBRn07z98Rd4hvkb5KKnrEdQGnseNWpDmU+ixxnWn4tdlfEFfIyUOfPWI+jUvWrBeFo9PtUvV3wt59eSpx5vMVezHgJIwj9/PnEh
+   eAHtmE0uBFEUhVuCkfiZ+RkiQYINYBEWYROCgdiDjWCIIYYiQcQII8RQjJzT6qZOvVR3dVNE0ucmt999f93t+7xSpdFwmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJ/BWBPnzQ/j9Lfqdejb2SH3xAxuYAh3wi71C/IN9kbD5bs8BFWXygvUbGPrbv0i/bg+lm7EbRg223PoJ5ypq8Y44YhzDwiFZzGGNcp3nLxUnYRxHIoHTT8xH8VgB1FcmzEu2r7GOZ7lUPrG+Q6pB7GPbxxYGvE8hJ5BQ7iGdkMCf3lHlzUYuX9AzNYH/qJPzqW9hHTmMR5RJyOR/6dkWXdBjnJ1r6jSzzax/fRt7Vxn6sZlaFfVQRqmee923MqrCPKkL1zI/jbZhVYR/lhEZw7R9FjvGPcA1hH9UQ99osmYYHqpjNfIQfOtLs1Jd9tIGdTXXjg37KInyVzekYn2v02UbntPb1SmnkdXo+fuIjnmv02Sb/pGLVyz70upPWdfqI55pOnm162QcvQa2yTh/FE9C+Zx+5E/2fhn20/735jdlWZ4Pj6uMRfeZT9iXoLaLsvqvTey6+xzHyJMtTtD4f+flQP+oDmJp+PlgkwXVp8J5rC4PbyJ1kcg39cED+Glfo2Ed9PuLc6D2w1mS/jrxkgUjn2LeP3McDGMW16afnowm8hPkGxuJM2UdQ+mp5qdF8l34nPg6w/lDyPKuP0EakzDluH0Gn2KoL1t36OCu+XeM+61/IOH1soq9pHwJIyk+FZXFL
   </data>
  </layer>
  <layer id="6" name="Near Tile Layer" width="100" height="50">
@@ -63,6 +63,9 @@
   </object>
   <object id="28" x="416" y="800">
    <polyline points="0,0 0,-80"/>
+  </object>
+  <object id="35" name="Test Polygon 1" x="353" y="693">
+   <polygon points="0,0 3.5,-17.5 15,1.5"/>
   </object>
  </objectgroup>
  <objectgroup id="5" name="Kinematic Object Layer">
