@@ -39,7 +39,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             if(!raycastComp.collisionInfo.collisionLeft)
-                velocity.x -= 1.f;
+                velocity.x -= 0.6f;
 
             if(raycastComp.collisionInfo.collisionBelow)
                 m_State = GameObjectState::Walking;
@@ -48,7 +48,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             if(!raycastComp.collisionInfo.collisionRight)
-                velocity.x += 1.f;
+                velocity.x += 0.6f;
 
             if(raycastComp.collisionInfo.collisionBelow)
                 m_State = GameObjectState::Walking;

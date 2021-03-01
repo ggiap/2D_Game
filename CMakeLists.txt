@@ -23,6 +23,8 @@ conan_cmake_run(REQUIRES
         flac/1.3.2@bincrafters/stable
         entt/3.4.0
         spdlog/1.5.0
+        IMPORTS "bin, *.dll -> ./bin"
+        IMPORTS "lib, *.dylib* -> ./bin"
         BASIC_SETUP
         BUILD missing)
 
