@@ -79,9 +79,9 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         m_Context->enttToBody[entity]->SetLinearVelocity(velocity);
 
         if (velocity.x < 0)
-            anim.animatedSprite.setScale(sf::Vector2f(-1.f, 0.f));
+            anim.animatedSprite.setScale(sf::Vector2f(-1.f, 1.f));
         else if(velocity.x > 0)
-            anim.animatedSprite.setScale(sf::Vector2f(-1.f, 0.f));
+            anim.animatedSprite.setScale(sf::Vector2f(1.f, 1.f));
 
         switch (m_State)
         {
