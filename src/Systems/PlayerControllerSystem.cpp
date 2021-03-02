@@ -80,7 +80,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         if (velocity.x < 0)
             anim.animatedSprite.setScale(sf::Vector2f(-1.f, 0.f));
-        else
+        else if(velocity.x > 0)
             anim.animatedSprite.setScale(sf::Vector2f(-1.f, 0.f));
 
         switch (m_State)
