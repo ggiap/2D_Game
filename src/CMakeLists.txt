@@ -18,6 +18,12 @@ add_library(SOURCE
         States/GameState.h
         States/GameState.cpp
         States/StateIdentifiers.h
+        States/MenuState.hpp
+        States/MenuState.cpp
+        States/PauseState.hpp
+        States/PauseState.cpp
+        States/SplashScreenState.hpp
+        States/SplashScreenState.cpp
         Utils/ResourceHolder.h
         Utils/Utility.hpp
         Utils/Utility.cpp
@@ -38,6 +44,7 @@ add_library(SOURCE
         Utils/Timer.hpp 
         Utils/Timer.cpp
         Utils/BodyCreator.h
+        
         Systems/BaseSystem.hpp
         Systems/BaseSystem.cpp
         Systems/CollisionSystem.hpp
@@ -63,7 +70,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
-        Tilemaps/SFMLOrthogonalLayer.hpp "States/MenuState.hpp" "States/MenuState.cpp" "States/PauseState.hpp" "States/PauseState.cpp" "States/SplashScreenState.hpp" "States/SplashScreenState.cpp" "core/MusicPlayer.hpp" "core/MusicPlayer.cpp" "core/SoundEffectPlayer.hpp" "Systems/EnemyControllerSystem.hpp")
+        Tilemaps/SFMLOrthogonalLayer.hpp )
 
 
 target_link_libraries(SOURCE ${SOURCE})

@@ -15,8 +15,8 @@
 #include "../Systems/AnimationSystem.hpp"
 #include "../Systems/CameraSystem.hpp"
 #include "../Systems/TilemapSystem.hpp"
-#include "../Utils//Context.hpp"
-#include "../Utils//Math.hpp"
+#include "../Utils/Context.hpp"
+#include "../Utils/Math.hpp"
 
 #include <Box2D/Box2D.h>
 #include <entt/entt.hpp>
@@ -193,12 +193,16 @@ void World::createPlayer()
 	fixtureDef.density = 1.f;
 	fixtureDef.friction = 1.f;
 	fixtureDef.restitution = 0.f;
-	fixtureDef.filter.categoryBits = b2d::Player;
+	fixtureDef.filter.categoryBits = BodyCategory::Player;
 
 	// Create and register the body in the world
 	m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);
 	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
-	fixture->SetUserData(shape);
+
+	UserData userData;
+	userData.shape = std::make_shared<sf::RectangleShape>(shape);
+	userData.entity = entity;
+	fixture->SetUserData(&userData);
 
 	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
 	m_WorldRegistry.emplace<C_PlayerController>(entity);
@@ -266,7 +270,7 @@ void World::createEnemy()
 		fixtureDef.density = 1.f;
 		fixtureDef.friction = 1.f;
 		fixtureDef.restitution = 0.f;
-		fixtureDef.filter.categoryBits = b2d::Enemy;
+		fixtureDef.filter.categoryBits = BodyCategory::Enemy;
 
 		// Create and register the body in the world
 		m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);

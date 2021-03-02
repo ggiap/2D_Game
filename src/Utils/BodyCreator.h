@@ -96,7 +96,7 @@ struct BodyCreator
 		b2Body *retBody = nullptr;
 		b2FixtureDef fixtureDef;
 		fixtureDef.density = 1.f;
-		fixtureDef.filter.categoryBits = b2d::Other;
+		fixtureDef.filter.categoryBits = BodyCategory::Other;
 
 		if (objShape == tmx::Object::Shape::Polyline)
 		{

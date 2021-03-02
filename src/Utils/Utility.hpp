@@ -36,7 +36,7 @@ namespace tmx
 // ====================================
 
 
-namespace b2d
+namespace BodyCategory
 {
     enum FilterCategory 
     {

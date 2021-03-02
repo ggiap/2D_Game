@@ -217,7 +217,7 @@ void CollisionSystem::UpdateRaycastOrigins()
 		if (shape == nullptr) return;
 
 		auto bounds = shape->getGlobalBounds();
-		auto size = shape->getSize();
+		auto &size = shape->getSize();
 
 		raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left, bounds.top));
