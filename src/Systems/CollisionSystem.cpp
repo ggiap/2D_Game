@@ -38,8 +38,8 @@ void CollisionSystem::handleRaycasts()
 
         for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
         {
-	        auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
-	        if (shape == nullptr) return;
+			auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
+			if (shape == nullptr) return;
 
 			if (m_World->getEntityRegistry()->has<C_EnemyTag>(entity))
 			{

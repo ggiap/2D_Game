@@ -44,7 +44,6 @@ add_library(SOURCE
         Utils/Timer.hpp 
         Utils/Timer.cpp
         Utils/BodyCreator.h
-        
         Systems/BaseSystem.hpp
         Systems/BaseSystem.cpp
         Systems/CollisionSystem.hpp

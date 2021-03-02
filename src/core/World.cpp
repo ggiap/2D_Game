@@ -17,7 +17,6 @@
 #include "../Systems/TilemapSystem.hpp"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
-
 #include <Box2D/Box2D.h>
 #include <entt/entt.hpp>
 #include "../Utils/SFMLDebugDraw.h"
@@ -198,11 +197,7 @@ void World::createPlayer()
 	// Create and register the body in the world
 	m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);
 	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
-
-	UserData userData;
-	userData.shape = std::make_shared<sf::RectangleShape>(shape);
-	userData.entity = entity;
-	fixture->SetUserData(&userData);
+	fixture->SetUserData(shape);
 
 	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
 	m_WorldRegistry.emplace<C_PlayerController>(entity);
