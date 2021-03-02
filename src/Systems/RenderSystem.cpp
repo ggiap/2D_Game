@@ -36,6 +36,9 @@ void RenderSystem::draw()
 		m_Context->window->draw(anim.animatedSprite);
 	});
 
+	if (m_World->b2dDebugging())
+		m_World->getB2World()->DrawDebugData();
+
 	if (m_World->sfmlDebugging())
 	{
 		m_World->getEntityRegistry()->view<C_Rigidbody>().each([&](auto entity, auto& rb)
@@ -43,9 +46,6 @@ void RenderSystem::draw()
 				drawDebugInfo(entity, rb);
 			});
 	}
-
-	if (m_World->b2dDebugging())
-		m_World->getB2World()->DrawDebugData();	
 }
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)

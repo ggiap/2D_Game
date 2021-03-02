@@ -15,6 +15,8 @@ struct CollisionInfo
     bool collisionBelow{false};
     bool collisionLeft {false};
     bool collisionRight{false};
+    bool platformCheckLeft{false};
+    bool platformCheckRight{false};
 
     void reset()
     {
@@ -22,6 +24,8 @@ struct CollisionInfo
         collisionBelow = false;
         collisionLeft  = false;
         collisionRight = false;
+        platformCheckLeft = false;
+        platformCheckRight = false;
     }
 };
 

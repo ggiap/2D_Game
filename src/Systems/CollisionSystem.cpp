@@ -41,11 +41,47 @@ void CollisionSystem::handleRaycasts()
 	        auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
 	        if (shape == nullptr) return;
 
+			if (m_World->getEntityRegistry()->has<C_EnemyTag>(entity))
+			{
+				b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_UP);
+				b2Vec2 rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * (raycastComp.rayLength * 2));
+				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
+				if (m_Callback.m_fixture != nullptr)
+				{
+					raycastComp.collisionInfo.platformCheckLeft = true;
+				}
+
+				std::array<sf::Vertex, 2> line;
+				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+				line[0].color = sf::Color::Blue;
+				line[1].color = sf::Color::Blue;
+				raycastComp.raycasts.push_back(line);
+
+				m_Callback = RayCastCallback();
+
+				rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_UP);
+				rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * (raycastComp.rayLength * 2));
+				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
+				if (m_Callback.m_fixture != nullptr)
+				{
+					raycastComp.collisionInfo.platformCheckRight = true;
+				}
+
+				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
+				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
+				line[0].color = sf::Color::Blue;
+				line[1].color = sf::Color::Blue;
+				raycastComp.raycasts.push_back(line);
+
+				m_Callback = RayCastCallback();
+			}
+
 	        // Check Above
 	        for (int i = 0; i < raycastComp.verticalRayCount; ++i)
 	        {
-		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topLeft +
-		                           utils::sfVecToB2Vec(math::VECTOR_RIGHT * (raycastComp.verticalRaySpacing * i));
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topLeft + utils::sfVecToB2Vec(math::VECTOR_DOWN / 2.f +
+					math::VECTOR_RIGHT * (raycastComp.verticalRaySpacing * i));
 				b2Vec2 rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_UP * raycastComp.rayLength);
 
 				std::array<sf::Vertex, 2> line;
@@ -68,7 +104,8 @@ void CollisionSystem::handleRaycasts()
 	        // Check Below
 	        for (int i = 0; i < raycastComp.verticalRayCount; ++i)
 	        {
-		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_LEFT * (raycastComp.verticalRaySpacing * i));
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomRight + utils::sfVecToB2Vec(math::VECTOR_UP / 2.f +
+					math::VECTOR_LEFT * (raycastComp.verticalRaySpacing * i));
 				b2Vec2 rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength);
 
 				std::array<sf::Vertex, 2> line;
@@ -91,8 +128,8 @@ void CollisionSystem::handleRaycasts()
 	        // Check Right
 	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
 	        {
-		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topRight +
-		                           utils::sfVecToB2Vec(math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i));
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(math::VECTOR_LEFT / 2.f +
+					math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i));
 				b2Vec2 rayDir = rayOrigin + (utils::sfVecToB2Vec(math::VECTOR_RIGHT * raycastComp.rayLength));
 
 				std::array<sf::Vertex, 2> line;
@@ -115,7 +152,8 @@ void CollisionSystem::handleRaycasts()
 	        // Check Left
 	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
 	        {
-		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i));
+		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_RIGHT / 2.f +
+					math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i));
 				auto rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength);
 
 				std::array<sf::Vertex, 2> line;

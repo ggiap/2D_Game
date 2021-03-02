@@ -238,7 +238,7 @@ void World::createEnemy()
 	for (const auto& obj : objects)
 	{
 		const auto entity = m_WorldRegistry.create();
-		auto shape = new sf::RectangleShape(sf::Vector2f(12.f, 11.f));
+		auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 11.f));
 		utils::centerOrigin(*shape);
 		shape->setFillColor(sf::Color::Transparent);
 		shape->setOutlineThickness(-1);
