@@ -17,7 +17,7 @@ void EnemyControllerSystem::update(sf::Time& dt)
 {
 	m_World->getEntityRegistry()->view<C_EnemyTag, C_Rigidbody, C_Raycast>().each([&](auto entity, auto& rb, auto& raycastComp)
 		{
-			b2Vec2 velocity = m_Context->bodies[entity]->GetLinearVelocity();
+			b2Vec2 velocity = m_Context->enttToBody[entity]->GetLinearVelocity();
 
 			if (velocity.x < 0.f)
 				velocity.x += -1.f;
@@ -41,6 +41,6 @@ void EnemyControllerSystem::update(sf::Time& dt)
 
 			velocity.x = std::clamp(velocity.x, -1.f, 1.f);
 			velocity.y = std::clamp(velocity.y, -10.f, 10.f);
-			m_Context->bodies[entity]->SetLinearVelocity(velocity);
+			m_Context->enttToBody[entity]->SetLinearVelocity(velocity);
 		});
 }

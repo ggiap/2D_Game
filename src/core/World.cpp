@@ -195,11 +195,12 @@ void World::createPlayer()
 	fixtureDef.filter.categoryBits = BodyCategory::Player;
 
 	// Create and register the body in the world
-	m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);
-	auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
+	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
+	m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
+	auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
 	fixture->SetUserData(shape);
 
-	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
+	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 	m_WorldRegistry.emplace<C_PlayerController>(entity);
 	m_WorldRegistry.emplace<C_Animation>(entity);
 	m_WorldRegistry.emplace<C_PlayerTag>(entity);
@@ -268,11 +269,12 @@ void World::createEnemy()
 		fixtureDef.filter.categoryBits = BodyCategory::Enemy;
 
 		// Create and register the body in the world
-		m_Context->bodies[entity] = m_b2World->CreateBody(&bodyDef);
-		auto fixture = m_Context->bodies[entity]->CreateFixture(&fixtureDef);
+		m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
+		m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
+		auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
 		fixture->SetUserData(shape);
 
-		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->bodies[entity]);
+		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 		m_WorldRegistry.emplace<C_Animation>(entity);
 		m_WorldRegistry.emplace<C_EnemyTag>(entity);
 		m_WorldRegistry.emplace<C_Raycast>(entity);
@@ -281,9 +283,10 @@ void World::createEnemy()
 
 void World::unloadScene()
 {
-	for (auto& pair : m_Context->bodies)
+	for (auto& pair : m_Context->enttToBody)
 		m_b2World->DestroyBody(pair.second);
-	m_Context->bodies.clear();
+	m_Context->enttToBody.clear();
+	m_Context->bodyToEntt.clear();
 
 	m_WorldRegistry.each([&](auto entity) 
 		{

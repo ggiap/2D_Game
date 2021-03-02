@@ -12,15 +12,15 @@ struct Context
 {
 	Context() = default;
 	Context(sf::RenderWindow& win, FontHolder& font, TextureHolder& texture, MusicPlayer& music, SoundEffectPlayer& sounds,
-			bool isPaused = false,
-			std::unordered_map<entt::entity, b2Body*> bd = {}) :
+			bool isPaused = false) :
 				window(&win),
 				fonts(&font),
 				textures(&texture),
 				music(&music),
 				sounds(&sounds),
 				isPaused(isPaused),
-				bodies(bd)
+				enttToBody(),
+				bodyToEntt()
 	{
 	
 	}
@@ -31,5 +31,6 @@ struct Context
 	MusicPlayer* music;
 	SoundEffectPlayer* sounds;
 	bool isPaused;
-	std::unordered_map<entt::entity, b2Body*> bodies;
+	std::unordered_map<entt::entity, b2Body*> enttToBody;
+	std::unordered_map<b2Body* , entt::entity> bodyToEntt;
 };

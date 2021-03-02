@@ -21,7 +21,7 @@ void CameraSystem::update(sf::Time& dt)
     {
         if(freeRoaming == false)
         {
-            auto targetPos = utils::B2VecToSFVec<sf::Vector2f>(m_Context->bodies[cameraComp.target]->GetPosition());
+            auto targetPos = utils::B2VecToSFVec<sf::Vector2f>(m_Context->enttToBody[cameraComp.target]->GetPosition());
             cameraComp.view.setCenter(targetPos);
             m_Context->window->setView(cameraComp.view);
         }

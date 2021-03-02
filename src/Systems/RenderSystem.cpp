@@ -50,7 +50,7 @@ void RenderSystem::draw()
 
 void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
 {
-    for(b2Fixture* fixture = m_Context->bodies[entity]->GetFixtureList(); fixture != nullptr; fixture = fixture->GetNext())
+    for(b2Fixture* fixture = m_Context->enttToBody[entity]->GetFixtureList(); fixture != nullptr; fixture = fixture->GetNext())
     {
         auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
         if (shape == nullptr) return;

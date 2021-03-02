@@ -34,7 +34,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         auto &anim = view.get<C_Animation>(entity);
         auto &raycastComp = view.get<C_Raycast>(entity);
 
-        b2Vec2 velocity = m_Context->bodies[entity]->GetLinearVelocity();
+        b2Vec2 velocity = m_Context->enttToBody[entity]->GetLinearVelocity();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
@@ -59,8 +59,8 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         {
             if(raycastComp.collisionInfo.collisionBelow)
                 velocity = {velocity.x, velocity.y - 50.f};
-                //m_Context->bodies[entity]->ApplyLinearImpulseToCenter(b2Vec2(0.f, -3.f), true);
-                //m_Context->bodies[entity]->ApplyForceToCenter(b2Vec2(0.f, -200.f), true);
+                //m_Context->enttToBody[entity]->ApplyLinearImpulseToCenter(b2Vec2(0.f, -3.f), true);
+                //m_Context->enttToBody[entity]->ApplyForceToCenter(b2Vec2(0.f, -200.f), true);
 
             m_State = GameObjectState::Jumping;
         }
@@ -76,7 +76,12 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         velocity.x = std::clamp(velocity.x, -5.f, 5.f);
         velocity.y = std::clamp(velocity.y, -10.f, 10.f);
-        m_Context->bodies[entity]->SetLinearVelocity(velocity);
+        m_Context->enttToBody[entity]->SetLinearVelocity(velocity);
+
+        if (velocity.x < 0)
+            anim.animatedSprite.setScale(sf::Vector2f(-1.f, 0.f));
+        else
+            anim.animatedSprite.setScale(sf::Vector2f(-1.f, 0.f));
 
         switch (m_State)
         {
