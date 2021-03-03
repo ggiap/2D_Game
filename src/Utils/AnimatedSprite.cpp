@@ -6,7 +6,7 @@
 AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
 animations(),m_animation(nullptr), m_frameTime(frameTime),
 m_currentFrame(0), m_isPaused(paused), m_isLooped(looped),
-m_texture(nullptr)
+m_Sprite()
 {
 
 }
@@ -14,7 +14,7 @@ m_texture(nullptr)
 void AnimatedSprite::setAnimation(const Animations::ID id)
 {
     m_animation = &animations[id];
-    m_texture = m_animation->getSpriteSheet();
+    m_Sprite.setTexture(*m_animation->getSpriteSheet());
     m_currentFrame = 0;
     setFrame(m_currentFrame);
 }
@@ -61,11 +61,7 @@ void AnimatedSprite::setLooped(bool looped)
 
 void AnimatedSprite::setColor(const sf::Color& color)
 {
-	// Update the vertices' color
-	m_vertices[0].color = color;
-	m_vertices[1].color = color;
-	m_vertices[2].color = color;
-	m_vertices[3].color = color;
+	m_Sprite.setColor(color);
 }
 
 const Animation* AnimatedSprite::getAnimation() const
@@ -108,22 +104,7 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
 	if (m_animation)
 	{
 		sf::IntRect rect = m_animation->getFrame(newFrame);
-
-        //calculate new vertex positions and texture coordinates
-		m_vertices[0].position = sf::Vector2f(0.f, 0.f);
-		m_vertices[1].position = sf::Vector2f(0.f, static_cast<float>(rect.height));
-		m_vertices[2].position = sf::Vector2f(static_cast<float>(rect.width), static_cast<float>(rect.height));
-		m_vertices[3].position = sf::Vector2f(static_cast<float>(rect.width), 0.f);
-
-		auto left = static_cast<float>(rect.left);
-        auto right = left + static_cast<float>(rect.width);
-        auto top = static_cast<float>(rect.top);
-        auto bottom = top + static_cast<float>(rect.height);
-
-		m_vertices[0].texCoords = sf::Vector2f(left, top);
-		m_vertices[1].texCoords = sf::Vector2f(left, bottom);
-		m_vertices[2].texCoords = sf::Vector2f(right, bottom);
-		m_vertices[3].texCoords = sf::Vector2f(right, top);
+		m_Sprite.setTextureRect(rect);
 	}
 
 	if (resetTime)
@@ -167,10 +148,9 @@ void AnimatedSprite::update(sf::Time deltaTime)
 
 void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if (m_animation && m_texture)
+	if (m_animation)
 	{
 		states.transform *= getTransform();
-		states.texture = m_texture;
-		target.draw(m_vertices, 4, sf::Quads, states);
+		target.draw(m_Sprite, states);
 	}
 }
