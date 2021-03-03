@@ -90,6 +90,53 @@ bool& World::b2dDebugging()
 	return b2dDebug;
 }
 
+void World::spawnEnemy()
+{
+	auto spawnLocation = utils::getObjectByName(m_WorldRegistry, "Spawner Locations", "Enemy Spawn Location 1");
+
+	const auto entity = m_WorldRegistry.create();
+	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 11.f));
+	utils::centerOrigin(*shape);
+	shape->setFillColor(sf::Color::Transparent);
+	shape->setOutlineThickness(-1);
+	shape->setOutlineColor(sf::Color::Green);
+
+	sf::Vector2f position;
+	position.x = spawnLocation.getPosition().x;
+	position.y = spawnLocation.getPosition().y;
+
+	// Create the body definition
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = utils::sfVecToB2Vec(position);
+	bodyDef.fixedRotation = true;
+	bodyDef.gravityScale = 1.5f;
+
+	// Fixture shape
+	b2PolygonShape bShape;
+	b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
+	bShape.SetAsBox(size.x, size.y);
+
+	// Fixture definition
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &bShape;
+	fixtureDef.density = 1.f;
+	fixtureDef.friction = 1.f;
+	fixtureDef.restitution = 0.f;
+	fixtureDef.filter.categoryBits = BodyCategory::Enemy;
+
+	// Create and register the body in the world
+	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
+	m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
+	auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
+	fixture->SetUserData(shape);
+
+	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
+	m_WorldRegistry.emplace<C_Animation>(entity);
+	m_WorldRegistry.emplace<C_EnemyTag>(entity);
+	m_WorldRegistry.emplace<C_Raycast>(entity);
+}
+
 void World::buildScene()
 {
 	m_b2World->SetAllowSleeping(true);
@@ -98,7 +145,7 @@ void World::buildScene()
 	m_SystemManager.addSystem(std::make_unique<TilemapSystem>(*m_Context, this));
 
 	createPlayer();
-	createEnemy();
+	createEnemies();
 	createAnimations();
 	createCamera();
 	
@@ -231,7 +278,7 @@ void World::createTilemap()
 	// m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
 }
 
-void World::createEnemy()
+void World::createEnemies()
 {
 	auto objects = utils::getObjectsByName(m_WorldRegistry, "Spawner Locations", "Enemy");
 

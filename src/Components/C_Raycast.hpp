@@ -8,6 +8,7 @@
 #include <Box2D/Common/b2Math.h>
 #include <vector>
 #include <array>
+#include <entt/entity/entity.hpp>
 
 struct CollisionInfo
 {
@@ -17,6 +18,10 @@ struct CollisionInfo
     bool collisionRight{false};
     bool platformCheckLeft{false};
     bool platformCheckRight{false};
+    entt::entity entityBelow{entt::null};
+    entt::entity entityAbove{entt::null};
+    entt::entity entityLeft {entt::null};
+    entt::entity entityRight{entt::null};
 
     void reset()
     {
@@ -26,6 +31,10 @@ struct CollisionInfo
         collisionRight = false;
         platformCheckLeft = false;
         platformCheckRight = false;
+        entityBelow = entt::null;
+        entityAbove = entt::null;
+        entityLeft = entt::null;
+        entityRight = entt::null;
     }
 };
 

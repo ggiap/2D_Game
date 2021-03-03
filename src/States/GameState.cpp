@@ -58,6 +58,11 @@ bool GameState::handleEvent(const sf::Event& event)
 {
     m_World.handleEvents(event);
 
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+    {
+        m_World.spawnEnemy();
+    }
+
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
     {
         requestStackPop();

@@ -95,6 +95,7 @@ void CollisionSystem::handleRaycasts()
 		        if (m_Callback.m_fixture != nullptr)
 		        {
 			        raycastComp.collisionInfo.collisionAbove = true;
+			        raycastComp.collisionInfo.entityAbove = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
 			        break;
 		        }
 				m_Callback = RayCastCallback();
@@ -119,6 +120,7 @@ void CollisionSystem::handleRaycasts()
 		        if (m_Callback.m_fixture != nullptr)
 		        {
 			        raycastComp.collisionInfo.collisionBelow = true;
+					raycastComp.collisionInfo.entityBelow = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
 			        break;
 		        }
 				m_Callback = RayCastCallback();
@@ -143,6 +145,7 @@ void CollisionSystem::handleRaycasts()
 		        if (m_Callback.m_fixture != nullptr)
 		        {
 			        raycastComp.collisionInfo.collisionRight = true;
+					raycastComp.collisionInfo.entityRight = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
 			        break;
 		        }
 				m_Callback = RayCastCallback();
@@ -167,6 +170,7 @@ void CollisionSystem::handleRaycasts()
 		        if(m_Callback.m_fixture != nullptr)
                 {
                     raycastComp.collisionInfo.collisionLeft = true;
+					raycastComp.collisionInfo.entityLeft = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
                     break;
                 }
 				m_Callback = RayCastCallback();

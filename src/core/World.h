@@ -6,6 +6,7 @@
 #include "../Utils/Utility.hpp"
 #include "../core/SystemManager.hpp"
 #include "../Utils/Timer.hpp"
+#include "../Utils/Animation.h"
 
 struct Context;
 
@@ -24,6 +25,7 @@ public:
 	float getRemainingTime();
 	bool& sfmlDebugging();
 	bool& b2dDebugging();
+	void spawnEnemy();
 
 private:
 	void buildScene();
@@ -31,7 +33,7 @@ private:
 	void createPlayer();
 	void createCamera();
 	void createTilemap();
-	void createEnemy();
+	void createEnemies();
 
 	void unloadScene();
 	void updateHUD(const sf::Time& dt);

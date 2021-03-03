@@ -55,6 +55,15 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         }
         velocity.x = math::lerp(velocity.x, velocity.x, 0.4f);
 
+        if (raycastComp.collisionInfo.collisionBelow && raycastComp.collisionInfo.entityBelow != entt::null)
+        {
+            if (m_World->getEntityRegistry()->has<C_EnemyTag>(raycastComp.collisionInfo.entityBelow))
+            {
+                m_World->getB2World()->DestroyBody(m_Context->enttToBody[raycastComp.collisionInfo.entityBelow]);
+                m_World->getEntityRegistry()->destroy(raycastComp.collisionInfo.entityBelow);
+            }
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             if(raycastComp.collisionInfo.collisionBelow)
@@ -78,9 +87,9 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         velocity.y = std::clamp(velocity.y, -10.f, 10.f);
         m_Context->enttToBody[entity]->SetLinearVelocity(velocity);
 
-        if (velocity.x < -0.01)
+        if (velocity.x < -0.1f)
             anim.animatedSprite.setScale(sf::Vector2f(-1.f, 1.f));
-        else if(velocity.x > 0.01f)
+        else if(velocity.x > 0.1f)
             anim.animatedSprite.setScale(sf::Vector2f(1.f, 1.f));
 
         switch (m_State)
