@@ -379,6 +379,9 @@ void World::unloadScene()
 		});
 	
 	m_SystemManager.deleteAllSystems();
+	for (auto& pair : anims)
+		delete pair.second;
+	anims.clear();
 }
 
 void World::updateHUD(const sf::Time& dt)
