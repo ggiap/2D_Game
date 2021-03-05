@@ -7,6 +7,7 @@
 #include "../core/SystemManager.hpp"
 #include "../Utils/Timer.hpp"
 #include "../Utils/Animation.h"
+#include <map>
 
 struct Context;
 
@@ -46,6 +47,8 @@ private:
 	SystemManager m_SystemManager;
 	std::unique_ptr<b2World> m_b2World;
 	entt::registry m_WorldRegistry;
+
+	std::unordered_map<Animations::ID, Animation> anims;
 
 	Timer m_CountdownTimer;
 	sf::Text m_TimerLabel;

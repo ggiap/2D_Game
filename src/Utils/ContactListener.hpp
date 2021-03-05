@@ -8,6 +8,9 @@
 #include <Box2D/Box2D.h>
 #include <vector>
 
+class World;
+struct Context;
+
 
 struct Contacts
 {
@@ -24,6 +27,7 @@ class ContactListener : public b2ContactListener
 {
 public:
     ContactListener() = default;
+    ContactListener(Context* context, World* world);
     ~ContactListener() override = default;
 
     void BeginContact(b2Contact* contact) override;
@@ -32,6 +36,8 @@ public:
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
     std::vector<Contacts> m_Contacts{};
+    Context* m_Context;
+    World* m_World;
 };
 
 

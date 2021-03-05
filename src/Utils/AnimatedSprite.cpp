@@ -71,17 +71,12 @@ const Animation* AnimatedSprite::getAnimation() const
 
 sf::FloatRect AnimatedSprite::getLocalBounds() const
 {
-	sf::IntRect rect = m_animation->getFrame(m_currentFrame);
-
-	auto width = static_cast<float>(std::abs(rect.width));
-    auto height = static_cast<float>(std::abs(rect.height));
-
-	return sf::FloatRect(0.f, 0.f, width, height);
+	return m_Sprite.getLocalBounds();
 }
 
 sf::FloatRect AnimatedSprite::getGlobalBounds() const
 {
-	return getTransform().transformRect(getLocalBounds());
+	return m_Sprite.getGlobalBounds();
 }
 
 bool AnimatedSprite::isLooped() const

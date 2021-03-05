@@ -4,6 +4,12 @@
 
 #include "ContactListener.hpp"
 #include <algorithm>
+#include "Context.hpp"
+#include "../core/World.h"
+
+ContactListener::ContactListener(Context* context, World* world) : m_Context(context), m_World(world)
+{
+}
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
@@ -22,7 +28,7 @@ void ContactListener::EndContact(b2Contact* contact)
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-
+   
 }
 
 void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)

@@ -1,10 +1,12 @@
 #include "MoveSystem.hpp"
 #include <SFML/System/Time.hpp>
 #include "../Utils/Math.hpp"
+#include "../Utils/FixtureUserData.hpp"
 #include "../Utils//Context.hpp"
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Raycast.hpp"
+#include "../Components/C_Tag.h"
 #include "../core/World.h"
 
 MoveSystem::MoveSystem(Context& context, World *world) :
@@ -21,10 +23,11 @@ void MoveSystem::update(sf::Time& dt)
             {
                 for(auto fixture = rb.rigidbody->GetFixtureList(); fixture != nullptr; fixture = fixture->GetNext())
                 {
-                    auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
-                    if (shape == nullptr) return;
-                    shape->setPosition(utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition()));
-                    shape->setRotation(math::radToDeg(rb.rigidbody->GetAngle()));
+                    auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
+                    if (userData->shape == nullptr) return;
+                    
+                    userData->shape->setPosition(utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition()));
+                    userData->shape->setRotation(math::radToDeg(rb.rigidbody->GetAngle()));
                 }
             }
 

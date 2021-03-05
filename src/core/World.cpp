@@ -17,6 +17,7 @@
 #include "../Systems/TilemapSystem.hpp"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
+#include "../Utils/FixtureUserData.hpp"
 #include <Box2D/Box2D.h>
 #include <entt/entt.hpp>
 #include "../Utils/SFMLDebugDraw.h"
@@ -120,7 +121,7 @@ void World::spawnEnemy()
 	// Fixture definition
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &bShape;
-	fixtureDef.density = 1.f;
+	fixtureDef.density = 0.5f;
 	fixtureDef.friction = 1.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::Enemy;
@@ -135,6 +136,23 @@ void World::spawnEnemy()
 	m_WorldRegistry.emplace<C_Animation>(entity);
 	m_WorldRegistry.emplace<C_EnemyTag>(entity);
 	m_WorldRegistry.emplace<C_Raycast>(entity);
+
+	auto view = m_WorldRegistry.view<C_Animation>();
+
+	for (auto& e : view)
+	{
+		if (entity == e)
+		{
+			if (m_WorldRegistry.has<C_EnemyTag>(entity))
+			{
+				auto& animComp = m_WorldRegistry.get<C_Animation>(entity);
+				animComp.animatedSprite.addAnimation(Animations::EnemyMoving, anims[Animations::EnemyMoving]);
+				animComp.animatedSprite.play(Animations::EnemyMoving);
+
+				utils::centerOrigin(animComp.animatedSprite);
+			}
+		}
+	}
 }
 
 void World::buildScene()
@@ -166,20 +184,24 @@ void World::createAnimations()
 	Animation standing;
 	standing.setSpriteSheet(texture);
 	standing.addFrame(sf::IntRect( 9, 32, 16, 22));
+	anims[Animations::Standing] = standing;
 
 	Animation walking;
 	walking.setSpriteSheet(texture);
 	walking.addFrame(sf::IntRect( 153, 32, 16, 22));
 	walking.addFrame(sf::IntRect( 186, 32, 16, 22));
+	anims[Animations::Walking] = walking;
 
 	Animation jumping;
 	jumping.setSpriteSheet(texture);
 	jumping.addFrame(sf::IntRect( 330, 31, 16, 22));
+	anims[Animations::Jumping] = jumping;
 
 	Animation enemyMoving;
 	enemyMoving.setSpriteSheet(monochrome_texture);
 	enemyMoving.addFrame(sf::IntRect(16, 261, 16, 12));
 	enemyMoving.addFrame(sf::IntRect(32, 261, 16, 12));
+	anims[Animations::EnemyMoving] = enemyMoving;
 
 	auto view = m_WorldRegistry.view<C_Animation>();
 
@@ -237,7 +259,7 @@ void World::createPlayer()
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &bShape;
 	fixtureDef.density = 1.f;
-	fixtureDef.friction = 1.f;
+	fixtureDef.friction = 0.8f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::Player;
 
@@ -245,7 +267,10 @@ void World::createPlayer()
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
 	m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
 	auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
-	fixture->SetUserData(shape);
+	FixtureUserData* fud = new FixtureUserData();
+	fud->entity = entity;
+	fud->shape = shape;
+	fixture->SetUserData(fud);
 
 	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 	m_WorldRegistry.emplace<C_PlayerController>(entity);
@@ -310,7 +335,7 @@ void World::createEnemies()
 		// Fixture definition
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = &bShape;
-		fixtureDef.density = 1.f;
+		fixtureDef.density = 0.5f;
 		fixtureDef.friction = 1.f;
 		fixtureDef.restitution = 0.f;
 		fixtureDef.filter.categoryBits = BodyCategory::Enemy;
@@ -319,7 +344,10 @@ void World::createEnemies()
 		m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
 		m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
 		auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
-		fixture->SetUserData(shape);
+		FixtureUserData* fud = new FixtureUserData();
+		fud->entity = entity;
+		fud->shape = shape;
+		fixture->SetUserData(fud);
 
 		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 		m_WorldRegistry.emplace<C_Animation>(entity);
@@ -331,7 +359,12 @@ void World::createEnemies()
 void World::unloadScene()
 {
 	for (auto& pair : m_Context->enttToBody)
+	{
+		for (auto fixture = pair.second->GetFixtureList(); fixture; fixture = fixture->GetNext())
+			delete fixture->GetUserData();
+
 		m_b2World->DestroyBody(pair.second);
+	}
 	m_Context->enttToBody.clear();
 	m_Context->bodyToEntt.clear();
 

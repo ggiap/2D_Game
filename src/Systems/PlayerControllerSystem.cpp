@@ -55,12 +55,21 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         }
         velocity.x = math::lerp(velocity.x, velocity.x, 0.4f);
 
-        if (raycastComp.collisionInfo.collisionBelow && raycastComp.collisionInfo.entityBelow != entt::null)
+        if (raycastComp.collisionInfo.entityBelow != entt::null)
         {
             if (m_World->getEntityRegistry()->has<C_EnemyTag>(raycastComp.collisionInfo.entityBelow))
             {
-                m_World->getB2World()->DestroyBody(m_Context->enttToBody[raycastComp.collisionInfo.entityBelow]);
+                auto* body = m_Context->enttToBody[raycastComp.collisionInfo.entityBelow];
+                for (auto* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
+                    delete fixture->GetUserData();
+
+                m_World->getB2World()->DestroyBody(body);
                 m_World->getEntityRegistry()->destroy(raycastComp.collisionInfo.entityBelow);
+                m_Context->bodyToEntt.erase(m_Context->enttToBody[raycastComp.collisionInfo.entityBelow]);
+                m_Context->enttToBody.erase(raycastComp.collisionInfo.entityBelow);    
+
+                velocity.y = 0;
+                velocity.y -= 5.f;
             }
         }
 

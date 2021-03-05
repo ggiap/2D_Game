@@ -15,8 +15,12 @@ BaseSystem(context, world)
 
 void AnimationSystem::update(sf::Time& dt)
 {
-    m_World->getEntityRegistry()->view<C_Animation>().each([&](auto entity, auto& anim)
+    auto view = m_World->getEntityRegistry()->view<C_Animation>();
+
+    for (auto& entity : view)
     {
-        anim.animatedSprite.update(dt);
-    });
+        auto& animComp = m_World->getEntityRegistry()->get<C_Animation>(entity);
+
+        animComp.animatedSprite.update(dt);
+    }
 }

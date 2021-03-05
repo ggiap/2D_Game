@@ -4,9 +4,7 @@ add_library(SOURCE
         core/Game.h
         core/Game.cpp
         core/World.cpp
-        core/World.h
-        core/SceneNode.cpp
-        core/SceneNode.h
+        core/World.h   
         core/MusicPlayer.hpp
         core/MusicPlayer.cpp
         core/SoundEffectPlayer.hpp
@@ -44,6 +42,7 @@ add_library(SOURCE
         Utils/Timer.hpp 
         Utils/Timer.cpp
         Utils/BodyCreator.h
+        Utils/FixtureUserData.hpp
         Systems/BaseSystem.hpp
         Systems/BaseSystem.cpp
         Systems/CollisionSystem.hpp
@@ -69,7 +68,7 @@ add_library(SOURCE
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
-        Tilemaps/SFMLOrthogonalLayer.hpp )
+        Tilemaps/SFMLOrthogonalLayer.hpp)
 
 
 target_link_libraries(SOURCE ${SOURCE})

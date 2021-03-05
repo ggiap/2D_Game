@@ -112,6 +112,7 @@ namespace Animations
         Standing,
         Walking,
         Jumping,
+        EnemyMoving,
     };
 }
 

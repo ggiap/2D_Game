@@ -1,6 +1,7 @@
 #include "CollisionSystem.hpp"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
+#include "../Utils/FixtureUserData.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
@@ -38,9 +39,6 @@ void CollisionSystem::handleRaycasts()
 
         for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
         {
-			auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
-			if (shape == nullptr) return;
-
 			if (m_World->getEntityRegistry()->has<C_EnemyTag>(entity))
 			{
 				b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_UP);
@@ -190,10 +188,10 @@ void CollisionSystem::CalculateRaySpacing()
 		auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
 		for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
 		{
-			auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
-			if (shape == nullptr) return;
+			auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
+			if (userData->shape == nullptr) return;
 
-			auto bounds = shape->getGlobalBounds();
+			auto bounds = userData->shape->getGlobalBounds();
 
 			float boundsWidth = bounds.width;
 			float boundsHeight = bounds.height;
@@ -217,11 +215,11 @@ void CollisionSystem::UpdateRaycastOrigins()
 		raycastComp.raycasts.clear();
 		auto fixture = rb.rigidbody->GetFixtureList();
 
-		auto shape = static_cast<sf::RectangleShape *>(fixture->GetUserData());
-		if (shape == nullptr) return;
+		auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
+		if (userData->shape == nullptr) return;
 
-		auto bounds = shape->getGlobalBounds();
-		auto &size = shape->getSize();
+		auto bounds = userData->shape->getGlobalBounds();
+		auto &size = userData->shape->getSize();
 
 		raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left, bounds.top));

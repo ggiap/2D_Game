@@ -6,6 +6,7 @@
 #include "../Components/C_Tag.h"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
+#include "../Utils/FixtureUserData.hpp"
 #include "../core/World.h"
 
 #include <vector>
@@ -52,9 +53,10 @@ void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
 {
     for(b2Fixture* fixture = m_Context->enttToBody[entity]->GetFixtureList(); fixture != nullptr; fixture = fixture->GetNext())
     {
-        auto shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
-        if (shape == nullptr) return;
-        m_Context->window->draw(*shape);
+		auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
+		if (userData->shape == nullptr) return;
+
+		m_Context->window->draw(*userData->shape);
 
         if(m_World->getEntityRegistry()->has<C_Raycast>(entity))
         {
