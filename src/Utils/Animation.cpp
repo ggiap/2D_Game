@@ -1,4 +1,5 @@
 #include "Animation.h"
+#include <assert.h>
 
 Animation::Animation() : m_texture(nullptr)
 {
@@ -27,5 +28,6 @@ std::size_t Animation::getSize() const
 
 const sf::IntRect& Animation::getFrame(std::size_t n) const
 {
+	//assert(m_frames.size() == 0 && n > 0);
 	return m_frames[n];
 }

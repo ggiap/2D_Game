@@ -13,7 +13,7 @@ m_Sprite()
 
 void AnimatedSprite::setAnimation(const Animations::ID id)
 {
-    m_animation = &animations[id];
+    m_animation = animations[id];
     m_Sprite.setTexture(*m_animation->getSpriteSheet());
     m_currentFrame = 0;
     setFrame(m_currentFrame);
@@ -23,7 +23,7 @@ void AnimatedSprite::setFrameTime(sf::Time time)
 {
 	m_frameTime = time;
 }
-void AnimatedSprite::addAnimation(Animations::ID id, Animation animation)
+void AnimatedSprite::addAnimation(Animations::ID id, Animation *animation)
 {
     animations[id] = animation;
 }
@@ -35,7 +35,7 @@ void AnimatedSprite::play()
 
 void AnimatedSprite::play(const Animations::ID id)
 {
-	if (getAnimation() != &animations[id])
+	if (getAnimation() != animations[id])
     {
         setAnimation(id);
     }

@@ -27,3 +27,9 @@ void SystemManager::deleteAllSystems()
 {
 	m_Systems.clear();
 }
+
+void SystemManager::initSystems()
+{
+	for (auto& system : m_Systems)
+		system->init();
+}

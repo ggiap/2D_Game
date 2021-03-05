@@ -19,6 +19,8 @@ public:
 	virtual void handleEvents(const sf::Event& event) { }
 	virtual void draw() { }
 
+	virtual void init() { }
+
 protected:
 	Context* m_Context{};
 	World* m_World;

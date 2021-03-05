@@ -14,7 +14,7 @@ CollisionSystem::CollisionSystem(Context& context, World* world) :
     BaseSystem(context, world),
     m_Callback()
 {
-	CalculateRaySpacing();
+	init();
 }
 
 void CollisionSystem::update(sf::Time& dt)
@@ -24,6 +24,11 @@ void CollisionSystem::update(sf::Time& dt)
 
     UpdateRaycastOrigins();
     handleRaycasts();
+}
+
+void CollisionSystem::init()
+{
+	CalculateRaySpacing();
 }
 
 void CollisionSystem::handleRaycasts()

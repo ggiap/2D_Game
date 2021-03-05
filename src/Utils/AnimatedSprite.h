@@ -18,7 +18,7 @@ public:
 	void update(sf::Time deltaTime);
 	void setAnimation(const Animations::ID id);
 	void setFrameTime(sf::Time time);
-	void addAnimation(Animations::ID id, Animation animation);
+	void addAnimation(Animations::ID id, Animation* animation);
 	void play();
 	void play(const Animations::ID id);
 	void pause();
@@ -34,7 +34,7 @@ public:
 	void setFrame(std::size_t newFrame, bool resetTime = true);
 
 private:
-    std::unordered_map<Animations::ID, Animation> animations;
+    std::unordered_map<Animations::ID, Animation*> animations;
 	const Animation* m_animation;
 	sf::Time m_frameTime;
 	sf::Time m_currentTime;

@@ -130,7 +130,10 @@ void World::spawnEnemy()
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
 	m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
 	auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
-	fixture->SetUserData(shape);
+	FixtureUserData* fud = new FixtureUserData();
+	fud->entity = entity;
+	fud->shape = shape;
+	fixture->SetUserData(fud);
 
 	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 	m_WorldRegistry.emplace<C_Animation>(entity);
@@ -153,6 +156,8 @@ void World::spawnEnemy()
 			}
 		}
 	}
+
+	m_SystemManager.initSystems();
 }
 
 void World::buildScene()
@@ -181,26 +186,26 @@ void World::createAnimations()
 	auto& texture = m_Context->textures->get(Textures::CharactersSpriteSheet);
 	auto& monochrome_texture = m_Context->textures->get(Textures::MonochromeSpriteSheet);
 
-	Animation standing;
-	standing.setSpriteSheet(texture);
-	standing.addFrame(sf::IntRect( 9, 32, 16, 22));
+	Animation *standing = new Animation();
+	standing->setSpriteSheet(texture);
+	standing->addFrame(sf::IntRect( 9, 32, 16, 22));
 	anims[Animations::Standing] = standing;
 
-	Animation walking;
-	walking.setSpriteSheet(texture);
-	walking.addFrame(sf::IntRect( 153, 32, 16, 22));
-	walking.addFrame(sf::IntRect( 186, 32, 16, 22));
+	Animation *walking = new Animation();
+	walking->setSpriteSheet(texture);
+	walking->addFrame(sf::IntRect( 153, 32, 16, 22));
+	walking->addFrame(sf::IntRect( 186, 32, 16, 22));
 	anims[Animations::Walking] = walking;
 
-	Animation jumping;
-	jumping.setSpriteSheet(texture);
-	jumping.addFrame(sf::IntRect( 330, 31, 16, 22));
+	Animation *jumping = new Animation();
+	jumping->setSpriteSheet(texture);
+	jumping->addFrame(sf::IntRect( 330, 31, 16, 22));
 	anims[Animations::Jumping] = jumping;
 
-	Animation enemyMoving;
-	enemyMoving.setSpriteSheet(monochrome_texture);
-	enemyMoving.addFrame(sf::IntRect(16, 261, 16, 12));
-	enemyMoving.addFrame(sf::IntRect(32, 261, 16, 12));
+	Animation *enemyMoving = new Animation();
+	enemyMoving->setSpriteSheet(monochrome_texture);
+	enemyMoving->addFrame(sf::IntRect(16, 261, 16, 12));
+	enemyMoving->addFrame(sf::IntRect(32, 261, 16, 12));
 	anims[Animations::EnemyMoving] = enemyMoving;
 
 	auto view = m_WorldRegistry.view<C_Animation>();

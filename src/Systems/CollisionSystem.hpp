@@ -11,6 +11,7 @@ public:
 	explicit CollisionSystem(Context& context, World* world);
 
 	void update(sf::Time& dt) override;
+    void init() override;
 
 private:
     void handleRaycasts();
