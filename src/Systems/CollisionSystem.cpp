@@ -39,7 +39,6 @@ void CollisionSystem::handleRaycasts()
         auto &rb = m_World->getEntityRegistry()->get<C_Rigidbody>(entity);
         auto &raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(entity);
         raycastComp.collisionInfo.reset();
-        raycastComp.rayLength = 1.7f;
 
         for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
         {

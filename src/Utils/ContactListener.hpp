@@ -10,7 +10,6 @@
 
 class World;
 struct Context;
-struct FixtureUserData;
 
 struct Contacts
 {
@@ -38,9 +37,6 @@ public:
     std::vector<Contacts> m_Contacts{};
     Context* m_Context;
     World* m_World;
-
-    FixtureUserData* userDataA;
-    FixtureUserData* userDataB;
 };
 
 

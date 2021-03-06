@@ -43,7 +43,7 @@ if (MSVC)
     if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         # remove default warning level from CMAKE_CXX_FLAGS
         string (REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-        add_compile_options(/W0 /WX /EHa "/permissive-") #/Za produces an error
+        add_compile_options(/W0 /WX "/permissive-") #/Za produces an error
     endif()
 else()
     target_compile_options(project_warnings

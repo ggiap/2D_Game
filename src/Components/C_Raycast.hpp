@@ -50,10 +50,10 @@ struct C_Raycast
 
     CollisionInfo collisionInfo{};
     RaycastOrigins raycastOrigins{};
-    float rayLength{};
+    float rayLength{2.f};
 	int horizontalRayCount{};
 	int verticalRayCount{};
-	float dstBetweenRays = 5.f;
+	float dstBetweenRays = .5f;
 	float horizontalRaySpacing{};
 	float verticalRaySpacing{};
 
