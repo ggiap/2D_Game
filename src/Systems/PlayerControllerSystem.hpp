@@ -25,7 +25,7 @@ public:
     void handleEvents(sf::Time dt);
 
 private:
-    GameObjectState::State m_State{};
+    GameObjectState::ID m_State{};
 };
 
 

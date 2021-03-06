@@ -5,8 +5,8 @@ MusicPlayer::MusicPlayer() :
 	m_Filenames(),
 	m_Volume(100.f)
 {
-	m_Filenames[Music::MenuTheme] = "../res/Music/Menu_Select.ogg";
-	m_Filenames[Music::GameTheme] = "../res/Music/Stage 1.ogg";
+	m_Filenames[Music::ID::MenuTheme] = "../res/Music/Menu_Select.ogg";
+	m_Filenames[Music::ID::GameTheme] = "../res/Music/Stage 1.ogg";
 }
 
 void MusicPlayer::play(Music::ID id)

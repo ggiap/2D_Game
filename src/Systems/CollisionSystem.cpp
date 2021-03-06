@@ -165,7 +165,7 @@ void CollisionSystem::CalculateRaySpacing()
 		for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
 		{
 			auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
-			if (userData->shape == nullptr) return;
+			if (userData == nullptr || userData->shape == nullptr) continue;
 
 			auto bounds = userData->shape->getGlobalBounds();
 
@@ -192,7 +192,7 @@ void CollisionSystem::UpdateRaycastOrigins()
 		auto fixture = rb.rigidbody->GetFixtureList();
 
 		auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
-		if (userData->shape == nullptr) return;
+		if (userData == nullptr || userData->shape == nullptr) return;
 
 		auto bounds = userData->shape->getGlobalBounds();
 		auto &size = userData->shape->getSize();

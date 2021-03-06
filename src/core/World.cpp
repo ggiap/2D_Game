@@ -30,14 +30,14 @@ World::World(Context& context) :
 	m_b2World(new b2World(b2Vec2(0, 9.81))),
 	m_WorldRegistry(),
 	anims(),
-	m_CountdownTimer(sf::seconds(50)),
+	m_CountdownTimer(sf::seconds(101)),
 	sfmlDebug(false),
 	b2dDebug(false)
 {
 	buildScene();
 
 	m_CountdownTimer.start();
-	m_TimerLabel.setFont(m_Context->fonts->get(Fonts::ARJULIAN));
+	m_TimerLabel.setFont(m_Context->fonts->get(Fonts::ID::ARJULIAN));
 	m_TimerLabel.setOutlineThickness(3.f);
 	m_TimerLabel.setCharacterSize(20u);
 	m_TimerLabel.setOutlineColor(sf::Color::Black);
@@ -125,7 +125,8 @@ void World::spawnEnemy()
 	fixtureDef.density = 0.5f;
 	fixtureDef.friction = 1.f;
 	fixtureDef.restitution = 0.f;
-	fixtureDef.filter.categoryBits = BodyCategory::Enemy;
+	fixtureDef.filter.categoryBits = BodyCategory::ID::Enemy;
+	fixtureDef.filter.maskBits = BodyCategory::ID::Player | BodyCategory::ID::Enemy | BodyCategory::ID::Other;
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
@@ -150,8 +151,8 @@ void World::spawnEnemy()
 			if (m_WorldRegistry.has<C_EnemyTag>(entity))
 			{
 				auto& animComp = m_WorldRegistry.get<C_Animation>(entity);
-				animComp.animatedSprite.addAnimation(Animations::EnemyMoving, anims[Animations::EnemyMoving]);
-				animComp.animatedSprite.play(Animations::EnemyMoving);
+				animComp.animatedSprite.addAnimation(Animations::ID::EnemyMoving, anims[Animations::ID::EnemyMoving]);
+				animComp.animatedSprite.play(Animations::ID::EnemyMoving);
 
 				utils::centerOrigin(animComp.animatedSprite);
 			}
@@ -184,30 +185,30 @@ void World::buildScene()
 
 void World::createAnimations()
 {
-	auto& texture = m_Context->textures->get(Textures::CharactersSpriteSheet);
-	auto& monochrome_texture = m_Context->textures->get(Textures::MonochromeSpriteSheet);
+	auto& texture = m_Context->textures->get(Textures::ID::CharactersSpriteSheet);
+	auto& monochrome_texture = m_Context->textures->get(Textures::ID::MonochromeSpriteSheet);
 
 	Animation *standing = new Animation();
 	standing->setSpriteSheet(texture);
 	standing->addFrame(sf::IntRect( 9, 32, 16, 22));
-	anims[Animations::Standing] = standing;
+	anims[Animations::ID::Standing] = standing;
 
 	Animation *walking = new Animation();
 	walking->setSpriteSheet(texture);
 	walking->addFrame(sf::IntRect( 153, 32, 16, 22));
 	walking->addFrame(sf::IntRect( 186, 32, 16, 22));
-	anims[Animations::Walking] = walking;
+	anims[Animations::ID::Walking] = walking;
 
 	Animation *jumping = new Animation();
 	jumping->setSpriteSheet(texture);
 	jumping->addFrame(sf::IntRect( 330, 31, 16, 22));
-	anims[Animations::Jumping] = jumping;
+	anims[Animations::ID::Jumping] = jumping;
 
 	Animation *enemyMoving = new Animation();
 	enemyMoving->setSpriteSheet(monochrome_texture);
 	enemyMoving->addFrame(sf::IntRect(16, 261, 16, 12));
 	enemyMoving->addFrame(sf::IntRect(32, 261, 16, 12));
-	anims[Animations::EnemyMoving] = enemyMoving;
+	anims[Animations::ID::EnemyMoving] = enemyMoving;
 
 	auto view = m_WorldRegistry.view<C_Animation>();
 
@@ -216,10 +217,10 @@ void World::createAnimations()
 		if(m_WorldRegistry.has<C_PlayerTag>(entity))
 		{
 			auto &animComp = m_WorldRegistry.get<C_Animation>(entity);
-			animComp.animatedSprite.addAnimation(Animations::Standing, standing);
-			animComp.animatedSprite.addAnimation(Animations::Walking, walking);
-			animComp.animatedSprite.addAnimation(Animations::Jumping, jumping);
-			animComp.animatedSprite.play(Animations::Standing);
+			animComp.animatedSprite.addAnimation(Animations::ID::Standing, standing);
+			animComp.animatedSprite.addAnimation(Animations::ID::Walking, walking);
+			animComp.animatedSprite.addAnimation(Animations::ID::Jumping, jumping);
+			animComp.animatedSprite.play(Animations::ID::Standing);
 
 			utils::centerOrigin(animComp.animatedSprite);
 		}
@@ -227,8 +228,8 @@ void World::createAnimations()
 		if (m_WorldRegistry.has<C_EnemyTag>(entity))
 		{
 			auto& animComp = m_WorldRegistry.get<C_Animation>(entity);
-			animComp.animatedSprite.addAnimation(Animations::Walking, enemyMoving);
-			animComp.animatedSprite.play(Animations::Walking);
+			animComp.animatedSprite.addAnimation(Animations::ID::Walking, enemyMoving);
+			animComp.animatedSprite.play(Animations::ID::Walking);
 
 			utils::centerOrigin(animComp.animatedSprite);
 		}
@@ -255,6 +256,7 @@ void World::createPlayer()
 	bodyDef.position = utils::sfVecToB2Vec(position);
 	bodyDef.fixedRotation = true;
 	bodyDef.gravityScale = 1.5f;
+	bodyDef.bullet = true;
 
 	// Fixture shape
 	b2PolygonShape bShape;
@@ -267,7 +269,8 @@ void World::createPlayer()
 	fixtureDef.density = 1.f;
 	fixtureDef.friction = 0.8f;
 	fixtureDef.restitution = 0.f;
-	fixtureDef.filter.categoryBits = BodyCategory::Player;
+	fixtureDef.filter.categoryBits = BodyCategory::ID::Player;
+	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other;
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
@@ -332,6 +335,7 @@ void World::createEnemies()
 		bodyDef.position = utils::sfVecToB2Vec(position);
 		bodyDef.fixedRotation = true;
 		bodyDef.gravityScale = 1.5f;
+		bodyDef.bullet = true;
 
 		// Fixture shape
 		b2PolygonShape bShape;
@@ -344,7 +348,8 @@ void World::createEnemies()
 		fixtureDef.density = 0.5f;
 		fixtureDef.friction = 1.f;
 		fixtureDef.restitution = 0.f;
-		fixtureDef.filter.categoryBits = BodyCategory::Enemy;
+		fixtureDef.filter.categoryBits = BodyCategory::ID::Enemy;
+		fixtureDef.filter.maskBits = BodyCategory::ID::Player | BodyCategory::ID::Enemy | BodyCategory::ID::Other;
 
 		// Create and register the body in the world
 		m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
@@ -354,7 +359,7 @@ void World::createEnemies()
 		fud->entity = entity;
 		fud->shape = shape;
 		fixture->SetUserData(fud);
-
+		
 		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 		m_WorldRegistry.emplace<C_Animation>(entity);
 		m_WorldRegistry.emplace<C_EnemyTag>(entity);

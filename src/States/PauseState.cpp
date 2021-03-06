@@ -7,7 +7,7 @@
 PauseState::PauseState(StateStack& stack, Context& context) :
 	State(stack, context)
 {
-	m_Text.setFont(m_Context.fonts->get(Fonts::ARJULIAN));
+	m_Text.setFont(m_Context.fonts->get(Fonts::ID::ARJULIAN));
 	m_Text.setString("Paused");
 	m_Text.setCharacterSize(20u);
 	m_Text.setOutlineThickness(3.f);

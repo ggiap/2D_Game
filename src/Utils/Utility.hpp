@@ -38,17 +38,18 @@ namespace tmx
 
 namespace BodyCategory
 {
-    enum FilterCategory 
+    enum ID
     {
         Player = 0x01,
         Enemy = 0x02,
-        Other = 0x04,
+        EnemySensor = 0x04,
+        Other = 0x08,
     };
 }
 
 namespace Music
 {
-    enum ID
+    enum class ID
     {
         MenuTheme,
         GameTheme,
@@ -57,7 +58,7 @@ namespace Music
 
 namespace Sounds
 {
-    enum ID
+    enum class ID
     {
         Jump,
         CoinPickup,
@@ -67,7 +68,7 @@ namespace Sounds
 
 namespace Textures
 {
-    enum ID
+    enum class ID
     {
         CharactersSpriteSheet,
         MonochromeSpriteSheet,
@@ -78,7 +79,7 @@ namespace Textures
 
 namespace Fonts
 {
-    enum ID
+    enum class ID
     {
         ARJULIAN,
     };
@@ -86,7 +87,7 @@ namespace Fonts
 
 namespace Category
 {
-    enum Type
+    enum class ID
     {
         None = 0,
         Scene = 1 << 0,
@@ -97,7 +98,7 @@ namespace Category
 
 namespace GameObjectState
 {
-    enum State
+    enum class ID
     {
         Standing,
         Walking,
@@ -107,7 +108,7 @@ namespace GameObjectState
 
 namespace Animations
 {
-    enum ID
+    enum class ID
     {
         Standing,
         Walking,

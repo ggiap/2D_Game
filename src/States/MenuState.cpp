@@ -10,7 +10,7 @@ MenuState::MenuState(StateStack& stack, Context& context) :
 	m_Options(),
 	optionIndex(0)
 {
-	auto& font = context.fonts->get(Fonts::ARJULIAN);
+	auto& font = context.fonts->get(Fonts::ID::ARJULIAN);
 
 	sf::Text playText;
 	playText.setFont(font);
@@ -26,7 +26,7 @@ MenuState::MenuState(StateStack& stack, Context& context) :
 
 	updateOptionsText();
 
-	m_Context.music->play(Music::MenuTheme);
+	m_Context.music->play(Music::ID::MenuTheme);
 }
 
 void MenuState::draw()

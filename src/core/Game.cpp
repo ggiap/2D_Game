@@ -22,7 +22,7 @@ Game::Game() :
 
 	loadResources();
 
-	m_StatisticsText.setFont(m_Fonts.get(Fonts::ARJULIAN));
+	m_StatisticsText.setFont(m_Fonts.get(Fonts::ID::ARJULIAN));
 	m_StatisticsText.setOutlineThickness(3.f);
 	m_StatisticsText.setOutlineColor(sf::Color::Black);
 	m_StatisticsText.setCharacterSize(20u);
@@ -103,10 +103,10 @@ void Game::Render()
 
 void Game::loadResources()
 {
-	m_Fonts.load(Fonts::ARJULIAN, "../res/Font/ARJULIAN.ttf");
-	m_Textures.load(Textures::CharactersSpriteSheet, "../res/Sprites/SMB_Characters2.png");
-	m_Textures.load(Textures::MonochromeSpriteSheet, "../res/Sprites/Tilemap/monochrome_tilemap_transparent_packed.png");
-	m_Textures.load(Textures::SplashScreen, "../res/Sprites/bg.png");
+	m_Fonts.load(Fonts::ID::ARJULIAN, "../res/Font/ARJULIAN.ttf");
+	m_Textures.load(Textures::ID::CharactersSpriteSheet, "../res/Sprites/SMB_Characters2.png");
+	m_Textures.load(Textures::ID::MonochromeSpriteSheet, "../res/Sprites/Tilemap/monochrome_tilemap_transparent_packed.png");
+	m_Textures.load(Textures::ID::SplashScreen, "../res/Sprites/bg.png");
 }
 
 void Game::registerStates()

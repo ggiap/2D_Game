@@ -19,12 +19,12 @@ GameState::GameState(StateStack& stack, Context& context) :
 
     youLoseLabel.setString("YOU LOSE");
     youLoseLabel.setCharacterSize(60u);
-    youLoseLabel.setFont(m_Context.fonts->get(Fonts::ARJULIAN));
+    youLoseLabel.setFont(m_Context.fonts->get(Fonts::ID::ARJULIAN));
     youLoseLabel.setOutlineThickness(3.f);
     youLoseLabel.setOutlineColor(sf::Color::Black);
     utils::centerOrigin(youLoseLabel);
 
-    m_Context.music->play(Music::GameTheme);
+    m_Context.music->play(Music::ID::GameTheme);
 }
 
 void GameState::draw()
@@ -88,7 +88,7 @@ bool GameState::handleEvent(const sf::Event& event)
     }
     else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
-        m_Context.sounds->play(Sounds::Pause);
+        m_Context.sounds->play(Sounds::ID::Pause);
         requestStackPush(States::Pause);
         m_Context.isPaused = true;
     } 

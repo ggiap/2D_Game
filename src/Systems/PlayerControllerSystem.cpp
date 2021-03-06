@@ -5,8 +5,9 @@
 #include "PlayerControllerSystem.hpp"
 #include <SFML/Window/Event.hpp>
 #include "../Utils/AnimatedSprite.h"
-#include "../Utils//Context.hpp"
-#include "../Utils//Math.hpp"
+#include "../Utils/Context.hpp"
+#include "../Utils/Math.hpp"
+#include "../Utils/FixtureUserData.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Raycast.hpp"
@@ -34,6 +35,9 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         auto &anim = view.get<C_Animation>(entity);
         auto &raycastComp = view.get<C_Raycast>(entity);
 
+        auto userData = static_cast<FixtureUserData*>(m_Context->enttToBody[entity]->GetFixtureList()->GetUserData());
+        if (userData == nullptr || userData->shape == nullptr) continue;
+
         b2Vec2 velocity = m_Context->enttToBody[entity]->GetLinearVelocity();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -42,7 +46,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
                 velocity.x -= 0.6f;
 
             if(raycastComp.collisionInfo.collisionBelow)
-                m_State = GameObjectState::Walking;
+                m_State = GameObjectState::ID::Walking;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -51,7 +55,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
                 velocity.x += 0.6f;
 
             if(raycastComp.collisionInfo.collisionBelow)
-                m_State = GameObjectState::Walking;
+                m_State = GameObjectState::ID::Walking;
         }
         velocity.x = math::lerp(velocity.x, velocity.x, 0.4f);
 
@@ -80,17 +84,17 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
                 //m_Context->enttToBody[entity]->ApplyLinearImpulseToCenter(b2Vec2(0.f, -3.f), true);
                 //m_Context->enttToBody[entity]->ApplyForceToCenter(b2Vec2(0.f, -200.f), true);
 
-            m_State = GameObjectState::Jumping;
+            m_State = GameObjectState::ID::Jumping;
         }
 
         if(!raycastComp.collisionInfo.collisionBelow)
-        	m_State = GameObjectState::Jumping;
+        	m_State = GameObjectState::ID::Jumping;
 
         if((velocity.x >= -0.1f || velocity.x <= 0.1f) && raycastComp.collisionInfo.collisionBelow)
-            m_State = GameObjectState::Standing;
+            m_State = GameObjectState::ID::Standing;
 
         if((velocity.x < -0.1f || velocity.x > 0.1f) && raycastComp.collisionInfo.collisionBelow)
-        	m_State = GameObjectState::Walking;
+        	m_State = GameObjectState::ID::Walking;
 
         velocity.x = std::clamp(velocity.x, -5.f, 5.f);
         velocity.y = std::clamp(velocity.y, -10.f, 10.f);
@@ -103,16 +107,16 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         switch (m_State)
         {
-            case GameObjectState::Standing:
-                anim.animatedSprite.play(Animations::Standing);
+            case GameObjectState::ID::Standing:
+                anim.animatedSprite.play(Animations::ID::Standing);
                 break;
 
-            case GameObjectState::Walking:
-                anim.animatedSprite.play(Animations::Walking);
+            case GameObjectState::ID::Walking:
+                anim.animatedSprite.play(Animations::ID::Walking);
                 break;
 
-            case GameObjectState::Jumping:
-                anim.animatedSprite.play(Animations::Jumping);
+            case GameObjectState::ID::Jumping:
+                anim.animatedSprite.play(Animations::ID::Jumping);
                 break;
         }
     }

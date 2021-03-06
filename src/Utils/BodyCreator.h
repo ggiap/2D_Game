@@ -72,6 +72,7 @@ struct BodyCreator
 		b2FixtureDef f;
 		f.density = 1.f;
 		f.shape = &ps;
+		f.filter.categoryBits = BodyCategory::Other;
 
 		body->CreateFixture(&f);
 	}

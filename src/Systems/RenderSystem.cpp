@@ -54,7 +54,7 @@ void RenderSystem::drawDebugInfo(entt::entity& entity, C_Rigidbody& rb)
     for(b2Fixture* fixture = m_Context->enttToBody[entity]->GetFixtureList(); fixture != nullptr; fixture = fixture->GetNext())
     {
 		auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
-		if (userData->shape == nullptr) return;
+		if (userData == nullptr || userData->shape == nullptr) continue;
 
 		m_Context->window->draw(*userData->shape);
 

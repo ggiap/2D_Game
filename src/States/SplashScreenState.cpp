@@ -10,13 +10,13 @@ SplashScreenState::SplashScreenState(StateStack& stack, Context context) :
 	m_TextEffectTime(sf::Time::Zero)
 {
 	m_Text.setCharacterSize(50u);
-	m_Text.setFont(context.fonts->get(Fonts::ARJULIAN));
+	m_Text.setFont(context.fonts->get(Fonts::ID::ARJULIAN));
 	m_Text.setString("Press any key to continue");
 	utils::centerOrigin(m_Text);
 	sf::Vector2f windowSize(context.window->getSize().x, context.window->getSize().y);
 	m_Text.setPosition(windowSize.x / 2.f, windowSize.y / 1.1f);
 
-	m_BackgroundSprite.setTexture(m_Context.textures->get(Textures::SplashScreen));
+	m_BackgroundSprite.setTexture(m_Context.textures->get(Textures::ID::SplashScreen));
 	m_BackgroundSprite.setScale(sf::Vector2f(4.5f, 4.5f));
 	utils::centerOrigin(m_BackgroundSprite);
 	m_BackgroundSprite.setPosition(windowSize.x / 2.f, windowSize.y / 2.2f);

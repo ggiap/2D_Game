@@ -24,7 +24,7 @@ void MoveSystem::update(sf::Time& dt)
                 for(auto fixture = rb.rigidbody->GetFixtureList(); fixture != nullptr; fixture = fixture->GetNext())
                 {
                     auto userData = static_cast<FixtureUserData*>(fixture->GetUserData());
-                    if (userData->shape == nullptr) return;
+                    if (userData == nullptr || userData->shape == nullptr) continue;
                     
                     userData->shape->setPosition(utils::B2VecToSFVec<sf::Vector2f>(rb.rigidbody->GetPosition()));
                     userData->shape->setRotation(math::radToDeg(rb.rigidbody->GetAngle()));
