@@ -8,7 +8,6 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include "../core/World.h"
-#include <array>
 
 CollisionSystem::CollisionSystem(Context& context, World* world) :
     BaseSystem(context, world),
@@ -44,6 +43,7 @@ void CollisionSystem::handleRaycasts()
 
         for(b2Fixture* fixture = rb.rigidbody->GetFixtureList(); fixture; fixture = fixture->GetNext())
         {
+			// Keep enemies on platforms
 			if (m_World->getEntityRegistry()->has<C_EnemyTag>(entity))
 			{
 				b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_UP);
@@ -54,12 +54,7 @@ void CollisionSystem::handleRaycasts()
 					raycastComp.collisionInfo.platformCheckLeft = true;
 				}
 
-				std::array<sf::Vertex, 2> line;
-				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-				line[0].color = sf::Color::Blue;
-				line[1].color = sf::Color::Blue;
-				raycastComp.raycasts.push_back(line);
+				createLine(rayOrigin, rayDir, raycastComp.raycasts);
 
 				m_Callback = RayCastCallback();
 
@@ -71,11 +66,7 @@ void CollisionSystem::handleRaycasts()
 					raycastComp.collisionInfo.platformCheckRight = true;
 				}
 
-				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-				line[0].color = sf::Color::Blue;
-				line[1].color = sf::Color::Blue;
-				raycastComp.raycasts.push_back(line);
+				createLine(rayOrigin, rayDir, raycastComp.raycasts);
 
 				m_Callback = RayCastCallback();
 			}
@@ -87,12 +78,7 @@ void CollisionSystem::handleRaycasts()
 					math::VECTOR_RIGHT * (raycastComp.verticalRaySpacing * i));
 				b2Vec2 rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_UP * raycastComp.rayLength);
 
-				std::array<sf::Vertex, 2> line;
-				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-				line[0].color = sf::Color::Red;
-				line[1].color = sf::Color::Red;
-				raycastComp.raycasts.push_back(line);
+				createLine(rayOrigin, rayDir, raycastComp.raycasts);
 
 		        m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if (m_Callback.m_fixture != nullptr)
@@ -112,12 +98,7 @@ void CollisionSystem::handleRaycasts()
 					math::VECTOR_LEFT * (raycastComp.verticalRaySpacing * i));
 				b2Vec2 rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_DOWN * raycastComp.rayLength);
 
-				std::array<sf::Vertex, 2> line;
-				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-				line[0].color = sf::Color::Red;
-				line[1].color = sf::Color::Red;
-				raycastComp.raycasts.push_back(line);
+				createLine(rayOrigin, rayDir, raycastComp.raycasts);
 
 				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if (m_Callback.m_fixture != nullptr)
@@ -137,12 +118,7 @@ void CollisionSystem::handleRaycasts()
 					math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i));
 				b2Vec2 rayDir = rayOrigin + (utils::sfVecToB2Vec(math::VECTOR_RIGHT * raycastComp.rayLength));
 
-				std::array<sf::Vertex, 2> line;
-				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-				line[0].color = sf::Color::Red;
-				line[1].color = sf::Color::Red;
-				raycastComp.raycasts.push_back(line);
+				createLine(rayOrigin, rayDir, raycastComp.raycasts);
 
 				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if (m_Callback.m_fixture != nullptr)
@@ -162,12 +138,7 @@ void CollisionSystem::handleRaycasts()
 					math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i));
 				auto rayDir = rayOrigin + utils::sfVecToB2Vec(math::VECTOR_LEFT * raycastComp.rayLength);
 
-				std::array<sf::Vertex, 2> line;
-				line[0].position = utils::B2VecToSFVec<sf::Vector2f>(rayOrigin);
-				line[1].position = utils::B2VecToSFVec<sf::Vector2f>(rayDir);
-				line[0].color = sf::Color::Red;
-				line[1].color = sf::Color::Red;
-				raycastComp.raycasts.push_back(line);
+				createLine(rayOrigin, rayDir, raycastComp.raycasts);
 
 		        m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if(m_Callback.m_fixture != nullptr)
@@ -235,4 +206,14 @@ void CollisionSystem::UpdateRaycastOrigins()
 		raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left + size.x, bounds.top + size.y));
 	});
+}
+
+void CollisionSystem::createLine(b2Vec2& origin, b2Vec2& direction, std::vector<std::array<sf::Vertex, 2>>& lines)
+{
+	std::array<sf::Vertex, 2> line;
+	line[0].position = utils::B2VecToSFVec<sf::Vector2f>(origin);
+	line[1].position = utils::B2VecToSFVec<sf::Vector2f>(direction);
+	line[0].color = sf::Color::Red;
+	line[1].color = sf::Color::Red;
+	lines.push_back(line);
 }

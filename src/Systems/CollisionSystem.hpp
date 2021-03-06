@@ -2,7 +2,10 @@
 
 #include "BaseSystem.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 #include "../Utils/RayCastCallback.hpp"
+#include <array>
+#include <vector>
 
 class CollisionSystem : public BaseSystem
 {
@@ -17,6 +20,7 @@ private:
     void handleRaycasts();
     void CalculateRaySpacing();
     void UpdateRaycastOrigins();
+    void createLine(b2Vec2 &origin, b2Vec2 &direction, std::vector<std::array<sf::Vertex, 2>>& lines);
 
     RayCastCallback m_Callback{};
 };

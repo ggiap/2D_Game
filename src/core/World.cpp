@@ -29,6 +29,7 @@ World::World(Context& context) :
 	m_SystemManager(),
 	m_b2World(new b2World(b2Vec2(0, 9.81))),
 	m_WorldRegistry(),
+	anims(),
 	m_CountdownTimer(sf::seconds(50)),
 	sfmlDebug(false),
 	b2dDebug(false)
