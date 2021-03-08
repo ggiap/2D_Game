@@ -39,6 +39,8 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         if (userData == nullptr || userData->shape == nullptr) continue;
 
         b2Vec2 velocity = m_Context->enttToBody[entity]->GetLinearVelocity();
+        velocity.x -= velocity.x > 0 ? .2f : -.2f;
+        if (velocity.x < .21f && velocity.x > -.21f) velocity.x = 0;
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
@@ -57,7 +59,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
             if(raycastComp.collisionInfo.collisionBelow)
                 m_State = GameObjectState::ID::Walking;
         }
-        velocity.x = math::lerp(velocity.x, velocity.x, 0.4f);
+        velocity.x = math::lerp(velocity.x, velocity.x, 0.5f);
 
         if (raycastComp.collisionInfo.entityBelow != entt::null)
         {

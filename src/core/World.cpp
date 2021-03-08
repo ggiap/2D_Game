@@ -267,7 +267,7 @@ void World::createPlayer()
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &bShape;
 	fixtureDef.density = 1.f;
-	fixtureDef.friction = 0.8f;
+	fixtureDef.friction = 0.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::ID::Player;
 	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other;

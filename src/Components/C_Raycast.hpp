@@ -22,6 +22,7 @@ struct CollisionInfo
     entt::entity entityAbove{entt::null};
     entt::entity entityLeft {entt::null};
     entt::entity entityRight{entt::null};
+    b2Vec2 normalBelow{};
 
     void reset()
     {
@@ -35,6 +36,7 @@ struct CollisionInfo
         entityAbove = entt::null;
         entityLeft = entt::null;
         entityRight = entt::null;
+        normalBelow = b2Vec2();
     }
 };
 

@@ -104,6 +104,7 @@ void CollisionSystem::handleRaycasts()
 		        {
 			        raycastComp.collisionInfo.collisionBelow = true;
 					raycastComp.collisionInfo.entityBelow = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
+					raycastComp.collisionInfo.normalBelow = m_Callback.m_normal;
 			        break;
 		        }
 				m_Callback = RayCastCallback();
