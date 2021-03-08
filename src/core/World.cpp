@@ -30,6 +30,7 @@ World::World(Context& context) :
 	m_b2World(new b2World(b2Vec2(0, 9.81))),
 	m_WorldRegistry(),
 	anims(),
+	m_ContactListener(m_Context, this),
 	m_CountdownTimer(sf::seconds(101)),
 	sfmlDebug(false),
 	b2dDebug(false)
@@ -42,6 +43,8 @@ World::World(Context& context) :
 	m_TimerLabel.setCharacterSize(20u);
 	m_TimerLabel.setOutlineColor(sf::Color::Black);
 	utils::centerOrigin(m_TimerLabel);
+
+	m_b2World->SetContactListener(&m_ContactListener);
 }
 
 World::~World()
@@ -97,7 +100,7 @@ void World::spawnEnemy()
 	auto spawnLocation = utils::getObjectByName(m_WorldRegistry, "Spawner Locations", "Enemy Spawn Location 1");
 
 	const auto entity = m_WorldRegistry.create();
-	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 11.f));
+	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 10.f));
 	utils::centerOrigin(*shape);
 	shape->setFillColor(sf::Color::Transparent);
 	shape->setOutlineThickness(-1);
@@ -319,7 +322,7 @@ void World::createEnemies()
 	for (const auto& obj : objects)
 	{
 		const auto entity = m_WorldRegistry.create();
-		auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 11.f));
+		auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 10.f));
 		utils::centerOrigin(*shape);
 		shape->setFillColor(sf::Color::Transparent);
 		shape->setOutlineThickness(-1);

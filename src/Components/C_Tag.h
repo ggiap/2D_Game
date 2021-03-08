@@ -16,4 +16,9 @@ struct C_EnemyTag
 
 };
 
+struct C_OneWayPlatform
+{
+
+};
+
 #endif //ENTITY_COMPONENT_SYSTEM_C_TAG_H

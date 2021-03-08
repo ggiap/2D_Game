@@ -7,6 +7,7 @@
 #include "../core/SystemManager.hpp"
 #include "../Utils/Timer.hpp"
 #include "../Utils/Animation.h"
+#include "../Utils/ContactListener.hpp"
 #include <map>
 
 struct Context;
@@ -49,6 +50,8 @@ private:
 	entt::registry m_WorldRegistry;
 
 	std::unordered_map<Animations::ID, Animation*> anims;
+
+	ContactListener m_ContactListener;
 
 	Timer m_CountdownTimer;
 	sf::Text m_TimerLabel;
