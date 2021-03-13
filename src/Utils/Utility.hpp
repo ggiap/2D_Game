@@ -42,7 +42,7 @@ namespace BodyCategory
     {
         Player = 0x01,
         Enemy = 0x02,
-        EnemySensor = 0x04,
+        OneWayPlatform = 0x04,
         Other = 0x08,
     };
 }

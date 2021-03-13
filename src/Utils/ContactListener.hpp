@@ -37,6 +37,9 @@ public:
     std::vector<Contacts> m_Contacts{};
     Context* m_Context;
     World* m_World;
+
+    b2Fixture* platformFixture = nullptr;
+    b2Fixture* otherFixture = nullptr;
 };
 
 

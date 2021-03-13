@@ -133,7 +133,6 @@ void World::spawnEnemy()
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
-	m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
 	auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
 	FixtureUserData* fud = new FixtureUserData();
 	fud->entity = entity;
@@ -178,11 +177,11 @@ void World::buildScene()
 	createCamera();
 	
 	m_SystemManager.addSystem(std::make_unique<MoveSystem>(*m_Context, this));
-	m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<AnimationSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<CameraSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<PlayerControllerSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<EnemyControllerSystem>(*m_Context, this));
+	m_SystemManager.addSystem(std::make_unique<CollisionSystem>(*m_Context, this));
 	m_SystemManager.addSystem(std::make_unique<RenderSystem>(*m_Context, this));
 }
 
@@ -273,11 +272,10 @@ void World::createPlayer()
 	fixtureDef.friction = 0.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::ID::Player;
-	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other;
+	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform;
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
-	m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
 	auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
 	FixtureUserData* fud = new FixtureUserData();
 	fud->entity = entity;
@@ -356,7 +354,6 @@ void World::createEnemies()
 
 		// Create and register the body in the world
 		m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
-		m_Context->bodyToEntt[m_Context->enttToBody[entity]] = entity;
 		auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
 		FixtureUserData* fud = new FixtureUserData();
 		fud->entity = entity;
@@ -380,7 +377,6 @@ void World::unloadScene()
 		m_b2World->DestroyBody(pair.second);
 	}
 	m_Context->enttToBody.clear();
-	m_Context->bodyToEntt.clear();
 
 	m_WorldRegistry.each([&](auto entity) 
 		{

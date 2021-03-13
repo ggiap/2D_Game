@@ -71,7 +71,6 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
                 m_World->getB2World()->DestroyBody(body);
                 m_World->getEntityRegistry()->destroy(raycastComp.collisionInfo.entityBelow);
-                m_Context->bodyToEntt.erase(m_Context->enttToBody[raycastComp.collisionInfo.entityBelow]);
                 m_Context->enttToBody.erase(raycastComp.collisionInfo.entityBelow);    
 
                 velocity.y = 0;

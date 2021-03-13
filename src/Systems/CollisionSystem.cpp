@@ -50,7 +50,7 @@ void CollisionSystem::handleRaycasts()
 				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 				if (m_Callback.m_fixture != nullptr)
 				{
-					raycastComp.collisionInfo.platformCheckLeft = true;
+					raycastComp.collisionInfo.groundCheckLeft = true;
 				}
 
 				createLine(rayOrigin, rayDir, raycastComp.raycasts);
@@ -62,7 +62,7 @@ void CollisionSystem::handleRaycasts()
 				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 				if (m_Callback.m_fixture != nullptr)
 				{
-					raycastComp.collisionInfo.platformCheckRight = true;
+					raycastComp.collisionInfo.groundCheckRight = true;
 				}
 
 				createLine(rayOrigin, rayDir, raycastComp.raycasts);
@@ -82,8 +82,11 @@ void CollisionSystem::handleRaycasts()
 		        m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if (m_Callback.m_fixture != nullptr)
 		        {
+					auto userData = static_cast<FixtureUserData*>(m_Callback.m_fixture->GetUserData());
+					if (userData == nullptr) continue;
+
 			        raycastComp.collisionInfo.collisionAbove = true;
-			        raycastComp.collisionInfo.entityAbove = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
+			        raycastComp.collisionInfo.entityAbove = userData->entity;
 			        break;
 		        }
 				m_Callback = RayCastCallback();
@@ -102,8 +105,11 @@ void CollisionSystem::handleRaycasts()
 				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if (m_Callback.m_fixture != nullptr)
 		        {
+					auto userData = static_cast<FixtureUserData*>(m_Callback.m_fixture->GetUserData());
+					if (userData == nullptr) continue;
+
 			        raycastComp.collisionInfo.collisionBelow = true;
-					raycastComp.collisionInfo.entityBelow = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
+					raycastComp.collisionInfo.entityBelow = userData->entity;
 					raycastComp.collisionInfo.normalBelow = m_Callback.m_normal;
 			        break;
 		        }
@@ -123,8 +129,11 @@ void CollisionSystem::handleRaycasts()
 				m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if (m_Callback.m_fixture != nullptr)
 		        {
+					auto userData = static_cast<FixtureUserData*>(m_Callback.m_fixture->GetUserData());
+					if (userData == nullptr) continue;
+
 			        raycastComp.collisionInfo.collisionRight = true;
-					raycastComp.collisionInfo.entityRight = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
+					raycastComp.collisionInfo.entityRight = userData->entity;
 			        break;
 		        }
 				m_Callback = RayCastCallback();
@@ -143,8 +152,11 @@ void CollisionSystem::handleRaycasts()
 		        m_World->getB2World()->RayCast(&m_Callback, rayOrigin, rayDir);
 		        if(m_Callback.m_fixture != nullptr)
                 {
+					auto userData = static_cast<FixtureUserData*>(m_Callback.m_fixture->GetUserData());
+					if (userData == nullptr) continue;
+
                     raycastComp.collisionInfo.collisionLeft = true;
-					raycastComp.collisionInfo.entityLeft = m_Context->bodyToEntt[m_Callback.m_fixture->GetBody()];
+					raycastComp.collisionInfo.entityLeft = userData->entity;
                     break;
                 }
 				m_Callback = RayCastCallback();

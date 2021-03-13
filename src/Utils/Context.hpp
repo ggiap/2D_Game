@@ -19,8 +19,7 @@ struct Context
 				music(&music),
 				sounds(&sounds),
 				isPaused(isPaused),
-				enttToBody(),
-				bodyToEntt()
+				enttToBody()
 	{
 	
 	}
@@ -32,5 +31,4 @@ struct Context
 	SoundEffectPlayer* sounds;
 	bool isPaused;
 	std::unordered_map<entt::entity, b2Body*> enttToBody;
-	std::unordered_map<b2Body* , entt::entity> bodyToEntt;
 };

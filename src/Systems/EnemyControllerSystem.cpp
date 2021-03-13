@@ -24,11 +24,11 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			else
 				velocity.x += 1.f;
 
-			if (raycastComp.collisionInfo.collisionBelow && raycastComp.collisionInfo.platformCheckLeft == false)
+			if (raycastComp.collisionInfo.collisionBelow && raycastComp.collisionInfo.groundCheckLeft == false)
 				if (velocity.x < 0.f)
 					velocity.x = std::abs(velocity.x);
 
-			if (raycastComp.collisionInfo.collisionBelow && raycastComp.collisionInfo.platformCheckRight == false)
+			if (raycastComp.collisionInfo.collisionBelow && raycastComp.collisionInfo.groundCheckRight == false)
 				if (velocity.x > 0.f)
 					velocity.x = -std::abs(velocity.x);
 

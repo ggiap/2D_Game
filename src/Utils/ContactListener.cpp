@@ -70,13 +70,14 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
         b2Vec2 relativeVel = -platformBody->GetLocalVector(pointVelOther - pointVelPlatform);
 
         if (relativeVel.y < 1) //if moving down faster than 1 m/s, handle as before
-            return;//point is moving into platform, leave contact solid and exit
-        else if (relativeVel.y < 1) 
-        { //if moving slower than 1 m/s
+            contact->SetEnabled(true);//point is moving into platform, leave contact solid and exit
+        else if (relativeVel.y < 0)
+        { 
+            //if moving slower than 1 m/s
             //borderline case, moving only slightly out of platform
             b2Vec2 relativePoint = platformBody->GetLocalPoint(worldManifold.points[i]);
-            float platformFaceY = 0.5f;//front of platform, from fixture definition :(
-            if (relativePoint.y > platformFaceY - 0.05)
+            float platformFaceY = .5f;//front of platform, from fixture definition :(
+            if (relativePoint.y < platformFaceY - 0.05)
                 return;//contact point is less than 5cm inside front face of platfrom
         }
     }
