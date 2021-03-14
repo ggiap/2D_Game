@@ -72,8 +72,7 @@ namespace Textures
     {
         CharactersSpriteSheet,
         MonochromeSpriteSheet,
-        Background,
-        SplashScreen,
+        MainBackground,
     };
 }
 

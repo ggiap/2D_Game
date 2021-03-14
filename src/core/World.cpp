@@ -190,7 +190,30 @@ void World::createAnimations()
 	auto& texture = m_Context->textures->get(Textures::ID::CharactersSpriteSheet);
 	auto& monochrome_texture = m_Context->textures->get(Textures::ID::MonochromeSpriteSheet);
 
-	Animation *standing = new Animation();
+	Animation* standing = new Animation();
+	standing->setSpriteSheet(texture);
+	standing->addFrame(sf::IntRect(320, 0, 16, 16));
+	anims[Animations::ID::Standing] = standing;
+
+	Animation* walking = new Animation();
+	walking->setSpriteSheet(texture);
+	walking->addFrame(sf::IntRect(464, 0, 16, 16));
+	walking->addFrame(sf::IntRect(416, 0, 16, 16));
+	anims[Animations::ID::Walking] = walking;
+
+	Animation* jumping = new Animation();
+	jumping->setSpriteSheet(texture);
+	jumping->addFrame(sf::IntRect(432, 0, 16, 16));
+	anims[Animations::ID::Jumping] = jumping;
+
+	Animation* enemyMoving = new Animation();
+	enemyMoving->setSpriteSheet(texture);
+	enemyMoving->addFrame(sf::IntRect(400, 224, 16, 16));
+	enemyMoving->addFrame(sf::IntRect(416, 224, 16, 16));
+	enemyMoving->addFrame(sf::IntRect(432, 224, 16, 16));
+	anims[Animations::ID::EnemyMoving] = enemyMoving;
+
+	/*Animation *standing = new Animation();
 	standing->setSpriteSheet(texture);
 	standing->addFrame(sf::IntRect( 9, 32, 16, 22));
 	anims[Animations::ID::Standing] = standing;
@@ -204,13 +227,13 @@ void World::createAnimations()
 	Animation *jumping = new Animation();
 	jumping->setSpriteSheet(texture);
 	jumping->addFrame(sf::IntRect( 330, 31, 16, 22));
-	anims[Animations::ID::Jumping] = jumping;
+	anims[Animations::ID::Jumping] = jumping;*/
 
-	Animation *enemyMoving = new Animation();
+	/*Animation *enemyMoving = new Animation();
 	enemyMoving->setSpriteSheet(monochrome_texture);
 	enemyMoving->addFrame(sf::IntRect(16, 261, 16, 12));
 	enemyMoving->addFrame(sf::IntRect(32, 261, 16, 12));
-	anims[Animations::ID::EnemyMoving] = enemyMoving;
+	anims[Animations::ID::EnemyMoving] = enemyMoving;*/
 
 	auto view = m_WorldRegistry.view<C_Animation>();
 
@@ -241,7 +264,8 @@ void World::createAnimations()
 void World::createPlayer()
 {
 	const auto entity = m_WorldRegistry.create();
-	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+	//auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
+	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 15.f));
 	utils::centerOrigin(*shape);
 	shape->setFillColor(sf::Color::Transparent);
 	shape->setOutlineThickness(-1);

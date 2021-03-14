@@ -25,4 +25,6 @@ private:
 
 	std::vector<sf::Text> m_Options;
 	std::size_t optionIndex;
+
+	sf::Sprite		m_BackgroundSprite;
 };

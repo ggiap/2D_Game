@@ -6,6 +6,7 @@
 #include "../Components/C_Tag.h"
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
+#include "../Components/C_Animation.hpp"
 
 EnemyControllerSystem::EnemyControllerSystem(Context &context, World* world) :
 	BaseSystem(context, world),
@@ -15,7 +16,7 @@ EnemyControllerSystem::EnemyControllerSystem(Context &context, World* world) :
 
 void EnemyControllerSystem::update(sf::Time& dt)
 {
-	m_World->getEntityRegistry()->view<C_EnemyTag, C_Rigidbody, C_Raycast>().each([&](auto entity, auto& rb, auto& raycastComp)
+	m_World->getEntityRegistry()->view<C_EnemyTag, C_Rigidbody, C_Raycast, C_Animation>().each([&](auto entity, auto& rb, auto& raycastComp, auto& animComp)
 		{
 			b2Vec2 velocity = m_Context->enttToBody[entity]->GetLinearVelocity();
 
@@ -42,5 +43,10 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			velocity.x = std::clamp(velocity.x, -1.f, 1.f);
 			velocity.y = std::clamp(velocity.y, -10.f, 10.f);
 			m_Context->enttToBody[entity]->SetLinearVelocity(velocity);
+
+			if (velocity.x < -0.1f)
+				animComp.animatedSprite.setScale(sf::Vector2f(1.f, 1.f));
+			else if (velocity.x > 0.1f)
+				animComp.animatedSprite.setScale(sf::Vector2f(-1.f, 1.f));
 		});
 }

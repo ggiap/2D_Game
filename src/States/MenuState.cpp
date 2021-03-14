@@ -27,11 +27,19 @@ MenuState::MenuState(StateStack& stack, Context& context) :
 	updateOptionsText();
 
 	m_Context.music->play(Music::ID::MenuTheme);
+
+	auto windowSize = m_Context.window->getSize();
+	m_BackgroundSprite.setTexture(m_Context.textures->get(Textures::ID::MainBackground));
+	m_BackgroundSprite.setScale(sf::Vector2f(4.5f, 4.5f));
+	utils::centerOrigin(m_BackgroundSprite);
+	m_BackgroundSprite.setPosition(windowSize.x / 2.f, windowSize.y / 2.2f);
 }
 
 void MenuState::draw()
 {
 	m_Context.window->setView(m_Context.window->getDefaultView());
+
+	m_Context.window->draw(m_BackgroundSprite);
 
 	for (const auto& text : m_Options)
 		m_Context.window->draw(text);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="41">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="41">
  <tileset firstgid="1" name="Tileset1" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="../Sprites/Tilemap/monochrome_tilemap_packed.png" width="320" height="320"/>
   <tile id="18">
@@ -13,7 +13,7 @@
  </tileset>
  <layer id="1" name="Far Tile Layer" width="100" height="50">
   <data encoding="base64" compression="zlib">
-   eAHtmE0uBFEUhVuCkfiZ+RkiQYINYBEWYROCgdiDjWCIIYYiQcQII8RQjJzT6qZOvVR3dVNE0ucmt999f93t+7xSpdFwmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJmIAJ/BWBPnzQ/j9Lfqdejb2SH3xAxuYAh3wi71C/IN9kbD5bs8BFWXygvUbGPrbv0i/bg+lm7EbRg223PoJ5ypq8Y44YhzDwiFZzGGNcp3nLxUnYRxHIoHTT8xH8VgB1FcmzEu2r7GOZ7lUPrG+Q6pB7GPbxxYGvE8hJ5BQ7iGdkMCf3lHlzUYuX9AzNYH/qJPzqW9hHTmMR5RJyOR/6dkWXdBjnJ1r6jSzzax/fRt7Vxn6sZlaFfVQRqmee923MqrCPKkL1zI/jbZhVYR/lhEZw7R9FjvGPcA1hH9UQ99osmYYHqpjNfIQfOtLs1Jd9tIGdTXXjg37KInyVzekYn2v02UbntPb1SmnkdXo+fuIjnmv02Sb/pGLVyz70upPWdfqI55pOnm162QcvQa2yTh/FE9C+Zx+5E/2fhn20/735jdlWZ4Pj6uMRfeZT9iXoLaLsvqvTey6+xzHyJMtTtD4f+flQP+oDmJp+PlgkwXVp8J5rC4PbyJ1kcg39cED+Glfo2Ed9PuLc6D2w1mS/jrxkgUjn2LeP3McDGMW16afnowm8hPkGxuJM2UdQ+mp5qdF8l34nPg6w/lDyPKuP0EakzDluH0Gn2KoL1t36OCu+XeM+61/IOH1soq9pHwJIyk+FZXFL
+   eAHtmMFOFEEYhNdEPBHBm+JRSYBEfQH0IXwIX8IoB8M78CLAETiiR0MChHgST0I8Ek5WwRRTdHqZ3c1qSKb+pLb/7v67d/lqe2aHwSARAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiEQAiHwvwg8wBtt3DPxM/U11it/+IyNLQEO+UgnyM+gPza23NSssKiJS7SHkNaxvbB+bQ2mr+KLkh624/oh5iVr8tYcMc5i4BSt6zHGWOc6ZnER8eM2kEfWLc+H+K0C6luIZ0Xtua1jWq51H5gfQe4h1zDixzUHvj6DFqDn7CB+Q2JO7iXzq6IhL+UZeon1pSfy17eIHy2NV0hfQ2/aoYkzekkPdX7U0l+p5m/8mBj5WAsfoprqivjRRWg68/zdRnVF/OgiNJ35p9iG6or4USc0h2v/PPSEN+EpRPzohrh+R8kL+EArFhs/5A89co3qV/y4A3YzNY4f8of2uORX17vxucafbYbV53pVJyP+4q2+e8Fc8/Vdrkf1XOPPNsPq++yHX3fKXPzFW/1J/NBzzSjPNn32o2TrffGfhh/DzkJtPH609wP/n0b8qH1b/u2Yn4cydz9O8TGoXxDr3Lfa765Rf3Nhq8EOtNtoD23OR3s+3BP3A5gG7F+i9RrmqvNxXuM+Ye4ztAZ5vENHHuwh93UH6MeP20zER5z9/tHlh84N12gfrZcn75F8b3zwOtazHz9adj/BRNemSfxwDzzHtjfxAZnvrTq28aP1gjwuIPFxZhiuXq82Mb5l+trk22i1T3k+MBU/CKESYqZ2XD/2safWsv3R9L/ZOP34iL7Lvfb1fT8ffwH+53Gj
   </data>
  </layer>
  <layer id="6" name="Near Tile Layer" width="100" height="50">
