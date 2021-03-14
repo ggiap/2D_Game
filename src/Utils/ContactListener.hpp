@@ -6,21 +6,9 @@
 #define ENTITY_COMPONENT_SYSTEM_CONTACTLISTENER_HPP
 
 #include <Box2D/Box2D.h>
-#include <vector>
 
 class World;
 struct Context;
-
-struct Contacts
-{
-    b2Fixture* fixtureA;
-    b2Fixture* fixtureB;
-
-    bool operator==(const Contacts& other) const
-    {
-        return (fixtureA == other.fixtureA) && (fixtureB == other.fixtureB);
-    }
-};
 
 class ContactListener : public b2ContactListener
 {
@@ -34,7 +22,6 @@ public:
     void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
-    std::vector<Contacts> m_Contacts{};
     Context* m_Context;
     World* m_World;
 

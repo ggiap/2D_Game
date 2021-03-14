@@ -19,7 +19,7 @@ debugDraw()
     debugDraw.SetWindow(m_Context->window);
     debugDraw.ClearFlags(debugDraw.e_aabbBit & debugDraw.e_centerOfMassBit &
                          debugDraw.e_jointBit & debugDraw.e_pairBit & debugDraw.e_shapeBit);
-    debugDraw.SetFlags( b2Draw::e_jointBit | debugDraw.e_shapeBit); // Debug draw shapes and joints only
+    debugDraw.SetFlags( debugDraw.e_jointBit | debugDraw.e_shapeBit); // Debug draw shapes and joints only
 	m_World->getB2World()->SetDebugDraw(&debugDraw);
 }
 

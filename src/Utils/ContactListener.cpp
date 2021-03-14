@@ -15,17 +15,12 @@ ContactListener::ContactListener(Context* context, World* world) : m_Context(con
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
-    Contacts contacts = { contact->GetFixtureA(), contact->GetFixtureB()};
-    m_Contacts.push_back(contacts);
+    
 }
 
 void ContactListener::EndContact(b2Contact* contact)
 {
-    Contacts contacts = { contact->GetFixtureA(), contact->GetFixtureB()};
-    auto found = std::find(m_Contacts.begin(), m_Contacts.end(), contacts);
-
-    if(found != m_Contacts.end())
-        m_Contacts.erase(found);
+   
 }
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
@@ -37,8 +32,8 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
     auto userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
 
     //check if one of the fixtures is the platform
-    b2Fixture* platformFixture = NULL;
-    b2Fixture* otherFixture = NULL;
+    b2Fixture* platformFixture = nullptr;
+    b2Fixture* otherFixture = nullptr;
     if (m_World->getEntityRegistry()->has<C_OneWayPlatform>(userDataA->entity))
     {
         platformFixture = fixtureA;
@@ -50,44 +45,23 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
         otherFixture = fixtureA;
     }
 
-    if (!platformFixture)
+    if (!platformFixture || !otherFixture)
         return;
 
-    int numPoints = contact->GetManifold()->pointCount;
-    b2WorldManifold worldManifold;
-    contact->GetWorldManifold(&worldManifold);
+    b2AABB platformAABB = platformFixture->GetAABB(0); 
+    b2AABB otherAABB = otherFixture->GetAABB(0);
 
-    b2Body* platformBody = platformFixture->GetBody();
-    b2Body* otherBody = otherFixture->GetBody();
+    auto platformHeight = platformAABB.upperBound.y - platformAABB.lowerBound.y;
+    auto halfplatformHeight = platformHeight * 0.5f;
 
-    //check if contact points are moving into platform
-    for (int i = 0; i < numPoints; i++)
+    if (otherAABB.upperBound.y > platformAABB.lowerBound.y + halfplatformHeight &&
+        otherAABB.lowerBound.y < platformAABB.upperBound.y)
     {
-        b2Vec2 pointVelPlatform =
-            platformBody->GetLinearVelocityFromWorldPoint(worldManifold.points[i]);
-        b2Vec2 pointVelOther =
-            otherBody->GetLinearVelocityFromWorldPoint(worldManifold.points[i]);
-        b2Vec2 relativeVel = -platformBody->GetLocalVector(pointVelOther - pointVelPlatform);
-
-        if (relativeVel.y < 1) //if moving down faster than 1 m/s, handle as before
-            contact->SetEnabled(true);//point is moving into platform, leave contact solid and exit
-        else if (relativeVel.y < 0)
-        { 
-            //if moving slower than 1 m/s
-            //borderline case, moving only slightly out of platform
-            b2Vec2 relativePoint = platformBody->GetLocalPoint(worldManifold.points[i]);
-            float platformFaceY = .5f;//front of platform, from fixture definition :(
-            if (relativePoint.y < platformFaceY - 0.05)
-                return;//contact point is less than 5cm inside front face of platfrom
-        }
+        contact->SetEnabled(false);
     }
-
-    //no points are moving into platform, contact should not be solid
-    contact->SetEnabled(false);
 }
 
 void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
-    //reset the default state of the contact in case it comes back for more
-    contact->SetEnabled(true);
+
 }

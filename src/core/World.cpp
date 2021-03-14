@@ -129,7 +129,7 @@ void World::spawnEnemy()
 	fixtureDef.friction = 1.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::ID::Enemy;
-	fixtureDef.filter.maskBits = BodyCategory::ID::Player | BodyCategory::ID::Enemy | BodyCategory::ID::Other;
+	fixtureDef.filter.maskBits = BodyCategory::ID::Player | BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform;
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
@@ -350,7 +350,7 @@ void World::createEnemies()
 		fixtureDef.friction = 1.f;
 		fixtureDef.restitution = 0.f;
 		fixtureDef.filter.categoryBits = BodyCategory::ID::Enemy;
-		fixtureDef.filter.maskBits = BodyCategory::ID::Player | BodyCategory::ID::Enemy | BodyCategory::ID::Other;
+		fixtureDef.filter.maskBits = BodyCategory::ID::Player | BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform;
 
 		// Create and register the body in the world
 		m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
