@@ -14,9 +14,9 @@
 #include <cmath>
 #include "../core/World.h"
 
-PlayerControllerSystem::PlayerControllerSystem(Context& context, World *world) :
-BaseSystem(context, world),
-m_State()
+PlayerControllerSystem::PlayerControllerSystem(Context& context, World* world) :
+    BaseSystem(context, world),
+    m_State()
 {
 
 }
@@ -30,10 +30,10 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 {
     auto view = m_World->getEntityRegistry()->view<C_PlayerTag, C_Animation, C_Raycast>();
 
-    for (auto &entity : view)
+    for (auto& entity : view)
     {
-        auto &anim = view.get<C_Animation>(entity);
-        auto &raycastComp = view.get<C_Raycast>(entity);
+        auto& anim = view.get<C_Animation>(entity);
+        auto& raycastComp = view.get<C_Raycast>(entity);
 
         auto userData = static_cast<FixtureUserData*>(m_Context->enttToBody[entity]->GetFixtureList()->GetUserData());
         if (userData == nullptr || userData->shape == nullptr) continue;

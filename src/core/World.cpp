@@ -30,6 +30,7 @@ World::World(Context& context) :
 	m_b2World(new b2World(b2Vec2(0, 9.81))),
 	m_WorldRegistry(),
 	anims(),
+	markedForDestruction(),
 	m_ContactListener(m_Context, this),
 	m_CountdownTimer(sf::seconds(101)),
 	sfmlDebug(false),
@@ -55,6 +56,7 @@ World::~World()
 void World::update(const sf::Time dt)
 {
 	m_SystemManager.update(dt);
+	destroyMarkedEntities();
 
 	updateHUD(dt);
 }
@@ -125,7 +127,7 @@ void World::spawnEnemy()
 	// Fixture definition
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &bShape;
-	fixtureDef.density = 0.5f;
+	fixtureDef.density = 0.1f;
 	fixtureDef.friction = 1.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::ID::Enemy;
@@ -164,6 +166,11 @@ void World::spawnEnemy()
 	m_SystemManager.initSystems();
 }
 
+std::vector<entt::entity>& World::getMarkedEntities()
+{
+	return markedForDestruction;
+}
+
 void World::buildScene()
 {
 	m_b2World->SetAllowSleeping(true);
@@ -173,6 +180,7 @@ void World::buildScene()
 
 	createPlayer();
 	createEnemies();
+	createCoins();
 	createAnimations();
 	createCamera();
 	
@@ -189,6 +197,7 @@ void World::createAnimations()
 {
 	auto& texture = m_Context->textures->get(Textures::ID::CharactersSpriteSheet);
 	auto& monochrome_texture = m_Context->textures->get(Textures::ID::MonochromeSpriteSheet);
+	auto& coin_animation = m_Context->textures->get(Textures::ID::CoinAnimation);
 
 	Animation* standing = new Animation();
 	standing->setSpriteSheet(texture);
@@ -212,6 +221,14 @@ void World::createAnimations()
 	enemyMoving->addFrame(sf::IntRect(416, 224, 16, 16));
 	enemyMoving->addFrame(sf::IntRect(432, 224, 16, 16));
 	anims[Animations::ID::EnemyMoving] = enemyMoving;
+
+	Animation* coin = new Animation();
+	coin->setSpriteSheet(coin_animation);
+	coin->addFrame(sf::IntRect(0, 0, 16, 16));
+	coin->addFrame(sf::IntRect(0, 16, 16, 16));
+	coin->addFrame(sf::IntRect(0, 32, 16, 16));
+	coin->addFrame(sf::IntRect(0, 48, 16, 16));
+	anims[Animations::ID::Coin] = coin;
 
 	/*Animation *standing = new Animation();
 	standing->setSpriteSheet(texture);
@@ -258,6 +275,15 @@ void World::createAnimations()
 
 			utils::centerOrigin(animComp.animatedSprite);
 		}
+
+		if (m_WorldRegistry.has<C_Coin>(entity))
+		{
+			auto& animComp = m_WorldRegistry.get<C_Animation>(entity);
+			animComp.animatedSprite.addAnimation(Animations::ID::Coin, coin);
+			animComp.animatedSprite.play(Animations::ID::Coin);
+
+			utils::centerOrigin(animComp.animatedSprite);
+		}
 	}
 }
 
@@ -296,7 +322,7 @@ void World::createPlayer()
 	fixtureDef.friction = 0.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::ID::Player;
-	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform;
+	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform | BodyCategory::Coin;
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
@@ -370,7 +396,7 @@ void World::createEnemies()
 		// Fixture definition
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = &bShape;
-		fixtureDef.density = 0.5f;
+		fixtureDef.density = 0.1f;
 		fixtureDef.friction = 1.f;
 		fixtureDef.restitution = 0.f;
 		fixtureDef.filter.categoryBits = BodyCategory::ID::Enemy;
@@ -391,10 +417,90 @@ void World::createEnemies()
 	}
 }
 
+void World::createCoins()
+{
+	auto coins = utils::getObjectsByName(m_WorldRegistry, "Spawner Locations", "Coin");
+
+	for (const auto& obj : coins)
+	{
+		const auto entity = m_WorldRegistry.create();
+		auto shape = new sf::RectangleShape(sf::Vector2f(12.f, 12.f));
+		utils::centerOrigin(*shape);
+		shape->setFillColor(sf::Color::Transparent);
+		shape->setOutlineThickness(-1);
+		shape->setOutlineColor(sf::Color::Green);
+
+		sf::Vector2f position;
+		position.x = obj.getPosition().x;
+		position.y = obj.getPosition().y;
+
+		// Create the body definition
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_dynamicBody;
+		bodyDef.position = utils::sfVecToB2Vec(position);
+		bodyDef.fixedRotation = true;
+		bodyDef.gravityScale = 1.5f;
+		bodyDef.bullet = true;
+
+		// Fixture shape
+		b2PolygonShape bShape;
+		b2Vec2 size = utils::sfVecToB2Vec(shape->getSize() / 2.f);
+		bShape.SetAsBox(size.x, size.y);
+
+		// Fixture definition
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &bShape;
+		fixtureDef.density = 0.1f;
+		fixtureDef.friction = 0.1f;
+		fixtureDef.restitution = 0.1f;
+		fixtureDef.filter.categoryBits = BodyCategory::ID::Coin;
+		fixtureDef.filter.maskBits = BodyCategory::ID::Player;
+
+		// Create and register the body in the world
+		m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);
+		m_Context->enttToBody[entity]->SetGravityScale(0);
+		auto fixture = m_Context->enttToBody[entity]->CreateFixture(&fixtureDef);
+		FixtureUserData* fud = new FixtureUserData();
+		fud->entity = entity;
+		fud->shape = shape;
+		fixture->SetUserData(fud);
+
+		m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
+		m_WorldRegistry.emplace<C_Animation>(entity);
+		m_WorldRegistry.emplace<C_Coin>(entity);
+	}
+}
+
+void World::destroyMarkedEntities()
+{
+	for (auto entity : markedForDestruction)
+	{
+		auto* body = m_Context->enttToBody[entity];
+ 		if (body == nullptr)
+		{
+			auto found = std::find(markedForDestruction.begin(), markedForDestruction.end(), entity);
+			if (found != markedForDestruction.end())
+				markedForDestruction.erase(found);
+			m_Context->enttToBody.erase(entity);
+			continue;
+		}
+		for (auto* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
+			delete fixture->GetUserData();
+
+		m_b2World->DestroyBody(body);
+		m_WorldRegistry.destroy(entity);
+		m_Context->enttToBody.erase(entity);
+		auto found = std::find(markedForDestruction.begin(), markedForDestruction.end(), entity);
+		if(found != markedForDestruction.end())
+			markedForDestruction.erase(found);
+	}
+}
+
 void World::unloadScene()
 {
 	for (auto& pair : m_Context->enttToBody)
 	{
+		if (pair.second == nullptr) continue;
 		for (auto fixture = pair.second->GetFixtureList(); fixture; fixture = fixture->GetNext())
 			delete fixture->GetUserData();
 

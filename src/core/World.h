@@ -28,6 +28,7 @@ public:
 	bool& sfmlDebugging();
 	bool& b2dDebugging();
 	void spawnEnemy();
+	std::vector<entt::entity>& getMarkedEntities();
 
 private:
 	void buildScene();
@@ -36,6 +37,8 @@ private:
 	void createCamera();
 	void createTilemap();
 	void createEnemies();
+	void createCoins();
+	void destroyMarkedEntities();
 
 	void unloadScene();
 	void updateHUD(const sf::Time& dt);
@@ -50,6 +53,8 @@ private:
 	entt::registry m_WorldRegistry;
 
 	std::unordered_map<Animations::ID, Animation*> anims;
+
+	std::vector<entt::entity> markedForDestruction;
 
 	ContactListener m_ContactListener;
 

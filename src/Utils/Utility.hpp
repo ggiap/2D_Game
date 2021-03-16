@@ -44,6 +44,7 @@ namespace BodyCategory
         Enemy = 0x02,
         OneWayPlatform = 0x04,
         Other = 0x08,
+        Coin = 0x16,
     };
 }
 
@@ -73,6 +74,7 @@ namespace Textures
         CharactersSpriteSheet,
         MonochromeSpriteSheet,
         MainBackground,
+        CoinAnimation,
     };
 }
 
@@ -113,6 +115,7 @@ namespace Animations
         Walking,
         Jumping,
         EnemyMoving,
+        Coin,
     };
 }
 

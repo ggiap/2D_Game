@@ -9,6 +9,7 @@
 
 class World;
 struct Context;
+struct FixtureUserData;
 
 class ContactListener : public b2ContactListener
 {
@@ -22,11 +23,16 @@ public:
     void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
+    void handleOneWayPlatforms(b2Contact* contact);
+    void handleCoins(b2Contact* contact);
+
     Context* m_Context;
     World* m_World;
 
-    b2Fixture* platformFixture = nullptr;
-    b2Fixture* otherFixture = nullptr;
+    b2Fixture* fixtureA;
+    b2Fixture* fixtureB;
+    FixtureUserData* userDataA;
+    FixtureUserData* userDataB;
 };
 
 

@@ -105,8 +105,9 @@ void Game::loadResources()
 {
 	m_Fonts.load(Fonts::ID::ARJULIAN, "../res/Font/ARJULIAN.ttf");
 	m_Textures.load(Textures::ID::MonochromeSpriteSheet, "../res/Sprites/Tilemap/monochrome_tilemap_transparent_packed.png");
-	m_Textures.load(Textures::ID::CharactersSpriteSheet, "../res/Sprites/Tilemap/tilemap_packed_16x16.png");
+	m_Textures.load(Textures::ID::CharactersSpriteSheet, "../res/Sprites/Tilemap/tilemap_packed_16x16_2.png");
 	m_Textures.load(Textures::ID::MainBackground, "../res/Sprites/MainBackground.png");
+	m_Textures.load(Textures::ID::CoinAnimation, "../res/Sprites/Tilemap/Coin_Animation.png");
 }
 
 void Game::registerStates()

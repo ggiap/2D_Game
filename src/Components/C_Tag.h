@@ -16,6 +16,11 @@ struct C_EnemyTag
 
 };
 
+struct C_Coin
+{
+
+};
+
 struct C_OneWayPlatform
 {
 

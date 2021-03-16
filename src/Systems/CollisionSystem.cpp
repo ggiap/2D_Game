@@ -110,7 +110,7 @@ void CollisionSystem::handleRaycasts()
 
 			        raycastComp.collisionInfo.collisionBelow = true;
 					raycastComp.collisionInfo.entityBelow = userData->entity;
-					raycastComp.collisionInfo.normalBelow = m_Callback.m_normal;
+					//raycastComp.collisionInfo.normalBelow = m_Callback.m_normal;
 			        break;
 		        }
 				m_Callback = RayCastCallback();

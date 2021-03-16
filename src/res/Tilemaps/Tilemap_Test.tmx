@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="41">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="61">
  <tileset firstgid="1" name="Tileset1" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="../Sprites/Tilemap/monochrome_tilemap_packed.png" width="320" height="320"/>
   <tile id="18">
@@ -88,6 +88,57 @@
    <point/>
   </object>
   <object id="34" name="Enemy Spawn Location 3" x="546.5" y="683.5">
+   <point/>
+  </object>
+  <object id="44" name="Coin" x="112" y="576">
+   <point/>
+  </object>
+  <object id="45" name="Coin" x="128" y="576">
+   <point/>
+  </object>
+  <object id="46" name="Coin" x="144" y="576">
+   <point/>
+  </object>
+  <object id="47" name="Coin" x="160" y="576">
+   <point/>
+  </object>
+  <object id="48" name="Coin" x="208" y="560">
+   <point/>
+  </object>
+  <object id="49" name="Coin" x="224" y="560">
+   <point/>
+  </object>
+  <object id="50" name="Coin" x="240" y="560">
+   <point/>
+  </object>
+  <object id="51" name="Coin" x="432" y="624">
+   <point/>
+  </object>
+  <object id="52" name="Coin" x="464" y="624">
+   <point/>
+  </object>
+  <object id="53" name="Coin" x="80" y="512">
+   <point/>
+  </object>
+  <object id="54" name="Coin" x="96" y="512">
+   <point/>
+  </object>
+  <object id="55" name="Coin" x="80" y="624">
+   <point/>
+  </object>
+  <object id="56" name="Coin" x="96" y="640">
+   <point/>
+  </object>
+  <object id="57" name="Coin" x="80" y="640">
+   <point/>
+  </object>
+  <object id="58" name="Coin" x="96" y="624">
+   <point/>
+  </object>
+  <object id="59" name="Coin" x="32" y="640">
+   <point/>
+  </object>
+  <object id="60" name="Coin" x="32" y="624">
    <point/>
   </object>
  </objectgroup>

@@ -15,7 +15,12 @@ ContactListener::ContactListener(Context* context, World* world) : m_Context(con
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
-    
+    fixtureA = contact->GetFixtureA();
+    fixtureB = contact->GetFixtureB();
+
+    userDataA = static_cast<FixtureUserData*>(fixtureA->GetUserData());
+    userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
+    handleCoins(contact);
 }
 
 void ContactListener::EndContact(b2Contact* contact)
@@ -25,12 +30,27 @@ void ContactListener::EndContact(b2Contact* contact)
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-    b2Fixture* fixtureA = contact->GetFixtureA();
-    b2Fixture* fixtureB = contact->GetFixtureB();
+    fixtureA = nullptr;
+    fixtureB = nullptr;
+    userDataA = nullptr;
+    userDataB = nullptr;
+    
+    fixtureA = contact->GetFixtureA();
+    fixtureB = contact->GetFixtureB();
 
-    auto userDataA = static_cast<FixtureUserData*>(fixtureA->GetUserData());
-    auto userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
+    userDataA = static_cast<FixtureUserData*>(fixtureA->GetUserData());
+    userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
 
+    handleOneWayPlatforms(contact);
+}
+
+void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+{
+
+}
+
+void ContactListener::handleOneWayPlatforms(b2Contact* contact)
+{
     //check if one of the fixtures is the platform
     b2Fixture* platformFixture = nullptr;
     b2Fixture* otherFixture = nullptr;
@@ -48,7 +68,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
     if (!platformFixture || !otherFixture)
         return;
 
-    b2AABB platformAABB = platformFixture->GetAABB(0); 
+    b2AABB platformAABB = platformFixture->GetAABB(0);
     b2AABB otherAABB = otherFixture->GetAABB(0);
 
     auto platformHeight = platformAABB.upperBound.y - platformAABB.lowerBound.y;
@@ -61,7 +81,27 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
     }
 }
 
-void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+void ContactListener::handleCoins(b2Contact* contact)
 {
+    b2Fixture* coinFixture = nullptr;
+    b2Fixture* playerFixture = nullptr;
+    FixtureUserData* coinUserData = nullptr;
+    if (m_World->getEntityRegistry()->has<C_Coin>(userDataA->entity))
+    {
+        coinFixture = fixtureA;
+        playerFixture = fixtureB;
 
+        coinUserData = userDataA;
+    }
+    else if (m_World->getEntityRegistry()->has<C_Coin>(userDataB->entity))
+    {
+        coinFixture = fixtureB;
+        playerFixture = fixtureA;
+
+        coinUserData = userDataB;
+    }
+
+    if (!coinFixture || !playerFixture) return;
+
+    m_World->getMarkedEntities().push_back(coinUserData->entity);
 }
