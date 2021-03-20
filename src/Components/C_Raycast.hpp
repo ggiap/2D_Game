@@ -55,7 +55,7 @@ struct C_Raycast
     float rayLength{2.f};
 	int horizontalRayCount{};
 	int verticalRayCount{};
-	float dstBetweenRays = .5f;
+	float dstBetweenRays = .8f;
 	float horizontalRaySpacing{};
 	float verticalRaySpacing{};
 

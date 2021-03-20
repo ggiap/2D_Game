@@ -61,7 +61,7 @@ namespace Sounds
 {
     enum class ID
     {
-        Jump,
+        Squash,
         CoinPickup,
         Pause,
     };

@@ -24,6 +24,13 @@ GameState::GameState(StateStack& stack, Context& context) :
     youLoseLabel.setOutlineColor(sf::Color::Black);
     utils::centerOrigin(youLoseLabel);
 
+    victoryLabel.setString("VICTORY");
+    victoryLabel.setCharacterSize(60u);
+    victoryLabel.setFont(m_Context.fonts->get(Fonts::ID::ARJULIAN));
+    victoryLabel.setOutlineThickness(3.f);
+    victoryLabel.setOutlineColor(sf::Color::Black);
+    utils::centerOrigin(victoryLabel);
+
     m_Context.music->play(Music::ID::GameTheme);
 }
 
@@ -31,13 +38,23 @@ void GameState::draw()
 {
 	m_World.draw();
 
-    if (m_World.getRemainingTime() <= 0)
+    if (m_World.getRemainingTime() <= 0 || m_World.GameOver())
         m_Context.window->draw(youLoseLabel);
+    if (m_World.getNumberOfEnemies() == 0)
+        m_Context.window->draw(victoryLabel);
 }
 
 bool GameState::update(const sf::Time dt)
 {
-    if (m_World.getRemainingTime() <= 0)
+    if (m_World.getNumberOfEnemies() == 0)
+    {
+        victoryLabel.setPosition(m_Context.window->getView().getCenter());
+        victoryLabel.setScale(m_Context.window->getView().getSize().x / m_Context.window->getDefaultView().getSize().x,
+                              m_Context.window->getView().getSize().y / m_Context.window->getDefaultView().getSize().y);
+
+        return false;
+    }
+    if (m_World.getRemainingTime() <= 0 || m_World.GameOver())
     {
         /*requestStackPop();
         requestStackPush(States::Game);*/
@@ -80,7 +97,7 @@ bool GameState::handleEvent(const sf::Event& event)
     }
 
     if ((event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Escape)) &&
-        m_World.getRemainingTime() <= 0)
+        m_World.getRemainingTime() <= 0 || m_World.getNumberOfEnemies() == 0)
     {
         requestStackPop();
         requestStackPush(States::Menu);

@@ -26,4 +26,9 @@ struct C_OneWayPlatform
 
 };
 
+struct C_Spikes
+{
+
+};
+
 #endif //ENTITY_COMPONENT_SYSTEM_C_TAG_H

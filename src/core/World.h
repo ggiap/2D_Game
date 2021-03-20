@@ -29,6 +29,8 @@ public:
 	bool& b2dDebugging();
 	void spawnEnemy();
 	std::vector<entt::entity>& getMarkedEntities();
+	unsigned& getNumberOfEnemies();
+	bool& GameOver();
 
 private:
 	void buildScene();
@@ -63,5 +65,12 @@ private:
 
 	bool sfmlDebug;
 	bool b2dDebug;
+	bool gameOver;
+
+	unsigned m_numberOfEnemies;
+
+	sf::Sprite m_coinHudSprite;
+	sf::Text m_coinCounLabel;
+	unsigned m_coinCount;
 };
 

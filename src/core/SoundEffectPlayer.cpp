@@ -6,6 +6,7 @@ SoundEffectPlayer::SoundEffectPlayer() :
 {
 	m_SoundBuffers.load(Sounds::ID::CoinPickup, "../res/SoundEffects/coin.wav");
 	m_SoundBuffers.load(Sounds::ID::Pause, "../res/SoundEffects/pause.wav");
+	m_SoundBuffers.load(Sounds::ID::Squash, "../res/SoundEffects/squash.wav");
 }
 
 void SoundEffectPlayer::play(Sounds::ID id)

@@ -20,5 +20,6 @@ private:
     b2Body* ground;
 
 	sf::Text youLoseLabel;
+	sf::Text victoryLabel;
 };
 

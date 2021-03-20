@@ -66,22 +66,27 @@ TilemapSystem::TilemapSystem(Context &context, World *world) : BaseSystem(contex
 					auto objects = l->getLayerAs<tmx::ObjectGroup>().getObjects();
 					for (const auto& obj : objects)
 					{
-						auto owPlatformEntity = m_World->getEntityRegistry()->create();
-						m_Context->enttToBody[owPlatformEntity] = BodyCreator::createBody(*m_World->getB2World(), obj, b2BodyType::b2_kinematicBody);
+						auto entity = m_World->getEntityRegistry()->create();
+						m_Context->enttToBody[entity] = BodyCreator::createBody(*m_World->getB2World(), obj, b2BodyType::b2_kinematicBody);
 
-						m_World->getEntityRegistry()->emplace<C_Rigidbody>(owPlatformEntity, m_Context->enttToBody[owPlatformEntity]);
+						m_World->getEntityRegistry()->emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
 
 						FixtureUserData* userData = new FixtureUserData();
-						userData->entity = owPlatformEntity;
-						m_Context->enttToBody[owPlatformEntity]->GetFixtureList()->SetUserData(userData);
+						userData->entity = entity;
+						m_Context->enttToBody[entity]->GetFixtureList()->SetUserData(userData);
 						
 						if (obj.getName().find("Platform") != std::string::npos)
 						{
-							m_World->getEntityRegistry()->emplace<C_OneWayPlatform>(owPlatformEntity);
+							m_World->getEntityRegistry()->emplace<C_OneWayPlatform>(entity);
 							b2Filter filter;
 							filter.categoryBits = BodyCategory::OneWayPlatform;
 							filter.maskBits = BodyCategory::Enemy | BodyCategory::Player;
-							m_Context->enttToBody[owPlatformEntity]->GetFixtureList()->SetFilterData(filter);
+							m_Context->enttToBody[entity]->GetFixtureList()->SetFilterData(filter);
+						}
+
+						if (obj.getName().find("Spikes") != std::string::npos)
+						{
+							m_World->getEntityRegistry()->emplace<C_Spikes>(entity);
 						}
 					}
 				}

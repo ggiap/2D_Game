@@ -3,7 +3,6 @@
 //
 
 #include "PlayerControllerSystem.hpp"
-#include <SFML/Window/Event.hpp>
 #include "../Utils/AnimatedSprite.h"
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
@@ -11,8 +10,11 @@
 #include "../Components/C_Tag.h"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Raycast.hpp"
-#include <cmath>
 #include "../core/World.h"
+#include "../core/SoundEffectPlayer.hpp"
+#include <SFML/Window/Event.hpp>
+#include <cmath>
+#include <spdlog/spdlog.h>
 
 PlayerControllerSystem::PlayerControllerSystem(Context& context, World* world) :
     BaseSystem(context, world),
@@ -28,7 +30,8 @@ void PlayerControllerSystem::update(sf::Time& dt)
 
 void PlayerControllerSystem::handleEvents(sf::Time dt)
 {
-    auto view = m_World->getEntityRegistry()->view<C_PlayerTag, C_Animation, C_Raycast>();
+    auto registry = m_World->getEntityRegistry();
+    auto view = registry->view<C_PlayerTag, C_Animation, C_Raycast>();
 
     for (auto& entity : view)
     {
@@ -63,14 +66,17 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         if (raycastComp.collisionInfo.entityBelow != entt::null)
         {
-            if (m_World->getEntityRegistry()->has<C_EnemyTag>(raycastComp.collisionInfo.entityBelow))
+            if (registry->has<C_EnemyTag>(raycastComp.collisionInfo.entityBelow))
             {
+                m_Context->sounds->play(Sounds::ID::Squash);
+                //--m_World->getNumberOfEnemies();
+                spdlog::info("Killed enemy, numOfEnemies: {}", --m_World->getNumberOfEnemies());
                 auto* body = m_Context->enttToBody[raycastComp.collisionInfo.entityBelow];
                 for (auto* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
                     delete fixture->GetUserData();
 
                 m_World->getB2World()->DestroyBody(body);
-                m_World->getEntityRegistry()->destroy(raycastComp.collisionInfo.entityBelow);
+                registry->destroy(raycastComp.collisionInfo.entityBelow);
                 m_Context->enttToBody.erase(raycastComp.collisionInfo.entityBelow);    
 
                 velocity.y = 0;

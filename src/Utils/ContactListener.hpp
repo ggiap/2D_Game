@@ -24,7 +24,9 @@ public:
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
     void handleOneWayPlatforms(b2Contact* contact);
-    void handleCoins(b2Contact* contact);
+    void handleCoins();
+
+    void initMemberData(b2Contact* contact);
 
     Context* m_Context;
     World* m_World;

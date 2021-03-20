@@ -45,12 +45,12 @@ void Game::Run()
 			timeSinceLastUpdate -= TimePerFrame;
 			HandleEvents();
 
-			if(!m_IsPaused)
-				Update(TimePerFrame);
-
 			// Check inside this loop, because stack might be empty before the update() call
 			if (m_StateStack.isEmpty())
 				m_window.close();
+
+			if(!m_IsPaused)
+				Update(TimePerFrame);		
 		}
 
 		if (!m_IsPaused)

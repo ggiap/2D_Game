@@ -1,12 +1,9 @@
-//
-// Created by george on 16/7/20.
-//
-
 #include "ContactListener.hpp"
-#include <algorithm>
 #include "Context.hpp"
 #include "../core/World.h"
+#include "../core/SoundEffectPlayer.hpp"
 #include "../Components/C_Tag.h"
+#include "../Components/C_Raycast.hpp"
 #include "../Utils/FixtureUserData.hpp"
 
 ContactListener::ContactListener(Context* context, World* world) : m_Context(context), m_World(world)
@@ -15,31 +12,19 @@ ContactListener::ContactListener(Context* context, World* world) : m_Context(con
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
-    fixtureA = contact->GetFixtureA();
-    fixtureB = contact->GetFixtureB();
+    initMemberData(contact);
 
-    userDataA = static_cast<FixtureUserData*>(fixtureA->GetUserData());
-    userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
-    handleCoins(contact);
+    handleCoins();
 }
 
 void ContactListener::EndContact(b2Contact* contact)
 {
-   
+
 }
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-    fixtureA = nullptr;
-    fixtureB = nullptr;
-    userDataA = nullptr;
-    userDataB = nullptr;
-    
-    fixtureA = contact->GetFixtureA();
-    fixtureB = contact->GetFixtureB();
-
-    userDataA = static_cast<FixtureUserData*>(fixtureA->GetUserData());
-    userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
+    initMemberData(contact);
 
     handleOneWayPlatforms(contact);
 }
@@ -81,27 +66,29 @@ void ContactListener::handleOneWayPlatforms(b2Contact* contact)
     }
 }
 
-void ContactListener::handleCoins(b2Contact* contact)
+void ContactListener::handleCoins()
 {
-    b2Fixture* coinFixture = nullptr;
-    b2Fixture* playerFixture = nullptr;
     FixtureUserData* coinUserData = nullptr;
     if (m_World->getEntityRegistry()->has<C_Coin>(userDataA->entity))
     {
-        coinFixture = fixtureA;
-        playerFixture = fixtureB;
-
         coinUserData = userDataA;
     }
     else if (m_World->getEntityRegistry()->has<C_Coin>(userDataB->entity))
     {
-        coinFixture = fixtureB;
-        playerFixture = fixtureA;
-
         coinUserData = userDataB;
     }
 
-    if (!coinFixture || !playerFixture) return;
+    if (coinUserData == nullptr) return;
 
+    m_Context->sounds->play(Sounds::ID::CoinPickup);
     m_World->getMarkedEntities().push_back(coinUserData->entity);
+}
+
+void ContactListener::initMemberData(b2Contact* contact)
+{
+    fixtureA = contact->GetFixtureA();
+    fixtureB = contact->GetFixtureB();
+
+    userDataA = static_cast<FixtureUserData*>(fixtureA->GetUserData());
+    userDataB = static_cast<FixtureUserData*>(fixtureB->GetUserData());
 }

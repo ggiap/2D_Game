@@ -8,6 +8,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include "../core/World.h"
+#include <spdlog/spdlog.h>
 
 CollisionSystem::CollisionSystem(Context& context, World* world) :
     BaseSystem(context, world),
@@ -18,7 +19,7 @@ CollisionSystem::CollisionSystem(Context& context, World* world) :
 
 void CollisionSystem::update(sf::Time& dt)
 {
-    m_World->getB2World()->Step(dt.asSeconds(), 8, 5);
+    m_World->getB2World()->Step(dt.asSeconds(), 8, 10);
 	m_World->getB2World()->ClearForces();
 
     UpdateRaycastOrigins();
@@ -108,6 +109,9 @@ void CollisionSystem::handleRaycasts()
 					auto userData = static_cast<FixtureUserData*>(m_Callback.m_fixture->GetUserData());
 					if (userData == nullptr) continue;
 
+					if (m_World->getEntityRegistry()->has<C_Spikes>(userData->entity))
+						m_World->GameOver() = true;
+
 			        raycastComp.collisionInfo.collisionBelow = true;
 					raycastComp.collisionInfo.entityBelow = userData->entity;
 					//raycastComp.collisionInfo.normalBelow = m_Callback.m_normal;
@@ -118,7 +122,7 @@ void CollisionSystem::handleRaycasts()
 	        m_Callback = RayCastCallback();
 
 	        // Check Right
-	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
+	        for (int i = 0; i < raycastComp.horizontalRayCount - 1; ++i)
 	        {
 		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.topRight + utils::sfVecToB2Vec(math::VECTOR_LEFT / 2.f +
 					math::VECTOR_DOWN * (raycastComp.horizontalRaySpacing * i));
@@ -141,7 +145,7 @@ void CollisionSystem::handleRaycasts()
 	        m_Callback = RayCastCallback();
 
 	        // Check Left
-	        for (int i = 0; i < raycastComp.horizontalRayCount; ++i)
+	        for (int i = 0; i < raycastComp.horizontalRayCount - 1; ++i)
 	        {
 		        b2Vec2 rayOrigin = raycastComp.raycastOrigins.bottomLeft + utils::sfVecToB2Vec(math::VECTOR_RIGHT / 2.f +
 					math::VECTOR_UP * (raycastComp.horizontalRaySpacing * i));
@@ -212,9 +216,9 @@ void CollisionSystem::UpdateRaycastOrigins()
 		raycastComp.raycastOrigins.topLeft = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left, bounds.top));
 		raycastComp.raycastOrigins.topRight = utils::sfVecToB2Vec(
-				sf::Vector2f(bounds.left + size.x, bounds.top));
+				sf::Vector2f(bounds.left + size.x, bounds.top + .1f));
 		raycastComp.raycastOrigins.bottomLeft = utils::sfVecToB2Vec(
-				sf::Vector2f(bounds.left, bounds.top + size.y));
+				sf::Vector2f(bounds.left, bounds.top + size.y - .1f));
 		raycastComp.raycastOrigins.bottomRight = utils::sfVecToB2Vec(
 				sf::Vector2f(bounds.left + size.x, bounds.top + size.y));
 	});

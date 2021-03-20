@@ -21,6 +21,7 @@
 #include <Box2D/Box2D.h>
 #include <entt/entt.hpp>
 #include "../Utils/SFMLDebugDraw.h"
+#include <spdlog/spdlog.h>
 
 World::World(Context& context) :
 	m_WorldView(context.window->getDefaultView()),
@@ -34,7 +35,12 @@ World::World(Context& context) :
 	m_ContactListener(m_Context, this),
 	m_CountdownTimer(sf::seconds(101)),
 	sfmlDebug(false),
-	b2dDebug(false)
+	b2dDebug(false),
+	gameOver(false),
+	m_numberOfEnemies(0),
+	m_coinHudSprite(),
+	m_coinCounLabel(),
+	m_coinCount(0)
 {
 	buildScene();
 
@@ -44,6 +50,16 @@ World::World(Context& context) :
 	m_TimerLabel.setCharacterSize(20u);
 	m_TimerLabel.setOutlineColor(sf::Color::Black);
 	utils::centerOrigin(m_TimerLabel);
+
+	m_coinCounLabel.setFont(m_Context->fonts->get(Fonts::ID::ARJULIAN));
+	m_coinCounLabel.setOutlineThickness(3.f);
+	m_coinCounLabel.setCharacterSize(20u);
+	m_coinCounLabel.setOutlineColor(sf::Color::Black);
+	utils::centerOrigin(m_TimerLabel);
+
+	m_coinHudSprite.setTexture(m_Context->textures->get(Textures::ID::CoinAnimation));
+	m_coinHudSprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+	utils::centerOrigin(m_coinHudSprite);
 
 	m_b2World->SetContactListener(&m_ContactListener);
 }
@@ -70,6 +86,8 @@ void World::draw()
 {
 	m_SystemManager.draw();
 	m_Context->window->draw(m_TimerLabel);
+	m_Context->window->draw(m_coinCounLabel);
+	m_Context->window->draw(m_coinHudSprite);
 }
 
 b2World* World::getB2World()
@@ -101,6 +119,8 @@ void World::spawnEnemy()
 {
 	auto spawnLocation = utils::getObjectByName(m_WorldRegistry, "Spawner Locations", "Enemy Spawn Location 1");
 
+	//++numberOfEnemies;
+	spdlog::info("Spawned enemy, numOfEnemies: {}", ++m_numberOfEnemies);
 	const auto entity = m_WorldRegistry.create();
 	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 10.f));
 	utils::centerOrigin(*shape);
@@ -118,6 +138,7 @@ void World::spawnEnemy()
 	bodyDef.position = utils::sfVecToB2Vec(position);
 	bodyDef.fixedRotation = true;
 	bodyDef.gravityScale = 1.5f;
+	bodyDef.bullet = true;
 
 	// Fixture shape
 	b2PolygonShape bShape;
@@ -169,6 +190,16 @@ void World::spawnEnemy()
 std::vector<entt::entity>& World::getMarkedEntities()
 {
 	return markedForDestruction;
+}
+
+unsigned& World::getNumberOfEnemies()
+{
+	return m_numberOfEnemies;
+}
+
+bool& World::GameOver()
+{
+	return gameOver;
 }
 
 void World::buildScene()
@@ -230,28 +261,6 @@ void World::createAnimations()
 	coin->addFrame(sf::IntRect(0, 48, 16, 16));
 	anims[Animations::ID::Coin] = coin;
 
-	/*Animation *standing = new Animation();
-	standing->setSpriteSheet(texture);
-	standing->addFrame(sf::IntRect( 9, 32, 16, 22));
-	anims[Animations::ID::Standing] = standing;
-
-	Animation *walking = new Animation();
-	walking->setSpriteSheet(texture);
-	walking->addFrame(sf::IntRect( 153, 32, 16, 22));
-	walking->addFrame(sf::IntRect( 186, 32, 16, 22));
-	anims[Animations::ID::Walking] = walking;
-
-	Animation *jumping = new Animation();
-	jumping->setSpriteSheet(texture);
-	jumping->addFrame(sf::IntRect( 330, 31, 16, 22));
-	anims[Animations::ID::Jumping] = jumping;*/
-
-	/*Animation *enemyMoving = new Animation();
-	enemyMoving->setSpriteSheet(monochrome_texture);
-	enemyMoving->addFrame(sf::IntRect(16, 261, 16, 12));
-	enemyMoving->addFrame(sf::IntRect(32, 261, 16, 12));
-	anims[Animations::ID::EnemyMoving] = enemyMoving;*/
-
 	auto view = m_WorldRegistry.view<C_Animation>();
 
 	for (auto &entity : view)
@@ -290,7 +299,6 @@ void World::createAnimations()
 void World::createPlayer()
 {
 	const auto entity = m_WorldRegistry.create();
-	//auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 20.f));
 	auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 15.f));
 	utils::centerOrigin(*shape);
 	shape->setFillColor(sf::Color::Transparent);
@@ -360,7 +368,8 @@ void World::createTilemap()
 	const auto tilemapEntity = m_WorldRegistry.create();
 	
 	m_WorldRegistry.emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/Tilemap_Test.tmx");
-	// m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
+	//m_WorldRegistry.emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/Demo_Level.tmx");
+	//m_Context->registry->emplace<C_Tilemap>(tilemapEntity, "../res/Tilemaps/big_map.tmx");
 }
 
 void World::createEnemies()
@@ -369,6 +378,8 @@ void World::createEnemies()
 
 	for (const auto& obj : objects)
 	{
+		//++numberOfEnemies;
+		spdlog::info("Spawned enemy, numOfEnemies: {}", ++m_numberOfEnemies);
 		const auto entity = m_WorldRegistry.create();
 		auto shape = new sf::RectangleShape(sf::Vector2f(10.f, 10.f));
 		utils::centerOrigin(*shape);
@@ -475,6 +486,7 @@ void World::destroyMarkedEntities()
 {
 	for (auto entity : markedForDestruction)
 	{
+		++m_coinCount;
 		auto* body = m_Context->enttToBody[entity];
  		if (body == nullptr)
 		{
@@ -525,9 +537,18 @@ void World::updateHUD(const sf::Time& dt)
 		m_CountdownTimer.update(dt);
 
 	m_TimerLabel.setString("Time: " + std::to_string(static_cast<int>(m_CountdownTimer.getRemainingTime())));
+	m_coinCounLabel.setString("x" + std::to_string(static_cast<unsigned>(m_coinCount)));
 
 	m_TimerLabel.setPosition(m_Context->window->getView().getCenter().x + (m_Context->window->getView().getSize().x / 2.4f),
 		m_Context->window->getView().getCenter().y - (m_Context->window->getView().getSize().y / 2.f));
 	m_TimerLabel.setScale(m_Context->window->getView().getSize().x / m_Context->window->getDefaultView().getSize().x,
 		m_Context->window->getView().getSize().y / m_Context->window->getDefaultView().getSize().y);
+
+	m_coinCounLabel.setPosition(m_Context->window->getView().getCenter().x + (m_Context->window->getView().getSize().x / 3.4f),
+		m_TimerLabel.getPosition().y);
+	m_coinCounLabel.setScale(m_TimerLabel.getScale());
+
+	m_coinHudSprite.setPosition(m_Context->window->getView().getCenter().x + (m_Context->window->getView().getSize().x / 3.52f),
+		m_Context->window->getView().getCenter().y - (m_Context->window->getView().getSize().y / 2.065f));
+	m_coinHudSprite.setScale(m_TimerLabel.getScale() * 1.5f);
 }
