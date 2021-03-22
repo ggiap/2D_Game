@@ -31,4 +31,9 @@ struct C_Spikes
 
 };
 
+struct C_Ladder
+{
+
+};
+
 #endif //ENTITY_COMPONENT_SYSTEM_C_TAG_H

@@ -1,7 +1,3 @@
-//
-// Created by george on 17/7/20.
-//
-
 #include "RayCastCallback.hpp"
 
 #include <Box2D/Dynamics/b2Fixture.h>
@@ -19,7 +15,7 @@ float RayCastCallback::ReportFixture(b2Fixture *fixture, const b2Vec2 &point, co
 {
     b2Filter filterData = fixture->GetFilterData();
 
-    if (filterData.categoryBits == BodyCategory::Coin)
+    if (filterData.categoryBits == BodyCategory::Coin || filterData.categoryBits == BodyCategory::Ladder)
     {
         return -1.f;
     }

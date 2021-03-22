@@ -96,7 +96,7 @@ bool GameState::handleEvent(const sf::Event& event)
         m_World.b2dDebugging() = !m_World.b2dDebugging();
     }
 
-    if ((event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Escape)) &&
+    if (((event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Escape))) &&
         m_World.getRemainingTime() <= 0 || m_World.getNumberOfEnemies() == 0)
     {
         requestStackPop();

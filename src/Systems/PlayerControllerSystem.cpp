@@ -97,6 +97,24 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         if(!raycastComp.collisionInfo.collisionBelow)
         	m_State = GameObjectState::ID::Jumping;
 
+        if (m_State == GameObjectState::ID::Jumping && !sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        {
+            ; //Do nothing
+        }
+        else
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && raycastComp.collisionInfo.climbingLadder)
+            {
+                velocity.y = 0.f;
+                velocity.y = -2.f;
+                m_State != GameObjectState::ID::Standing;
+            }
+            else if (raycastComp.collisionInfo.climbingLadder)
+            {
+                velocity.y = 0;
+            }
+        }
+
         if((velocity.x >= -0.1f || velocity.x <= 0.1f) && raycastComp.collisionInfo.collisionBelow)
             m_State = GameObjectState::ID::Standing;
 

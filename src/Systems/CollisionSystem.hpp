@@ -18,6 +18,7 @@ public:
 
 private:
     void handleRaycasts();
+    void handleLadders();
     void CalculateRaySpacing();
     void UpdateRaycastOrigins();
     void createLine(b2Vec2 &origin, b2Vec2 &direction, std::vector<std::array<sf::Vertex, 2>>& lines);

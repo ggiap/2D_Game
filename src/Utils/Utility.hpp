@@ -43,8 +43,9 @@ namespace BodyCategory
         Player = 0x01,
         Enemy = 0x02,
         OneWayPlatform = 0x04,
-        Other = 0x08,
+        Ladder = 0x08,
         Coin = 0x16,
+        Other = 0x32,    
     };
 }
 

@@ -88,6 +88,16 @@ TilemapSystem::TilemapSystem(Context &context, World *world) : BaseSystem(contex
 						{
 							m_World->getEntityRegistry()->emplace<C_Spikes>(entity);
 						}
+
+						if (obj.getName().find("Ladder") != std::string::npos)
+						{
+							m_Context->enttToBody[entity]->GetFixtureList()->SetSensor(true);
+							m_World->getEntityRegistry()->emplace<C_Ladder>(entity);
+							b2Filter filter;
+							filter.categoryBits = BodyCategory::Ladder;
+							filter.maskBits = BodyCategory::Player;
+							m_Context->enttToBody[entity]->GetFixtureList()->SetFilterData(filter);
+						}
 					}
 				}
 			}

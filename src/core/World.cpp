@@ -330,7 +330,7 @@ void World::createPlayer()
 	fixtureDef.friction = 0.f;
 	fixtureDef.restitution = 0.f;
 	fixtureDef.filter.categoryBits = BodyCategory::ID::Player;
-	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform | BodyCategory::Coin;
+	fixtureDef.filter.maskBits = BodyCategory::ID::Enemy | BodyCategory::ID::Other | BodyCategory::OneWayPlatform | BodyCategory::Coin | BodyCategory::Ladder;
 
 	// Create and register the body in the world
 	m_Context->enttToBody[entity] = m_b2World->CreateBody(&bodyDef);

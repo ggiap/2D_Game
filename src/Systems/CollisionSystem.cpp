@@ -24,6 +24,7 @@ void CollisionSystem::update(sf::Time& dt)
 
     UpdateRaycastOrigins();
     handleRaycasts();
+	handleLadders();
 }
 
 void CollisionSystem::init()
@@ -109,7 +110,8 @@ void CollisionSystem::handleRaycasts()
 					auto userData = static_cast<FixtureUserData*>(m_Callback.m_fixture->GetUserData());
 					if (userData == nullptr) continue;
 
-					if (m_World->getEntityRegistry()->has<C_Spikes>(userData->entity))
+					if (m_World->getEntityRegistry()->has<C_Spikes>(userData->entity) &&
+						m_World->getEntityRegistry()->has<C_PlayerTag>(entity))
 						m_World->GameOver() = true;
 
 			        raycastComp.collisionInfo.collisionBelow = true;
@@ -168,6 +170,36 @@ void CollisionSystem::handleRaycasts()
 	        m_Callback = RayCastCallback();
         }
     }
+}
+
+void CollisionSystem::handleLadders()
+{
+	b2Fixture* playerFixture = nullptr;
+	FixtureUserData* playerUserData = nullptr;
+	auto playerView = m_World->getEntityRegistry()->view<C_PlayerTag>();
+	for (auto entity : playerView)
+	{
+		playerFixture = m_Context->enttToBody[entity]->GetFixtureList();
+		playerUserData = static_cast<FixtureUserData*>(playerFixture->GetUserData());
+	}
+
+	b2Fixture* ladderFixture = nullptr;
+	auto ladderView = m_World->getEntityRegistry()->view<C_Ladder>();
+	for (auto entity : ladderView)
+	{
+		ladderFixture = m_Context->enttToBody[entity]->GetFixtureList();
+
+		if (!ladderFixture || !playerFixture) return;
+
+		b2AABB ladderAABB = ladderFixture->GetAABB(0);
+		b2AABB playerAABB = playerFixture->GetAABB(0);
+
+		if (ladderAABB.Contains(playerAABB))
+		{
+			auto& raycastComp = m_World->getEntityRegistry()->get<C_Raycast>(playerUserData->entity);
+			raycastComp.collisionInfo.climbingLadder = true;
+		}
+	}
 }
 
 void CollisionSystem::CalculateRaySpacing()

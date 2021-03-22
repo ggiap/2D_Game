@@ -18,6 +18,7 @@ struct CollisionInfo
     bool collisionRight{false};
     bool groundCheckLeft{false};
     bool groundCheckRight{false};
+    bool climbingLadder{false};
     entt::entity entityBelow{entt::null};
     entt::entity entityAbove{entt::null};
     entt::entity entityLeft {entt::null};
@@ -32,6 +33,7 @@ struct CollisionInfo
         collisionRight = false;
         groundCheckLeft = false;
         groundCheckRight = false;
+        climbingLadder = false;
         entityBelow = entt::null;
         entityAbove = entt::null;
         entityLeft = entt::null;
