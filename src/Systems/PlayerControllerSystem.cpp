@@ -97,29 +97,22 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
         if(!raycastComp.collisionInfo.collisionBelow)
         	m_State = GameObjectState::ID::Jumping;
 
-        if (m_State == GameObjectState::ID::Jumping && !sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        if ((velocity.x >= -0.1f || velocity.x <= 0.1f) && raycastComp.collisionInfo.collisionBelow)
+            m_State = GameObjectState::ID::Standing;
+
+        if ((velocity.x < -0.1f || velocity.x > 0.1f) && raycastComp.collisionInfo.collisionBelow)
+            m_State = GameObjectState::ID::Walking;
+
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            ; //Do nothing
-        }
-        else
-        {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && raycastComp.collisionInfo.climbingLadder)
+            if (raycastComp.collisionInfo.climbingLadder)
             {
                 velocity.y = 0.f;
                 velocity.y = -2.f;
-                m_State != GameObjectState::ID::Standing;
+                m_State = GameObjectState::ID::ClimbingLadder;
             }
-            else if (raycastComp.collisionInfo.climbingLadder)
-            {
-                velocity.y = 0;
-            }
-        }
-
-        if((velocity.x >= -0.1f || velocity.x <= 0.1f) && raycastComp.collisionInfo.collisionBelow)
-            m_State = GameObjectState::ID::Standing;
-
-        if((velocity.x < -0.1f || velocity.x > 0.1f) && raycastComp.collisionInfo.collisionBelow)
-        	m_State = GameObjectState::ID::Walking;
+        }    
 
         velocity.x = std::clamp(velocity.x, -5.f, 5.f);
         velocity.y = std::clamp(velocity.y, -10.f, 10.f);
@@ -142,6 +135,10 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
             case GameObjectState::ID::Jumping:
                 anim.animatedSprite.play(Animations::ID::Jumping);
+                break;
+
+            case GameObjectState::ID::ClimbingLadder:
+                anim.animatedSprite.play(Animations::ID::ClimbingLadder);
                 break;
         }
     }

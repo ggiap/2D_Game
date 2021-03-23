@@ -246,6 +246,12 @@ void World::createAnimations()
 	jumping->addFrame(sf::IntRect(432, 0, 16, 16));
 	anims[Animations::ID::Jumping] = jumping;
 
+	Animation* climbingLadder = new Animation();
+	climbingLadder->setSpriteSheet(texture);
+	climbingLadder->addFrame(sf::IntRect(384, 0, 16, 16));
+	climbingLadder->addFrame(sf::IntRect(400, 0, 16, 16));
+	anims[Animations::ID::ClimbingLadder] = climbingLadder;
+
 	Animation* enemyMoving = new Animation();
 	enemyMoving->setSpriteSheet(texture);
 	enemyMoving->addFrame(sf::IntRect(400, 224, 16, 16));
@@ -271,6 +277,7 @@ void World::createAnimations()
 			animComp.animatedSprite.addAnimation(Animations::ID::Standing, standing);
 			animComp.animatedSprite.addAnimation(Animations::ID::Walking, walking);
 			animComp.animatedSprite.addAnimation(Animations::ID::Jumping, jumping);
+			animComp.animatedSprite.addAnimation(Animations::ID::ClimbingLadder, climbingLadder);
 			animComp.animatedSprite.play(Animations::ID::Standing);
 
 			utils::centerOrigin(animComp.animatedSprite);

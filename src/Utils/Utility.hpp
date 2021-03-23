@@ -105,6 +105,7 @@ namespace GameObjectState
         Standing,
         Walking,
         Jumping,
+        ClimbingLadder,
     };
 }
 
@@ -115,6 +116,7 @@ namespace Animations
         Standing,
         Walking,
         Jumping,
+        ClimbingLadder,
         EnemyMoving,
         Coin,
     };
