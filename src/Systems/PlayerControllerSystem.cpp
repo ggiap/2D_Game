@@ -1,7 +1,3 @@
-//
-// Created by george on 4/7/20.
-//
-
 #include "PlayerControllerSystem.hpp"
 #include "../Utils/AnimatedSprite.h"
 #include "../Utils/Context.hpp"
@@ -18,7 +14,8 @@
 
 PlayerControllerSystem::PlayerControllerSystem(Context& context, World* world) :
     BaseSystem(context, world),
-    m_State()
+    m_State(),
+    m_lowJumpMultiplier(1.08f)
 {
 
 }
@@ -64,7 +61,6 @@ void PlayerControllerSystem::update(sf::Time& dt)
             if (registry->has<C_EnemyTag>(raycastComp.collisionInfo.entityBelow))
             {
                 m_Context->sounds->play(Sounds::ID::Squash);
-                //--m_World->getNumberOfEnemies();
                 spdlog::info("Killed enemy, numOfEnemies: {}", --m_World->getNumberOfEnemies());
                 auto* body = m_Context->enttToBody[raycastComp.collisionInfo.entityBelow];
                 for (auto* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
@@ -83,11 +79,18 @@ void PlayerControllerSystem::update(sf::Time& dt)
         {
             if (raycastComp.collisionInfo.collisionBelow)
                 velocity = { velocity.x, velocity.y - 50.f };
+
             //m_Context->enttToBody[entity]->ApplyLinearImpulseToCenter(b2Vec2(0.f, -3.f), true);
             //m_Context->enttToBody[entity]->ApplyForceToCenter(b2Vec2(0.f, -200.f), true);
 
             m_State = GameObjectState::ID::Jumping;
         }
+
+        if (velocity.y < 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            velocity = { velocity.x, velocity.y + utils::sfVecToB2Vec(math::VECTOR_DOWN).y * m_World->getB2World()->GetGravity().y * (m_lowJumpMultiplier - 1) * dt.asMilliseconds() };
+        }
+        velocity.x = math::lerp(velocity.x, velocity.x, 0.8f);
 
         if (!raycastComp.collisionInfo.collisionBelow)
             m_State = GameObjectState::ID::Jumping;

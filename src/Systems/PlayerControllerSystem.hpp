@@ -25,6 +25,8 @@ public:
 
 private:
     GameObjectState::ID m_State{};
+    float m_lowJumpMultiplier;
+    float m_fallMultiplier;
 };
 
 
