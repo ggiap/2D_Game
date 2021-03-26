@@ -49,13 +49,16 @@ void EnemyControllerSystem::update(sf::Time& dt)
 			else if (velocity.x > 0.1f)
 				animComp.animatedSprite.setScale(sf::Vector2f(-1.f, 1.f));
 
-			if (raycastComp.collisionInfo.collisionLeft || raycastComp.collisionInfo.collisionRight)
+			if (raycastComp.collisionInfo.collisionLeft || raycastComp.collisionInfo.collisionRight || raycastComp.collisionInfo.collisionBelow)
 			{
 				if(raycastComp.collisionInfo.entityLeft != entt::null &&
 					m_World->getEntityRegistry()->has<C_PlayerTag>(raycastComp.collisionInfo.entityLeft))
 					m_World->GameOver() = true;
 				else if(raycastComp.collisionInfo.entityRight != entt::null &&
 					m_World->getEntityRegistry()->has<C_PlayerTag>(raycastComp.collisionInfo.entityRight))
+					m_World->GameOver() = true;
+				else if (raycastComp.collisionInfo.entityBelow != entt::null &&
+					m_World->getEntityRegistry()->has<C_PlayerTag>(raycastComp.collisionInfo.entityBelow))
 					m_World->GameOver() = true;
 			}
 		});
