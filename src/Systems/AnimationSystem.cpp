@@ -5,17 +5,22 @@
 #include "AnimationSystem.hpp"
 #include "../Components/C_Animation.hpp"
 #include "../Utils//Context.hpp"
+#include "../core/World.h"
 
-AnimationSystem::AnimationSystem(Context& context) :
-BaseSystem(context)
+AnimationSystem::AnimationSystem(Context& context, World *world) :
+BaseSystem(context, world)
 {
 
 }
 
 void AnimationSystem::update(sf::Time& dt)
 {
-    m_Context->registry->view<C_Animation>().each([&](auto entity, auto& anim)
+    auto view = m_World->getEntityRegistry()->view<C_Animation>();
+
+    for (auto& entity : view)
     {
-        anim.animatedSprite.update(dt);
-    });
+        auto& animComp = m_World->getEntityRegistry()->get<C_Animation>(entity);
+
+        animComp.animatedSprite.update(dt);
+    }
 }

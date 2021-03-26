@@ -1,6 +1,7 @@
 #pragma once
 
 struct Context;
+class World;
 
 namespace sf 
 {
@@ -12,12 +13,15 @@ class BaseSystem
 {
 public:
 	BaseSystem() = default;
-	explicit BaseSystem(Context& context);
+	explicit BaseSystem(Context& context, World *world);
 
 	virtual void update(sf::Time& dt) { }
 	virtual void handleEvents(const sf::Event& event) { }
 	virtual void draw() { }
 
+	virtual void init() { }
+
 protected:
 	Context* m_Context{};
+	World* m_World;
 };

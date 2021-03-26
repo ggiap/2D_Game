@@ -1,34 +1,34 @@
 #include "Game.h"
 #include <SFML/Window/Event.hpp>
 #include "../States/GameState.h"
+#include "../States/MenuState.hpp"
+#include "../States/SplashScreenState.hpp"
+#include "../States/PauseState.hpp"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1 / 60.f);
 
 Game::Game() :
 	m_window(sf::VideoMode(1200, 800), "Application",
 	        sf::Style::Close | sf::Style::Resize, sf::ContextSettings(0,0,0,1,1)),
-	m_Textures(),
 	m_Fonts(),
-	m_B2DWorld(b2Vec2(0, 9.81)),
-	m_StateStack(Context(m_window, m_Textures, m_Fonts, m_Registry, m_B2DWorld)),
+	m_MusicPlayer(),
+	m_SoundPlayer(),
+	m_StateStack(Context(m_window, m_Fonts, m_Textures, m_MusicPlayer, m_SoundPlayer)),
 	m_StatisticsText(),
 	m_StatisticsUpdateTime(),
 	m_StatisticsNumFrames(0)
 {
 	m_window.setKeyRepeatEnabled(false);
 
-	m_B2DWorld.SetAllowSleeping(true);
-
 	loadResources();
 
-	m_StatisticsText.setFont(m_Fonts.get(Fonts::ARJULIAN));
-	m_StatisticsText.setOutlineThickness(3);
-	m_StatisticsText.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f + 5.f,
-                                 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 5.f);
+	m_StatisticsText.setFont(m_Fonts.get(Fonts::ID::ARJULIAN));
+	m_StatisticsText.setOutlineThickness(3.f);
+	m_StatisticsText.setOutlineColor(sf::Color::Black);
 	m_StatisticsText.setCharacterSize(20u);
 
 	registerStates();
-	m_StateStack.pushState(States::Game);
+	m_StateStack.pushState(States::Title);
 }
 
 void Game::Run()
@@ -44,14 +44,20 @@ void Game::Run()
 		{
 			timeSinceLastUpdate -= TimePerFrame;
 			HandleEvents();
-			Update(TimePerFrame);
 
 			// Check inside this loop, because stack might be empty before the update() call
 			if (m_StateStack.isEmpty())
 				m_window.close();
+
+			if(!m_IsPaused)
+				Update(TimePerFrame);		
 		}
-		updateStatistics(dt);
-		Render();
+
+		if (!m_IsPaused)
+		{
+			updateStatistics(dt);
+			Render();
+		}
 	}
 }
 
@@ -62,6 +68,16 @@ void Game::HandleEvents()
 	{
 		m_StateStack.handleEvent(event);
 
+		if (event.type == sf::Event::LostFocus)
+		{
+			m_IsPaused = true;
+		}
+
+		if (event.type == sf::Event::GainedFocus)
+		{
+			m_IsPaused = false;
+		}
+
 		if (event.type == sf::Event::Closed)
 			m_window.close();
 	}
@@ -71,8 +87,8 @@ void Game::Update(sf::Time dt)
 {
 	m_StateStack.update(dt);
 
-    m_StatisticsText.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f + 0.f,
-                                 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f + 0.f);
+    m_StatisticsText.setPosition(m_window.getView().getCenter().x - m_window.getView().getSize().x / 2.f,
+                                 m_window.getView().getCenter().y - m_window.getView().getSize().y / 2.f);
     m_StatisticsText.setScale(m_window.getView().getSize().x /  m_window.getDefaultView().getSize().x,
                               m_window.getView().getSize().y /  m_window.getDefaultView().getSize().y);
 }
@@ -87,12 +103,19 @@ void Game::Render()
 
 void Game::loadResources()
 {
-	m_Fonts.load(Fonts::ARJULIAN, "../res/Font/ARJULIAN.ttf");
+	m_Fonts.load(Fonts::ID::ARJULIAN, "../res/Font/ARJULIAN.ttf");
+	m_Textures.load(Textures::ID::MonochromeSpriteSheet, "../res/Sprites/Tilemap/monochrome_tilemap_transparent_packed.png");
+	m_Textures.load(Textures::ID::CharactersSpriteSheet, "../res/Sprites/Tilemap/tilemap_packed_16x16_2.png");
+	m_Textures.load(Textures::ID::MainBackground, "../res/Sprites/MainBackground.png");
+	m_Textures.load(Textures::ID::CoinAnimation, "../res/Sprites/Tilemap/Coin_Animation.png");
 }
 
 void Game::registerStates()
 {
+	m_StateStack.registerState<SplashScreenState>(States::Title);
+	m_StateStack.registerState<MenuState>(States::Menu);
 	m_StateStack.registerState<GameState>(States::Game);
+	m_StateStack.registerState<PauseState>(States::Pause);
 }
 
 void Game::updateStatistics(sf::Time dt)

@@ -8,19 +8,20 @@
 #include <SFML/Window/Event.hpp>
 #include "../Utils/Context.hpp"
 #include "../Components/C_Camera.hpp"
+#include "../core/World.h"
 
-CameraSystem::CameraSystem(Context &context) :
-BaseSystem(context),
+CameraSystem::CameraSystem(Context &context, World* world) :
+BaseSystem(context, world),
 freeRoaming(false)
 { }
 
 void CameraSystem::update(sf::Time& dt)
 {
-    m_Context->registry->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
+    m_World->getEntityRegistry()->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
     {
         if(freeRoaming == false)
         {
-            auto targetPos = utils::B2VecToSFVec<sf::Vector2f>(m_Context->bodies[cameraComp.target]->GetPosition());
+            auto targetPos = utils::B2VecToSFVec<sf::Vector2f>(m_Context->enttToBody[cameraComp.target]->GetPosition());
             cameraComp.view.setCenter(targetPos);
             m_Context->window->setView(cameraComp.view);
         }
@@ -51,7 +52,7 @@ void CameraSystem::handleEvents(const sf::Event& event)
             zoomViewAt({event.mouseWheelScroll.x, event.mouseWheelScroll.y}, zoomAmount);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
     {
         freeRoaming = false;
         resetView();
@@ -62,7 +63,7 @@ void CameraSystem::cameraPanning()
 {
     freeRoaming = true;
 
-    m_Context->registry->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
+    m_World->getEntityRegistry()->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
@@ -89,7 +90,7 @@ void CameraSystem::cameraPanning()
 
 void CameraSystem::zoomViewAt(sf::Vector2<int> pixel, float zoom)
 {
-    m_Context->registry->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
+    m_World->getEntityRegistry()->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
     {
         const sf::Vector2f beforeCoord{ m_Context->window->mapPixelToCoords(pixel) };
         cameraComp.view.zoom(zoom);
@@ -103,7 +104,7 @@ void CameraSystem::zoomViewAt(sf::Vector2<int> pixel, float zoom)
 
 void CameraSystem::resetView()
 {
-    m_Context->registry->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
+    m_World->getEntityRegistry()->view<C_Camera>().each([&](auto& entity, auto& cameraComp)
     {
         cameraComp.view = cameraComp.defaultView;
     });

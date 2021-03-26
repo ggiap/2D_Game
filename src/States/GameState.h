@@ -4,7 +4,6 @@
 
 class StateStack;
 
-
 class GameState : public State
 {
 public:
@@ -19,5 +18,8 @@ private:
 
     b2MouseJoint* mouseJoint;
     b2Body* ground;
+
+	sf::Text youLoseLabel;
+	sf::Text victoryLabel;
 };
 

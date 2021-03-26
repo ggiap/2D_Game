@@ -4,6 +4,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 
 #include "Animation.h"
@@ -17,7 +18,7 @@ public:
 	void update(sf::Time deltaTime);
 	void setAnimation(const Animations::ID id);
 	void setFrameTime(sf::Time time);
-	void addAnimation(Animations::ID id, Animation animation);
+	void addAnimation(Animations::ID id, Animation* animation);
 	void play();
 	void play(const Animations::ID id);
 	void pause();
@@ -33,15 +34,14 @@ public:
 	void setFrame(std::size_t newFrame, bool resetTime = true);
 
 private:
-    std::unordered_map<Animations::ID, Animation> animations;
+    std::unordered_map<Animations::ID, Animation*> animations;
 	const Animation* m_animation;
 	sf::Time m_frameTime;
 	sf::Time m_currentTime;
 	std::size_t m_currentFrame;
 	bool m_isPaused;
 	bool m_isLooped;
-	const sf::Texture* m_texture;
-	sf::Vertex m_vertices[4];
+	sf::Sprite m_Sprite;
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };

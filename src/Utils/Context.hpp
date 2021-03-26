@@ -1,33 +1,34 @@
 #pragma once
 
 #include <unordered_map>
-
-#include <entt/entity/registry.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <Box2D/Box2D.h>
 
 #include "Utility.hpp"
+
+class MusicPlayer;
+class SoundEffectPlayer;
 
 struct Context
 {
 	Context() = default;
-	Context(sf::RenderWindow& win, TextureHolder& tex,
-	        FontHolder& font, entt::registry& reg,
-	        b2World& wr, std::unordered_map<entt::entity, b2Body*> bd = {}) :
-            window(&win),
-            textures(&tex),
-            fonts(&font),
-            registry(&reg),
-            b2_World(&wr),
-            bodies(bd)
+	Context(sf::RenderWindow& win, FontHolder& font, TextureHolder& texture, MusicPlayer& music, SoundEffectPlayer& sounds,
+			bool isPaused = false) :
+				window(&win),
+				fonts(&font),
+				textures(&texture),
+				music(&music),
+				sounds(&sounds),
+				isPaused(isPaused),
+				enttToBody()
 	{
 	
 	}
 
 	sf::RenderWindow* window;
-	TextureHolder* textures;
 	FontHolder* fonts;
-	entt::registry* registry;
-	b2World* b2_World;
-	std::unordered_map<entt::entity, b2Body*> bodies;
+	TextureHolder* textures;
+	MusicPlayer* music;
+	SoundEffectPlayer* sounds;
+	bool isPaused;
+	std::unordered_map<entt::entity, b2Body*> enttToBody;
 };

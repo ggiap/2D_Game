@@ -6,6 +6,9 @@
 #define ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP
 
 #include <Box2D/Common/b2Math.h>
+#include <vector>
+#include <array>
+#include <entt/entity/entity.hpp>
 
 struct CollisionInfo
 {
@@ -13,6 +16,14 @@ struct CollisionInfo
     bool collisionBelow{false};
     bool collisionLeft {false};
     bool collisionRight{false};
+    bool groundCheckLeft{false};
+    bool groundCheckRight{false};
+    bool climbingLadder{false};
+    entt::entity entityBelow{entt::null};
+    entt::entity entityAbove{entt::null};
+    entt::entity entityLeft {entt::null};
+    entt::entity entityRight{entt::null};
+    b2Vec2 normalBelow{};
 
     void reset()
     {
@@ -20,6 +31,14 @@ struct CollisionInfo
         collisionBelow = false;
         collisionLeft  = false;
         collisionRight = false;
+        groundCheckLeft = false;
+        groundCheckRight = false;
+        climbingLadder = false;
+        entityBelow = entt::null;
+        entityAbove = entt::null;
+        entityLeft = entt::null;
+        entityRight = entt::null;
+        normalBelow = b2Vec2();
     }
 };
 
@@ -35,12 +54,14 @@ struct C_Raycast
 
     CollisionInfo collisionInfo{};
     RaycastOrigins raycastOrigins{};
-    float rayLength{};
+    float rayLength{2.f};
 	int horizontalRayCount{};
 	int verticalRayCount{};
-	float dstBetweenRays = .5f;
+	float dstBetweenRays = .8f;
 	float horizontalRaySpacing{};
 	float verticalRaySpacing{};
+
+    std::vector<std::array<sf::Vertex, 2>> raycasts;
 };
 
 #endif //ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP

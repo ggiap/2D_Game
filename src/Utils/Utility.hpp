@@ -13,6 +13,7 @@
 #include "../Utils/ResourceHolder.h"
 
 
+// ======= FORWARD DECLARATIONS =======
 namespace sf
 {
     class Texture;
@@ -20,20 +21,67 @@ namespace sf
     class Sprite;
     class Text;
     class RectangleShape;
+    class SoundBuffer;
+}
+
+template<typename Resource, typename Identifier>
+class ResourceHolder;
+
+class AnimatedSprite;
+
+namespace tmx
+{
+    class Object;
+}
+// ====================================
+
+
+namespace BodyCategory
+{
+    enum ID
+    {
+        Player = 0x01,
+        Enemy = 0x02,
+        OneWayPlatform = 0x04,
+        Ladder = 0x08,
+        Coin = 0x16,
+        Other = 0x32,    
+    };
+}
+
+namespace Music
+{
+    enum class ID
+    {
+        MenuTheme,
+        GameTheme,
+    };
+}
+
+namespace Sounds
+{
+    enum class ID
+    {
+        Squash,
+        CoinPickup,
+        Pause,
+    };
 }
 
 namespace Textures
 {
-    enum ID
+    enum class ID
     {
         CharactersSpriteSheet,
-        Background,
+        MonochromeSpriteSheet,
+        MainBackground,
+        CoinAnimation,
     };
 }
 
 namespace Fonts
 {
-    enum ID
+    enum class ID
     {
         ARJULIAN,
     };
@@ -41,7 +89,7 @@ namespace Fonts
 
 namespace Category
 {
-    enum Type
+    enum class ID
     {
         None = 0,
         Scene = 1 << 0,
@@ -52,36 +100,31 @@ namespace Category
 
 namespace GameObjectState
 {
-    enum State
+    enum class ID
     {
         Standing,
         Walking,
         Jumping,
+        ClimbingLadder,
     };
 }
 
 namespace Animations
 {
-    enum ID
+    enum class ID
     {
         Standing,
         Walking,
         Jumping,
+        ClimbingLadder,
+        EnemyMoving,
+        Coin,
     };
 }
 
-template<typename Resource, typename Identifier>
-class ResourceHolder;
-
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
-
-class AnimatedSprite;
-
-namespace tmx
-{
-	class Object;
-}
+using SoundBufferHolder = ResourceHolder<sf::SoundBuffer, Sounds::ID>;
 
 namespace utils
 {
@@ -91,6 +134,7 @@ namespace utils
     void centerOrigin(sf::Shape& rect);
     void centerOrigin(AnimatedSprite& animatedSprite);
     tmx::Object getObjectByName(entt::registry &reg, const std::string& layerName, const std::string& name);
+    std::vector<tmx::Object> getObjectsByName(entt::registry &reg, const std::string& layerName, const std::string& substr);
     const char* getKeyName(const sf::Keyboard::Key key);
 
     // Box2D to SFML space conversion constant

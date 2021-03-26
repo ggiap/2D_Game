@@ -1,11 +1,10 @@
 #pragma once
 
-#include <entt/entt.hpp>
-#include <Box2D/Box2D.h>
-
 #include "../States/StateStack.h"
 #include "../Utils/ResourceHolder.h"
 #include "../Utils/Utility.hpp"
+#include "../core/MusicPlayer.hpp"
+#include "../core/SoundEffectPlayer.hpp"
 
 class Game : private sf::NonCopyable
 {
@@ -22,19 +21,20 @@ private:
 	void registerStates();
 	void updateStatistics(sf::Time dt);
 
-    void zoomViewAt(sf::Vector2i pixel, float zoom);
 private:
     static const sf::Time TimePerFrame;
 
 	sf::RenderWindow m_window;
-	TextureHolder m_Textures;
 	FontHolder m_Fonts;
+	TextureHolder m_Textures;
 	StateStack m_StateStack;
-	entt::registry m_Registry;
-	b2World m_B2DWorld;
+	MusicPlayer m_MusicPlayer;
+	SoundEffectPlayer m_SoundPlayer;
 
 	sf::Text m_StatisticsText;
 	sf::Time m_StatisticsUpdateTime;
 	std::size_t	m_StatisticsNumFrames;
+
+	bool m_IsPaused{ false };
 };
 

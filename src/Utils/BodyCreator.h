@@ -70,8 +70,9 @@ struct BodyCreator
 		b2PolygonShape ps;
 		ps.Set(vertices.get(), points.size());
 		b2FixtureDef f;
-		f.density = 1.f;
+		f.density = body->GetType() == b2BodyType::b2_dynamicBody ? 1.f : 0.f;
 		f.shape = &ps;
+		f.filter.categoryBits = BodyCategory::Other;
 
 		body->CreateFixture(&f);
 	}
@@ -95,7 +96,8 @@ struct BodyCreator
 		bodyDef.position.Set(objPos.x, objPos.y);
 		b2Body *retBody = nullptr;
 		b2FixtureDef fixtureDef;
-		fixtureDef.density = 1.f;
+		fixtureDef.density = bodyType == b2BodyType::b2_dynamicBody ? 1.f : 0.f;
+		fixtureDef.filter.categoryBits = BodyCategory::Other;
 
 		if (objShape == tmx::Object::Shape::Polyline)
 		{

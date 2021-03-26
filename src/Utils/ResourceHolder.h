@@ -13,6 +13,9 @@ public:
 	template<typename Parameter>
 	void load(Identifier, const std::string&, Parameter);
 
+	void unload(Identifier);
+	void unloadAll();
+
 	Resource& get(Identifier);
 	const Resource& get(Identifier) const;
 
@@ -31,7 +34,7 @@ inline void ResourceHolder<Resource, Identifier>::load(Identifier ID, const std:
 		throw std::runtime_error("ResourceHolder::load - Failed to load " + filename);
 	}
 
-	auto inserted[[maybe_unused]] = m_ResourceMap.insert(std::make_pair(ID, std::move(resource)));
+	auto inserted = m_ResourceMap.insert(std::make_pair(ID, std::move(resource)));
 
 	assert(inserted.second);
 }
@@ -47,9 +50,24 @@ inline void ResourceHolder<Resource, Identifier>::load(Identifier ID, const std:
 		throw std::runtime_error("ResourceHolder::load - Failed to load " + filename);
 	}
 
-	auto inserted[[maybe_unused]] = m_ResourceMap.insert(std::make_pair(ID, std::move(resource)));
+	auto inserted = m_ResourceMap.insert(std::make_pair(ID, std::move(resource)));
 
 	assert(inserted.second);
+}
+
+template<typename Resource, typename Identifier>
+inline void ResourceHolder<Resource, Identifier>::unload(Identifier ID)
+{
+	auto found = m_ResourceMap.find(ID);
+	found->second.reset();
+	m_ResourceMap.erase(found);
+}
+
+
+template<typename Resource, typename Identifier>
+inline void ResourceHolder<Resource, Identifier>::unloadAll()
+{
+	m_ResourceMap.clear();
 }
 
 template<typename Resource, typename Identifier>

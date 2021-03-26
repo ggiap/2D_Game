@@ -24,7 +24,7 @@ void SFMLDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	sf::Vector2f center;
 	for(int i = 0; i < vertexCount; i++)
 	{
-		//polygon.setPoint(i, SFMLDraw::B2VecToSFVec(vertices[i]));
+		//polygon.setPoint(i, utils::B2VecToSFVec<sf::Vector2f>(vertices[i]));
 		sf::Vector2f transformedVec = utils::B2VecToSFVec<sf::Vector2f>(vertices[i]);
 		polygon.setPoint(i, sf::Vector2f(std::floor(transformedVec.x), std::floor(transformedVec.y))); // flooring the coords to fix distorted lines on flat surfaces
 	}																								   // they still show up though.. but less frequently
@@ -40,7 +40,7 @@ void SFMLDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, 
 	sf::ConvexShape polygon(vertexCount);
 	for(int i = 0; i < vertexCount; i++)
 	{
-		//polygon.setPoint(i, SFMLDraw::B2VecToSFVec(vertices[i]));
+		//polygon.setPoint(i, utils::B2VecToSFVec<sf::Vector2f>(vertices[i]));
 		sf::Vector2f transformedVec = utils::B2VecToSFVec<sf::Vector2f>(vertices[i]);
 		polygon.setPoint(i, sf::Vector2f(std::floor(transformedVec.x), std::floor(transformedVec.y))); // flooring the coords to fix distorted lines on flat surfaces
 	}																								   // they still show up though.. but less frequently
