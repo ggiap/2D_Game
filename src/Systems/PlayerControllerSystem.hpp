@@ -22,7 +22,6 @@ public:
     explicit PlayerControllerSystem(Context& context, World *world);
 
     void update(sf::Time& dt) override;
-    void handleEvents(sf::Time dt);
 
 private:
     GameObjectState::ID m_State{};

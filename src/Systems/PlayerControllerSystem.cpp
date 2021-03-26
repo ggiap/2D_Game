@@ -25,11 +25,6 @@ PlayerControllerSystem::PlayerControllerSystem(Context& context, World* world) :
 
 void PlayerControllerSystem::update(sf::Time& dt)
 {
-    handleEvents(dt);
-}
-
-void PlayerControllerSystem::handleEvents(sf::Time dt)
-{
     auto registry = m_World->getEntityRegistry();
     auto view = registry->view<C_PlayerTag, C_Animation, C_Raycast>();
 
@@ -47,19 +42,19 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            if(!raycastComp.collisionInfo.collisionLeft)
+            if (!raycastComp.collisionInfo.collisionLeft)
                 velocity.x -= 0.6f;
 
-            if(raycastComp.collisionInfo.collisionBelow)
+            if (raycastComp.collisionInfo.collisionBelow)
                 m_State = GameObjectState::ID::Walking;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            if(!raycastComp.collisionInfo.collisionRight)
+            if (!raycastComp.collisionInfo.collisionRight)
                 velocity.x += 0.6f;
 
-            if(raycastComp.collisionInfo.collisionBelow)
+            if (raycastComp.collisionInfo.collisionBelow)
                 m_State = GameObjectState::ID::Walking;
         }
         velocity.x = math::lerp(velocity.x, velocity.x, 0.5f);
@@ -77,7 +72,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
                 m_World->getB2World()->DestroyBody(body);
                 registry->destroy(raycastComp.collisionInfo.entityBelow);
-                m_Context->enttToBody.erase(raycastComp.collisionInfo.entityBelow);    
+                m_Context->enttToBody.erase(raycastComp.collisionInfo.entityBelow);
 
                 velocity.y = 0;
                 velocity.y -= 5.f;
@@ -86,16 +81,16 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
-            if(raycastComp.collisionInfo.collisionBelow)
-                velocity = {velocity.x, velocity.y - 50.f};
-                //m_Context->enttToBody[entity]->ApplyLinearImpulseToCenter(b2Vec2(0.f, -3.f), true);
-                //m_Context->enttToBody[entity]->ApplyForceToCenter(b2Vec2(0.f, -200.f), true);
+            if (raycastComp.collisionInfo.collisionBelow)
+                velocity = { velocity.x, velocity.y - 50.f };
+            //m_Context->enttToBody[entity]->ApplyLinearImpulseToCenter(b2Vec2(0.f, -3.f), true);
+            //m_Context->enttToBody[entity]->ApplyForceToCenter(b2Vec2(0.f, -200.f), true);
 
             m_State = GameObjectState::ID::Jumping;
         }
 
-        if(!raycastComp.collisionInfo.collisionBelow)
-        	m_State = GameObjectState::ID::Jumping;
+        if (!raycastComp.collisionInfo.collisionBelow)
+            m_State = GameObjectState::ID::Jumping;
 
         if ((velocity.x >= -0.1f || velocity.x <= 0.1f) && raycastComp.collisionInfo.collisionBelow)
             m_State = GameObjectState::ID::Standing;
@@ -112,7 +107,7 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
                 velocity.y = -2.f;
                 m_State = GameObjectState::ID::ClimbingLadder;
             }
-        }    
+        }
 
         velocity.x = std::clamp(velocity.x, -5.f, 5.f);
         velocity.y = std::clamp(velocity.y, -10.f, 10.f);
@@ -120,26 +115,26 @@ void PlayerControllerSystem::handleEvents(sf::Time dt)
 
         if (velocity.x < -0.1f)
             anim.animatedSprite.setScale(sf::Vector2f(-1.f, 1.f));
-        else if(velocity.x > 0.1f)
+        else if (velocity.x > 0.1f)
             anim.animatedSprite.setScale(sf::Vector2f(1.f, 1.f));
 
         switch (m_State)
         {
-            case GameObjectState::ID::Standing:
-                anim.animatedSprite.play(Animations::ID::Standing);
-                break;
+        case GameObjectState::ID::Standing:
+            anim.animatedSprite.play(Animations::ID::Standing);
+            break;
 
-            case GameObjectState::ID::Walking:
-                anim.animatedSprite.play(Animations::ID::Walking);
-                break;
+        case GameObjectState::ID::Walking:
+            anim.animatedSprite.play(Animations::ID::Walking);
+            break;
 
-            case GameObjectState::ID::Jumping:
-                anim.animatedSprite.play(Animations::ID::Jumping);
-                break;
+        case GameObjectState::ID::Jumping:
+            anim.animatedSprite.play(Animations::ID::Jumping);
+            break;
 
-            case GameObjectState::ID::ClimbingLadder:
-                anim.animatedSprite.play(Animations::ID::ClimbingLadder);
-                break;
+        case GameObjectState::ID::ClimbingLadder:
+            anim.animatedSprite.play(Animations::ID::ClimbingLadder);
+            break;
         }
     }
 }
