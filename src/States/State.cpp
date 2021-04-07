@@ -1,7 +1,8 @@
 #include "State.h"
+#include "StateStack.h"
 
 #include <utility>
-#include "StateStack.h"
+
 
 State::State(StateStack& stack, Context context) :
 	m_Stack(&stack),

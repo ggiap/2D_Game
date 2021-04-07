@@ -18,9 +18,10 @@
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
 #include "../Utils/FixtureUserData.hpp"
+#include "../Utils/SFMLDebugDraw.h"
+
 #include <Box2D/Box2D.h>
 #include <entt/entt.hpp>
-#include "../Utils/SFMLDebugDraw.h"
 #include <spdlog/spdlog.h>
 
 World::World(Context& context) :

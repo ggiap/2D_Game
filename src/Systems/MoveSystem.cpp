@@ -1,5 +1,5 @@
 #include "MoveSystem.hpp"
-#include <SFML/System/Time.hpp>
+
 #include "../Utils/Math.hpp"
 #include "../Utils/FixtureUserData.hpp"
 #include "../Utils//Context.hpp"
@@ -8,6 +8,8 @@
 #include "../Components/C_Raycast.hpp"
 #include "../Components/C_Tag.h"
 #include "../core/World.h"
+
+#include <SFML/System/Time.hpp>
 
 MoveSystem::MoveSystem(Context& context, World *world) :
     BaseSystem(context, world)

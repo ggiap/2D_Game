@@ -1,13 +1,6 @@
-//
-// Created by george on 3/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_C_PLAYERCONTROLLER_HPP
-#define ENTITY_COMPONENT_SYSTEM_C_PLAYERCONTROLLER_HPP
+#pragma once
 
 struct C_PlayerController
 {
 
 };
-
-#endif //ENTITY_COMPONENT_SYSTEM_C_PLAYERCONTROLLER_HPP

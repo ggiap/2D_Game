@@ -5,9 +5,11 @@
 #include "../Components/C_Tag.h"
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
+#include "../core/World.h"
+
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
-#include "../core/World.h"
+
 #include <spdlog/spdlog.h>
 
 CollisionSystem::CollisionSystem(Context& context, World* world) :
@@ -20,7 +22,6 @@ CollisionSystem::CollisionSystem(Context& context, World* world) :
 void CollisionSystem::update(sf::Time& dt)
 {
     m_World->getB2World()->Step(dt.asSeconds(), 8, 10);
-	m_World->getB2World()->ClearForces();
 
     UpdateRaycastOrigins();
     handleRaycasts();

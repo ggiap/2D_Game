@@ -1,9 +1,4 @@
-//
-// Created by george on 4/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_C_MOVABLE_HPP
-#define ENTITY_COMPONENT_SYSTEM_C_MOVABLE_HPP
+#pragma once
 
 #include <SFML/System/Vector2.hpp>
 
@@ -22,5 +17,3 @@ struct C_Movable
     sf::Vector2f direction{};
     float maxSpeed{};
 };
-
-#endif //ENTITY_COMPONENT_SYSTEM_C_MOVABLE_HPP

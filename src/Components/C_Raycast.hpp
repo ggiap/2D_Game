@@ -1,9 +1,4 @@
-//
-// Created by george on 22/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP
-#define ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP
+#pragma once
 
 #include <Box2D/Common/b2Math.h>
 #include <vector>
@@ -63,5 +58,3 @@ struct C_Raycast
 
     std::vector<std::array<sf::Vertex, 2>> raycasts;
 };
-
-#endif //ENTITY_COMPONENT_SYSTEM_C_RAYCAST_HPP

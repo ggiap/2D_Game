@@ -1,14 +1,16 @@
 #pragma once
 
+#include <map>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Window/Event.hpp>
-#include "../Utils/Utility.hpp"
+
 #include "../core/SystemManager.hpp"
+#include "../Utils/Utility.hpp"
 #include "../Utils/Timer.hpp"
 #include "../Utils/Animation.h"
 #include "../Utils/ContactListener.hpp"
-#include <map>
 
 struct Context;
 

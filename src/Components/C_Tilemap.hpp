@@ -1,5 +1,4 @@
-#ifndef C_TILEMAP_HPP
-#define C_TILEMAP_HPP
+#pragma once
 
 #include "../Tilemaps/SFMLOrthogonalLayer.hpp"
 #include <vector>
@@ -16,6 +15,3 @@ struct C_Tilemap
     std::vector<std::unique_ptr<MapLayer>> m_TileLayers;
     std::vector<std::unique_ptr<tmx::ObjectGroup>> m_ObjectLayers;
 };
-
-
-#endif //C_TILEMAP_HPP

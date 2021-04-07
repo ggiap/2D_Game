@@ -1,11 +1,11 @@
 #include "Game.h"
-#include <SFML/Window/Event.hpp>
+
 #include "../States/GameState.h"
 #include "../States/MenuState.hpp"
 #include "../States/SplashScreenState.hpp"
 #include "../States/PauseState.hpp"
 
-const sf::Time Game::TimePerFrame = sf::seconds(1 / 60.f);
+#include <SFML/Window/Event.hpp>
 
 Game::Game() :
 	m_window(sf::VideoMode(1200, 800), "Application",

@@ -140,7 +140,7 @@ namespace utils
     // Box2D to SFML space conversion constant
     const auto PIXELS_PER_METERS = 32.f;
 
-    //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS units
+    //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS(meters, kilograms, seconds) units
     b2Vec2 sfVecToB2Vec(const float x, const float y);
     
     template <typename T>

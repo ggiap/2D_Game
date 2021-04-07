@@ -1,5 +1,5 @@
 #include "EnemyControllerSystem.hpp"
-#include <SFML/System/Time.hpp>
+
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
 #include "../core/World.h"
@@ -7,6 +7,8 @@
 #include "../Components/C_Rigidbody.hpp"
 #include "../Components/C_Raycast.hpp"
 #include "../Components/C_Animation.hpp"
+
+#include <SFML/System/Time.hpp>
 
 EnemyControllerSystem::EnemyControllerSystem(Context &context, World* world) :
 	BaseSystem(context, world),

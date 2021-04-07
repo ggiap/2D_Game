@@ -1,5 +1,4 @@
-#ifndef TILEMAP_SYSTEM_HPP
-#define TILEMAP_SYSTEM_HPP
+#pragma once
 
 #include "BaseSystem.hpp"
 
@@ -11,5 +10,3 @@ public:
 
     void update(sf::Time &dt) override;
 };
-
-#endif

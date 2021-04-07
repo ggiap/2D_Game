@@ -1,9 +1,4 @@
-//
-// Created by george on 3/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_C_ANIMATION_HPP
-#define ENTITY_COMPONENT_SYSTEM_C_ANIMATION_HPP
+#pragma once
 
 #include "Utils/AnimatedSprite.h"
 
@@ -18,5 +13,3 @@ struct C_Animation
 
     AnimatedSprite animatedSprite{};
 };
-
-#endif //ENTITY_COMPONENT_SYSTEM_C_ANIMATION_HPP
