@@ -1,8 +1,12 @@
+#pragma once
+
 #include "../Utils/Utility.hpp"
-#include <list>
+#include "../Utils/ResourceHolder.h"
+
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
-#include "../Utils/ResourceHolder.h"
+
+#include <list>
 
 class SoundEffectPlayer : public sf::NonCopyable
 {
