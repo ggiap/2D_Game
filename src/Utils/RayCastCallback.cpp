@@ -1,10 +1,10 @@
 #include "RayCastCallback.hpp"
-
-#include <Box2D/Dynamics/b2Fixture.h>
-#include "../Utils/Context.hpp"
-#include "../Utils/FixtureUserData.hpp"
+#include "Context.hpp"
+#include "FixtureUserData.hpp"
 #include "../core/World.h"
 #include "../Components/C_Tag.h"
+
+#include <Box2D/Dynamics/b2Fixture.h>
 
 RayCastCallback::RayCastCallback(Context* context, World* world) : m_Context(context), m_World(world),
                                  m_fixture(nullptr), m_fraction(), m_normal(), m_point()

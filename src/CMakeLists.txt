@@ -27,8 +27,7 @@ add_library(SOURCE
         Utils/Math.hpp
         Utils/Context.hpp
         Utils/SFMLDebugDraw.h
-        Utils/SFMLDebugDraw.cpp
-        Utils/QueryCallback.cpp
+        Utils/SFMLDebugDraw.cpp 
         Utils/QueryCallback.h
         Utils/Animation.cpp
         Utils/AnimatedSprite.h

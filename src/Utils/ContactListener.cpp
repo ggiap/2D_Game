@@ -1,11 +1,11 @@
 #include "ContactListener.hpp"
 #include "Context.hpp"
+#include "FixtureUserData.hpp"
 #include "../core/World.h"
 #include "../core/SoundEffectPlayer.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
-#include "../Utils/FixtureUserData.hpp"
-#include <spdlog/spdlog.h>
+
 
 ContactListener::ContactListener(Context* context, World* world) : m_Context(context), m_World(world)
 {
