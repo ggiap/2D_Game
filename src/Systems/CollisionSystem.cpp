@@ -10,8 +10,6 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 
-#include <spdlog/spdlog.h>
-
 CollisionSystem::CollisionSystem(Context& context, World* world) :
     BaseSystem(context, world),
     m_Callback()

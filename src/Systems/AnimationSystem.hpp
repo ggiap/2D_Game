@@ -1,7 +1,8 @@
 #pragma once
 
-#include <SFML/System/Time.hpp>
 #include "BaseSystem.hpp"
+
+#include <SFML/System/Time.hpp>
 
 struct Context;
 

@@ -1,14 +1,11 @@
-//
-// Created by george on 3/8/20.
-//
-
 #include "CameraSystem.hpp"
-#include <SFML/System/Time.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Event.hpp>
 #include "../Utils/Context.hpp"
 #include "../Components/C_Camera.hpp"
 #include "../core/World.h"
+
+#include <SFML/System/Time.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
 
 CameraSystem::CameraSystem(Context &context, World* world) :
 BaseSystem(context, world),

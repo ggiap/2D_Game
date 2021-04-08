@@ -10,6 +10,7 @@
 #include "../core/SoundEffectPlayer.hpp"
 
 #include <SFML/Window/Event.hpp>
+
 #include <cmath>
 #include <spdlog/spdlog.h>
 
