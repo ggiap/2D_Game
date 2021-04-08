@@ -8,8 +8,8 @@
 #include <SFML/System/NonCopyable.hpp>
 
 #include "State.h"
-#include "StateIdentifiers.h"
 #include "../Utils/Context.hpp"
+#include "../Utils/Utility.hpp"
 
 class StateStack : private sf::NonCopyable
 {
@@ -45,7 +45,7 @@ private:
 private:
 	struct PendingChange
 	{
-		PendingChange(Action action, States::ID stateID = States::None);
+		PendingChange(Action action, States::ID stateID = States::ID::None);
 
 		Action action;
 		States::ID stateID;

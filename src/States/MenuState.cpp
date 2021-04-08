@@ -1,8 +1,9 @@
 #include "MenuState.hpp"
-#include <SFML/Window/Event.hpp>
 #include "../Utils/Utility.hpp"
 #include "../Components/C_Camera.hpp"
 #include "../core/MusicPlayer.hpp"
+
+#include <SFML/Window/Event.hpp>
 
 
 MenuState::MenuState(StateStack& stack, Context& context) :
@@ -66,7 +67,7 @@ bool MenuState::handleEvent(const sf::Event& event)
 		if (optionIndex == Play)
 		{
 			requestStackPop();
-			requestStackPush(States::Game);
+			requestStackPush(States::ID::Game);
 		}
 		else if (optionIndex == Exit)
 		{

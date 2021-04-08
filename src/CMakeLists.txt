@@ -14,8 +14,7 @@ add_library(SOURCE
         States/State.cpp
         States/StateStack.cpp
         States/GameState.h
-        States/GameState.cpp
-        States/StateIdentifiers.h
+        States/GameState.cpp    
         States/MenuState.hpp
         States/MenuState.cpp
         States/PauseState.hpp
@@ -63,11 +62,10 @@ add_library(SOURCE
         Systems/EnemyControllerSystem.cpp
         Components/C_Rigidbody.hpp
         Components/C_Animation.hpp
-        Components/C_PlayerController.hpp
-        Components/C_Movable.hpp
         Components/C_Tag.h
         Components/C_Raycast.hpp
         Components/C_Camera.hpp
+        Components/C_Tilemap.hpp
         Tilemaps/SFMLOrthogonalLayer.hpp)
 
 

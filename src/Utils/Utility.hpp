@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <Box2D/Box2D.h>
+
 #include <cassert>
 #include <cmath>
 #include <entt/entity/registry.hpp>
@@ -119,6 +120,20 @@ namespace Animations
         ClimbingLadder,
         EnemyMoving,
         Coin,
+    };
+}
+
+namespace States
+{
+    enum class ID
+    {
+        None,
+        Game,
+        Menu,
+        Settings,
+        Loading,
+        Pause,
+        Title
     };
 }
 

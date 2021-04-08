@@ -1,7 +1,6 @@
 #include "World.h"
 
 #include "../Components/C_Rigidbody.hpp"
-#include "../Components/C_PlayerController.hpp"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
@@ -349,7 +348,6 @@ void World::createPlayer()
 	fixture->SetUserData(fud);
 
 	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
-	m_WorldRegistry.emplace<C_PlayerController>(entity);
 	m_WorldRegistry.emplace<C_Animation>(entity);
 	m_WorldRegistry.emplace<C_PlayerTag>(entity);
 	m_WorldRegistry.emplace<C_Raycast>(entity);

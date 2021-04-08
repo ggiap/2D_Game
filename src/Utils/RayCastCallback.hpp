@@ -1,9 +1,4 @@
-//
-// Created by george on 17/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_RAYCASTCALLBACK_HPP
-#define ENTITY_COMPONENT_SYSTEM_RAYCASTCALLBACK_HPP
+#pragma once
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Common/b2Math.h>
@@ -30,6 +25,3 @@ public:
     Context* m_Context;
     World* m_World;
 };
-
-
-#endif //ENTITY_COMPONENT_SYSTEM_RAYCASTCALLBACK_HPP

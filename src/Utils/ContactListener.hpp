@@ -1,9 +1,4 @@
-//
-// Created by george on 16/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_CONTACTLISTENER_HPP
-#define ENTITY_COMPONENT_SYSTEM_CONTACTLISTENER_HPP
+#pragma once
 
 #include <Box2D/Box2D.h>
 
@@ -36,6 +31,3 @@ public:
     FixtureUserData* userDataA;
     FixtureUserData* userDataB;
 };
-
-
-#endif //ENTITY_COMPONENT_SYSTEM_CONTACTLISTENER_HPP

@@ -42,9 +42,11 @@ source distribution.
 
 #include <vector>
 #include <memory>
+
 #include <SFML/System/Vector2.hpp>
 #include <Box2D/Box2D.h>
 #include <tmxlite/Object.hpp>
+
 #include "../Utils/Utility.hpp"
 
 

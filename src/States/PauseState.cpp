@@ -1,8 +1,9 @@
 #include "PauseState.hpp"
 #include "../Utils/Utility.hpp"
-#include <SFML/Window/Event.hpp>
 #include "../utils/Context.hpp"
 #include "../core/MusicPlayer.hpp"
+
+#include <SFML/Window/Event.hpp>
 
 PauseState::PauseState(StateStack& stack, Context& context) :
 	State(stack, context)
@@ -54,7 +55,7 @@ bool PauseState::handleEvent(const sf::Event& event)
 	if (event.key.code == sf::Keyboard::BackSpace)
 	{
 		requestStackClear();
-		requestStackPush(States::Menu);
+		requestStackPush(States::ID::Menu);
 	}
 
 	return false;

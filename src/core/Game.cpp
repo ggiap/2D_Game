@@ -28,7 +28,7 @@ Game::Game() :
 	m_StatisticsText.setCharacterSize(20u);
 
 	registerStates();
-	m_StateStack.pushState(States::Title);
+	m_StateStack.pushState(States::ID::Title);
 }
 
 void Game::Run()
@@ -112,10 +112,10 @@ void Game::loadResources()
 
 void Game::registerStates()
 {
-	m_StateStack.registerState<SplashScreenState>(States::Title);
-	m_StateStack.registerState<MenuState>(States::Menu);
-	m_StateStack.registerState<GameState>(States::Game);
-	m_StateStack.registerState<PauseState>(States::Pause);
+	m_StateStack.registerState<SplashScreenState>(States::ID::Title);
+	m_StateStack.registerState<MenuState>(States::ID::Menu);
+	m_StateStack.registerState<GameState>(States::ID::Game);
+	m_StateStack.registerState<PauseState>(States::ID::Pause);
 }
 
 void Game::updateStatistics(sf::Time dt)
