@@ -1,7 +1,6 @@
 #include "World.h"
 
 #include "../Components/C_Rigidbody.hpp"
-#include "../Components/C_PlayerController.hpp"
 #include "../Components/C_Animation.hpp"
 #include "../Components/C_Tag.h"
 #include "../Components/C_Raycast.hpp"
@@ -18,9 +17,10 @@
 #include "../Utils/Context.hpp"
 #include "../Utils/Math.hpp"
 #include "../Utils/FixtureUserData.hpp"
+#include "../Utils/SFMLDebugDraw.h"
+
 #include <Box2D/Box2D.h>
 #include <entt/entt.hpp>
-#include "../Utils/SFMLDebugDraw.h"
 #include <spdlog/spdlog.h>
 
 World::World(Context& context) :
@@ -348,7 +348,6 @@ void World::createPlayer()
 	fixture->SetUserData(fud);
 
 	m_WorldRegistry.emplace<C_Rigidbody>(entity, m_Context->enttToBody[entity]);
-	m_WorldRegistry.emplace<C_PlayerController>(entity);
 	m_WorldRegistry.emplace<C_Animation>(entity);
 	m_WorldRegistry.emplace<C_PlayerTag>(entity);
 	m_WorldRegistry.emplace<C_Raycast>(entity);

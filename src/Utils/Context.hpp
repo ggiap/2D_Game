@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "Utility.hpp"
@@ -24,11 +25,11 @@ struct Context
 	
 	}
 
-	sf::RenderWindow* window;
-	FontHolder* fonts;
-	TextureHolder* textures;
-	MusicPlayer* music;
-	SoundEffectPlayer* sounds;
-	bool isPaused;
+	sf::RenderWindow*	window;
+	FontHolder*			fonts;
+	TextureHolder*		textures;
+	MusicPlayer*		music;
+	SoundEffectPlayer*	sounds;
+	bool				isPaused;
 	std::unordered_map<entt::entity, b2Body*> enttToBody;
 };

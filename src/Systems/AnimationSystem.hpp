@@ -1,12 +1,8 @@
-//
-// Created by george on 4/7/20.
-//
+#pragma once
 
-#ifndef ENTITY_COMPONENT_SYSTEM_ANIMATIONSYSTEM_HPP
-#define ENTITY_COMPONENT_SYSTEM_ANIMATIONSYSTEM_HPP
+#include "BaseSystem.hpp"
 
 #include <SFML/System/Time.hpp>
-#include "BaseSystem.hpp"
 
 struct Context;
 
@@ -18,5 +14,3 @@ public:
 
     void update(sf::Time& dt) override;
 };
-
-#endif //ENTITY_COMPONENT_SYSTEM_ANIMATIONSYSTEM_HPP

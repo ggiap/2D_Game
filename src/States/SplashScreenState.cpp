@@ -1,5 +1,6 @@
 #include "SplashScreenState.hpp"
 #include "../Utils/Utility.hpp"
+
 #include <SFML/Window/Event.hpp>
 
 SplashScreenState::SplashScreenState(StateStack& stack, Context context) :
@@ -48,7 +49,7 @@ bool SplashScreenState::handleEvent(const sf::Event& event)
 	if (event.type == sf::Event::KeyPressed)
 	{
 		requestStackPop();
-		requestStackPush(States::Menu);
+		requestStackPush(States::ID::Menu);
 	}
 
 	return true;

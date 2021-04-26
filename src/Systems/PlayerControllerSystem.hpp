@@ -1,9 +1,4 @@
-//
-// Created by george on 4/7/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_PLAYERCONTROLLERSYSTEM_HPP
-#define ENTITY_COMPONENT_SYSTEM_PLAYERCONTROLLERSYSTEM_HPP
+#pragma once
 
 #include "BaseSystem.hpp"
 #include "../Utils/Utility.hpp"
@@ -28,6 +23,3 @@ private:
     float m_lowJumpMultiplier;
     float m_fallMultiplier;
 };
-
-
-#endif //ENTITY_COMPONENT_SYSTEM_PLAYERCONTROLLERSYSTEM_HPP

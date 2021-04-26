@@ -2,8 +2,10 @@
 
 #include <vector>
 #include <memory>
+
 #include <entt/entity/registry.hpp>
 #include <SFML/System/Time.hpp>
+
 #include "../Systems/BaseSystem.hpp"
 
 class SystemManager

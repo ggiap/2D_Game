@@ -1,7 +1,3 @@
-//
-// Created by george on 4/7/20.
-//
-
 #include "AnimationSystem.hpp"
 #include "../Components/C_Animation.hpp"
 #include "../Utils//Context.hpp"

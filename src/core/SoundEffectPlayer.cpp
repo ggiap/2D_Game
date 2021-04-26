@@ -15,11 +15,3 @@ void SoundEffectPlayer::play(Sounds::ID id)
 	m_Sounds.back().setVolume(10.f);
 	m_Sounds.back().play();
 }
-
-void SoundEffectPlayer::removeStoppedSounds()
-{
-	m_Sounds.remove_if([&](const sf::Sound& s)
-		{
-			return s.getStatus() == sf::Sound::Stopped;
-		});
-}

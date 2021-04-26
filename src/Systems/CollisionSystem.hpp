@@ -1,9 +1,11 @@
 #pragma once
 
 #include "BaseSystem.hpp"
+#include "../Utils/RayCastCallback.hpp"
+
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
-#include "../Utils/RayCastCallback.hpp"
+
 #include <array>
 #include <vector>
 

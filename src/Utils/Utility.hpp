@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <Box2D/Box2D.h>
+
 #include <cassert>
 #include <cmath>
 #include <entt/entity/registry.hpp>
@@ -122,6 +123,20 @@ namespace Animations
     };
 }
 
+namespace States
+{
+    enum class ID
+    {
+        None,
+        Game,
+        Menu,
+        Settings,
+        Loading,
+        Pause,
+        Title
+    };
+}
+
 using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
 using SoundBufferHolder = ResourceHolder<sf::SoundBuffer, Sounds::ID>;
@@ -140,7 +155,7 @@ namespace utils
     // Box2D to SFML space conversion constant
     const auto PIXELS_PER_METERS = 32.f;
 
-    //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS units
+    //Converts SFML's vector to Box2D's vector and downscales it so it fits Box2D's MKS(meters, kilograms, seconds) units
     b2Vec2 sfVecToB2Vec(const float x, const float y);
     
     template <typename T>

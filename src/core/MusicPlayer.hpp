@@ -1,6 +1,10 @@
+#pragma once
+
 #include <map>
-#include <SFML/Audio/Music.hpp>
+
 #include "../Utils/Utility.hpp"
+
+#include <SFML/Audio/Music.hpp>
 
 class MusicPlayer : sf::NonCopyable
 {

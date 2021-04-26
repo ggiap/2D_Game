@@ -22,19 +22,19 @@ private:
 	void updateStatistics(sf::Time dt);
 
 private:
-    static const sf::Time TimePerFrame;
+    const sf::Time TimePerFrame = sf::seconds(1 / 60.f);
 
-	sf::RenderWindow m_window;
-	FontHolder m_Fonts;
-	TextureHolder m_Textures;
-	StateStack m_StateStack;
-	MusicPlayer m_MusicPlayer;
+	sf::RenderWindow  m_window;
+	FontHolder		  m_Fonts;
+	TextureHolder	  m_Textures;
+	StateStack		  m_StateStack;
+	MusicPlayer		  m_MusicPlayer;
 	SoundEffectPlayer m_SoundPlayer;
 
-	sf::Text m_StatisticsText;
-	sf::Time m_StatisticsUpdateTime;
-	std::size_t	m_StatisticsNumFrames;
+	sf::Text		  m_StatisticsText;
+	sf::Time		  m_StatisticsUpdateTime;
+	std::size_t		  m_StatisticsNumFrames;
 
-	bool m_IsPaused{ false };
+	bool			  m_IsPaused{ false };
 };
 

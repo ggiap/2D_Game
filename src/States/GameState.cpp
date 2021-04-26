@@ -1,10 +1,11 @@
 #include "GameState.h"
 #include "StateStack.h"
 #include "../Utils/QueryCallback.h"
-#include <SFML/Window/Event.hpp>
 #include "../Components/C_Rigidbody.hpp"
 #include "../core/MusicPlayer.hpp"
 #include "../core/SoundEffectPlayer.hpp"
+
+#include <SFML/Window/Event.hpp>
 
 GameState::GameState(StateStack& stack, Context& context) :
 	State(stack, context),
@@ -83,7 +84,7 @@ bool GameState::handleEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
     {
         requestStackPop();
-        requestStackPush(States::Game);
+        requestStackPush(States::ID::Game);
     }
 
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
@@ -100,13 +101,13 @@ bool GameState::handleEvent(const sf::Event& event)
         (m_World.getRemainingTime() <= 0 || m_World.getNumberOfEnemies() == 0))
     {
         requestStackPop();
-        requestStackPush(States::Menu);
+        requestStackPush(States::ID::Menu);
         m_Context.isPaused = false;
     }
     else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
         m_Context.sounds->play(Sounds::ID::Pause);
-        requestStackPush(States::Pause);
+        requestStackPush(States::ID::Pause);
         m_Context.isPaused = true;
     } 
 

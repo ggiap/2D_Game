@@ -3,11 +3,13 @@
 #include <map>
 #include <functional>
 #include <cassert>
-#include <SFML/System.hpp>
+
+#include <SFML/System/Time.hpp>
+#include <SFML/System/NonCopyable.hpp>
 
 #include "State.h"
-#include "StateIdentifiers.h"
 #include "../Utils/Context.hpp"
+#include "../Utils/Utility.hpp"
 
 class StateStack : private sf::NonCopyable
 {
@@ -34,7 +36,7 @@ public:
 	void popState();
 	void clearStates();
 
-	[[nodiscard]] bool isEmpty() const;
+	bool isEmpty() const;
 
 private:
 	State::Ptr createState(States::ID stateID);
@@ -43,7 +45,7 @@ private:
 private:
 	struct PendingChange
 	{
-		PendingChange(Action action, States::ID stateID = States::None);
+		PendingChange(Action action, States::ID stateID = States::ID::None);
 
 		Action action;
 		States::ID stateID;
@@ -61,6 +63,6 @@ void StateStack::registerState(States::ID stateID)
 {
 	m_Factories[stateID] = [this]()
 	{ 
-		return State::Ptr(new T(*this, m_Context)); 
+		return State::Ptr(new T(*this, m_Context));
 	};
 }

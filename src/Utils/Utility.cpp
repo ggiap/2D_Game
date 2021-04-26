@@ -1,8 +1,8 @@
 #include "Utility.hpp"
 #include "AnimatedSprite.h"
-#include <tmxlite/Object.hpp>
 #include <../Components/C_Tilemap.hpp>
-#include <spdlog/spdlog.h>
+
+#include <tmxlite/Object.hpp>
 
 namespace utils
 {
