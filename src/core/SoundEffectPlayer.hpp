@@ -15,8 +15,6 @@ public:
 
 	void play(Sounds::ID id);
 
-	void removeStoppedSounds();
-
 private:
 	SoundBufferHolder m_SoundBuffers;
 	std::list<sf::Sound> m_Sounds;

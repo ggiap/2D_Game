@@ -1,9 +1,4 @@
-//
-// Created by george on 3/8/20.
-//
-
-#ifndef ENTITY_COMPONENT_SYSTEM_CAMERASYSTEM_HPP
-#define ENTITY_COMPONENT_SYSTEM_CAMERASYSTEM_HPP
+#pragma once
 
 #include "BaseSystem.hpp"
 
@@ -31,6 +26,3 @@ private:
 
     bool freeRoaming{false};
 };
-
-
-#endif //ENTITY_COMPONENT_SYSTEM_CAMERASYSTEM_HPP

@@ -1,6 +1,6 @@
 #include "PauseState.hpp"
 #include "../Utils/Utility.hpp"
-#include "../utils/Context.hpp"
+#include "../Utils/Context.hpp"
 #include "../core/MusicPlayer.hpp"
 
 #include <SFML/Window/Event.hpp>
