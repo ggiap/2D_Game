@@ -130,7 +130,7 @@ sudo pacman -Syu cmake
 
 ### Clone the repo
 ```
-git clone https://github.com/ggiap/2D_Game.git
+git clone https://github.com/ggiap/2D_Game.git && cd 2D_Game
 ```
 
 ### Initialize and update the submodules
@@ -141,7 +141,6 @@ git submodule update --init
 ### Create a build folder
 
 ```
-cd 2D_Game
 mkdir build
 cd build
 ```
