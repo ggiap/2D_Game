@@ -14,12 +14,9 @@ if(NOT EXISTS "${CMAKE_MODULE_PATH}/conan.cmake")
 endif()
 
 include(${CMAKE_MODULE_PATH}/conan.cmake)
-conan_add_remote(NAME bincrafters URL
-                 https://api.bintray.com/conan/bincrafters/public-conan)
 
 conan_cmake_run(REQUIRES
         box2d/2.3.2.ef96a4f@conan/stable
-        sfml/2.5.1@bincrafters/stable
         entt/3.4.0
         spdlog/1.5.0
         IMPORTS "bin, *.dll -> ./bin"
@@ -115,11 +112,13 @@ include_directories(${CMAKE_SOURCE_DIR} src/Systems)
 include_directories(${CMAKE_SOURCE_DIR} src/States)
 include_directories(${CMAKE_SOURCE_DIR} src/utils)
 include_directories(${CMAKE_SOURCE_DIR} extlib/tmxlite/tmxlite/include)
+include_directories(${CMAKE_SOURCE_DIR} extlib/sfml/include)
 add_subdirectory(extlib/tmxlite/tmxlite)
+add_subdirectory(extlib/sfml)
 add_subdirectory(src)
 
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} tmxlite)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} sfml-window sfml-system sfml-audio sfml-graphics tmxlite)
 
 add_custom_command(
         TARGET ${CMAKE_PROJECT_NAME} POST_BUILD

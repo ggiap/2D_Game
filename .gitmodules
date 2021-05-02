@@ -1,3 +1,6 @@
 [submodule "extlib/tmxlite"]
 	path = extlib/tmxlite
 	url = https://github.com/fallahn/tmxlite.git
+[submodule "extlib/sfml"]
+	path = extlib/sfml
+	url = https://github.com/SFML/SFML.git
