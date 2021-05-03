@@ -105,6 +105,7 @@ else()
     endif()
 endif (MSVC)
 
+set(BUILD_SHARED_LIBS false)
 include_directories(${CMAKE_SOURCE_DIR} src)
 include_directories(${CMAKE_SOURCE_DIR} src/core)
 include_directories(${CMAKE_SOURCE_DIR} src/Components)
