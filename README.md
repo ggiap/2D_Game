@@ -126,6 +126,11 @@ pip install conan
 sudo pacman -Syu cmake
 ```
 
+#### make
+```
+sudo pacman -Syu make
+```
+
 #### SFML
 Download all the dependencies with your package manager for SFML before building the project:
 
