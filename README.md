@@ -1,5 +1,5 @@
 # 2D_Game
-This is a pretty small game created for my thesis. Features: one-way platforms, coins, hazards, enemies and ladders.
+This is a pretty small game created for my thesis: "Creation of a cross-platform 2D Game using a data oriented approach". Features: one-way platforms, coins, hazards, enemies and ladders.
 
 ## Built With
 
@@ -48,7 +48,7 @@ cd 2D_Game
 
 ### Initialize and update the submodules
 ```
-git submodule update --init
+git submodule update --init --recursive
 ```
 
 ### Create a build folder
@@ -126,6 +126,23 @@ pip install conan
 sudo pacman -Syu cmake
 ```
 
+#### SFML
+Download all the dependencies with your package manager for SFML before building the project:
+
+* freetype
+* x11
+* xrandr
+* udev
+* opengl
+* flac
+* ogg
+* vorbis
+* vorbisenc
+* vorbisfile
+* openal
+* pthread
+
+
 ## Installing
 
 ### Clone the repo
@@ -135,7 +152,7 @@ git clone https://github.com/ggiap/2D_Game.git && cd 2D_Game
 
 ### Initialize and update the submodules
 ```
-git submodule update --init
+git submodule update --init --recursive
 ```
 
 ### Create a build folder
@@ -149,12 +166,12 @@ cd build
 
 ##### Debug build
 ```
-cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+cmake -DCMAKE_BUILD_TYPE=Debug .. && make -j4
 ```
 
 ##### Release build
 ```
-cmake -DCMAKE_BUILD_TYPE=Release .. && make
+cmake -DCMAKE_BUILD_TYPE=Release .. && make -j4
 ```
 
 ##### Run
