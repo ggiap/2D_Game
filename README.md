@@ -197,6 +197,7 @@ cd bin && ./2D_Game
 * **Esc:** Pause
 * **Backspace:** (While in pause state) Return to menu
 * **P:** Spawn enemy
+* **I:** Reset camera target
 
 ## License
 
