@@ -126,3 +126,9 @@ add_custom_command(
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/src/res
         ${CMAKE_CURRENT_BINARY_DIR}/res)
+
+add_custom_command(
+    TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_SOURCE_DIR}/extlib/sfml/extlibs/bin/x64/openal32.dll
+    ${CMAKE_CURRENT_BINARY_DIR}/bin)
