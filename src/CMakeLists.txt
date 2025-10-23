@@ -68,4 +68,11 @@ add_library(SOURCE
         Tilemaps/SFMLOrthogonalLayer.hpp)
 
 
-target_link_libraries(SOURCE sfml-window sfml-system sfml-audio sfml-graphics ${SOURCE})
+target_link_libraries(SOURCE PUBLIC
+    sfml-system
+    sfml-window
+    sfml-graphics
+    sfml-audio
+    Box2D
+    EnTT::EnTT
+    spdlog::spdlog)

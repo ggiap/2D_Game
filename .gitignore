@@ -443,3 +443,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /build/
+
+vcpkg/
+vcpkg_installed/

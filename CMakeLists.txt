@@ -6,23 +6,9 @@ set(CMAKE_MODULE_PATH
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
          ${CMAKE_MODULE_PATH})
 
-# Download automatically, you can also just copy the conan.cmake file
-if(NOT EXISTS "${CMAKE_MODULE_PATH}/conan.cmake")
-    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-    file(DOWNLOAD "https://github.com/conan-io/cmake-conan/raw/v0.15/conan.cmake"
-            "${CMAKE_MODULE_PATH}/conan.cmake")
-endif()
-
-include(${CMAKE_MODULE_PATH}/conan.cmake)
-
-conan_cmake_run(REQUIRES
-        box2d/2.3.2.ef96a4f@conan/stable
-        entt/3.4.0
-        spdlog/1.5.0
-        IMPORTS "bin, *.dll -> ./bin"
-        IMPORTS "lib, *.dylib* -> ./bin"
-        BASIC_SETUP
-        BUILD missing)
+# Find vcpkg packages
+find_package(EnTT CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 # Link this 'library' to use the standard warnings
 add_library(project_warnings INTERFACE)
@@ -114,12 +100,25 @@ include_directories(${CMAKE_SOURCE_DIR} src/States)
 include_directories(${CMAKE_SOURCE_DIR} src/utils)
 include_directories(${CMAKE_SOURCE_DIR} extlib/tmxlite/tmxlite/include)
 include_directories(${CMAKE_SOURCE_DIR} extlib/sfml/include)
+include_directories(${CMAKE_SOURCE_DIR} extlib/box2d/Box2D)
 add_subdirectory(extlib/tmxlite/tmxlite)
 add_subdirectory(extlib/sfml)
+set(BOX2D_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(extlib/box2d/Box2D)
 add_subdirectory(src)
 
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE project_options project_warnings SOURCE ${CONAN_LIBS} sfml-window sfml-system sfml-audio sfml-graphics tmxlite)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+    project_options
+    project_warnings
+    SOURCE
+    sfml-system
+    sfml-window
+    sfml-graphics
+    sfml-audio
+    Box2D
+    EnTT::EnTT
+    tmxlite)
 
 add_custom_command(
         TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
@@ -129,6 +128,12 @@ add_custom_command(
 
 add_custom_command(
     TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_SOURCE_DIR}/extlib/sfml/extlibs/bin/x64/openal32.dll
-    ${CMAKE_CURRENT_BINARY_DIR}/bin)
+    ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)
+
+add_custom_command(
+    TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:tmxlite>
+    ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)

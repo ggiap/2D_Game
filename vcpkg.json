@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "2d-game",
+  "version": "1.0.0",
+  "builtin-baseline": "6353ece09f6cebc34413ea04e69beab3fece73c2",
+  "dependencies": [
+    {
+      "name": "entt",
+      "version>=": "3.4.0"
+    },
+    "spdlog"
+  ],
+  "overrides": [
+    {
+      "name": "entt",
+      "version": "3.4.0"
+    }
+  ]
+}

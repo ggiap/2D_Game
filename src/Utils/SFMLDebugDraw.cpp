@@ -83,17 +83,6 @@ void SFMLDebugDraw::DrawSolidCircle(const b2Vec2& center, float radius, const b2
 	m_window->draw(line, 2, sf::Lines);
 }
 
-void SFMLDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
-{
-    sf::CircleShape circle;
-    circle.setRadius(size);
-    circle.setOrigin(circle.getRadius(), circle.getRadius());
-    circle.setFillColor(SFMLDebugDraw::GLColorToSFML(color));
-    circle.setPosition(utils::B2VecToSFVec<sf::Vector2f>(p));
-
-    m_window->draw(circle);
-}
-
 void SFMLDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
 	sf::Vertex line[] =
